@@ -1,0 +1,19 @@
+{
+  "name": "react-matcha",
+  "version": "0.0.1",
+  "description": "create tests, visualize schema",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s-herbert/react-matcha.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/s-herbert/react-matcha/issues"
+  },
+  "homepage": "https://github.com/s-herbert/react-matcha#readme"
+}

@@ -36,6 +36,7 @@ const MAX_HISTORY_LENGTH = 20;
 
 export class QueryHistory extends React.Component {
   static propTypes = {
+    response: PropTypes.string,
     query: PropTypes.string,
     variables: PropTypes.string,
     operationName: PropTypes.string,
@@ -62,6 +63,7 @@ export class QueryHistory extends React.Component {
         query: nextProps.query,
         variables: nextProps.variables,
         operationName: nextProps.operationName,
+        response: nextProps.response,
       };
       this.historyStore.push(item);
       if (this.historyStore.length > MAX_HISTORY_LENGTH) {
@@ -92,7 +94,7 @@ export class QueryHistory extends React.Component {
     return (
       <div>
         <div className="history-title-bar">
-          <div className="history-title">{'History'}</div>
+          <div className="history-title">{'Test Drawer'}</div>
           <div className="doc-explorer-rhs">
             {this.props.children}
           </div>

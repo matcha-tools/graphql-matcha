@@ -1,119 +1,151 @@
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
-const root = require('./helpers').root;
-const VERSION = JSON.stringify(require('../package.json').version);
+const root = require("./helpers").root;
+const VERSION = JSON.stringify(require("../package.json").version);
 
 module.exports = function(_, { mode }) {
   return {
     performance: {
-      hints: false,
+      hints: false
     },
     resolve: {
-      extensions: ['.ts', '.tsx', '.mjs', '.js', '.json', '.css', '.svg'],
+      extensions: [".ts", ".tsx", ".mjs", ".js", ".json", ".css", ".svg"]
     },
-    entry: ['./src/polyfills.ts', './index.tsx'],
+    entry: ["./src/visualizer/polyfills.ts", "./index.tsx"],
     devServer: {
-      contentBase: root('demo'),
+      contentBase: root("demo"),
       watchContentBase: true,
       port: 9090,
-      stats: 'errors-only',
+      stats: "errors-only"
     },
     output: {
-      path: root('demo-dist'),
-      filename: '[name].js',
-      sourceMapFilename: '[name].[id].map',
+      path: root("demo-dist"),
+      filename: "[name].js",
+      sourceMapFilename: "[name].[id].map"
     },
     module: {
       rules: [
         {
-          test: /\.tsx?$/,
-          use: 'ts-loader',
-          exclude: [/\.(spec|e2e)\.ts$/],
+          test: /\.(js|js\.flow)$/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              plugins: [
+                "@babel/plugin-proposal-object-rest-spread",
+                "@babel/plugin-transform-arrow-functions",
+                "@babel/plugin-transform-destructuring",
+                "@babel/plugin-transform-regenerator",
+                "@babel/plugin-proposal-class-properties",
+                "@babel/plugin-syntax-async-generators"
+              ],
+              presets:["@babel/preset-react", "@babel/preset-flow","@babel/preset-env"]
+            }
+          },
+        exclude: [/\.render.\js$/, /node_modules\/(?!graphql-language-service-interface\/dist).*/],
+
         },
+
+        {
+          test: /\.tsx?$/,
+          use: "ts-loader",
+          exclude: [/\.(spec|e2e)\.ts$/]
+        },
+
         {
           test: /\.render\.js$/,
           use: {
-            loader: 'file-loader',
+            loader: "file-loader",
             options: {
-              name: 'voyager.worker.js',
-            },
-          },
+              name: "voyager.worker.js"
+            }
+          }
         },
+
         {
-          test: /\.css$/,
+          test: /src\/visualizer\/.*\.css$/,
           exclude: /variables\.css$/,
           use: ExtractTextPlugin.extract({
-            fallback: 'style-loader',
+            fallback: "style-loader",
             use: [
               {
-                loader: 'css-loader',
+                loader: "css-loader",
                 options: {
-                  sourceMap: true,
-                },
+                  sourceMap: true
+                }
               },
-              'postcss-loader',
-            ],
-          }),
+              "postcss-loader"
+            ]
+          })
         },
         {
-          test: /variables\.css$/,
-          loader: 'postcss-variables-loader?es5=1',
+          test: /css\/.*\.css$/,
+          use: ExtractTextPlugin.extract({
+            fallback: "style-loader",
+            use: {
+              loader:"postcss-loader"
+            }
+          })
+        }
+        ,
+        {
+          test: /src\/visualizer\/components\/variables\.css$/,
+          loader: "postcss-variables-loader?es5=1"
         },
         {
           test: /\.svg$/,
           use: [
             {
-              loader: 'babel-loader',
+              loader: "babel-loader",
               options: {
                 plugins: [
-                  '@babel/plugin-transform-block-scoping',
-                  '@babel/plugin-transform-arrow-functions',
-                  '@babel/plugin-transform-destructuring'
+                  "@babel/plugin-transform-block-scoping",
+                  "@babel/plugin-transform-arrow-functions",
+                  "@babel/plugin-transform-destructuring"
                 ]
               }
             },
             {
-              loader: 'react-svg-loader',
+              loader: "react-svg-loader",
               options: {
                 jsx: false,
                 svgo: {
-                  plugins: [{mergePaths: false}]
+                  plugins: [{ mergePaths: false }]
                 }
               }
             }
           ]
-        },
-      ],
+        }
+      ]
     },
 
     plugins: [
       new webpack.LoaderOptionsPlugin({
         worker: {
           output: {
-            filename: '[name].worker.js',
-          },
-        },
+            filename: "[name].worker.js"
+          }
+        }
       }),
 
       new webpack.DefinePlugin({
-        VERSION: VERSION,
+        VERSION: VERSION
       }),
 
       new HtmlWebpackPlugin({
-        template: './demo/index.html',
+        template: "./index.html"
       }),
 
       new ExtractTextPlugin({
-        filename: '[name].[hash].css',
+        filename: "[name].[hash].css"
       }),
 
       new CopyWebpackPlugin([
-        { from: '**/*.png', context: './demo' },
-        { from: '**/*.ico', context: './demo' },
-      ]),
-    ],
+        { from: "**/*.png", context: "./demo" },
+        { from: "**/*.ico", context: "./demo" }
+      ])
+    ]
   };
 };

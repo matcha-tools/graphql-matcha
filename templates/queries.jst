@@ -1,0 +1,14 @@
+// Mocha boilerplate for testing query expected.
+
+it('', () => {
+  const query = `$query`;
+  const expected = `$expected`;
+  
+  return integrationServer
+    .graphqlQuery(app, query)
+    .then((response) => {
+      expect(response.statusCode).to.equal(200);
+      expect(response.body).to.have.deep.equals(expected);    
+    });
+});
+

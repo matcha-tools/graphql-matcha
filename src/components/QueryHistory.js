@@ -130,7 +130,7 @@ export class QueryHistory extends React.Component {
       this.selectedForTestingStore.push(item);
       this.historyStore.edit(item);
     } else if (favorite) {
-      delete item.favorite;
+      item.favorite = false;
       this.historyStore.edit(item);
       this.selectedForTestingStore.delete(item);
     }

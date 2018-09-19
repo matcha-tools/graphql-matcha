@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 
 export default class HistoryQuery extends React.Component {
   static propTypes = {
+    response: PropTypes.string, 
     favorite: PropTypes.bool,
     favoriteSize: PropTypes.number,
     handleEditLabel: PropTypes.func,
@@ -88,6 +89,7 @@ export default class HistoryQuery extends React.Component {
     this.props.onSelect(
       this.props.query,
       this.props.variables,
+      this.props.response,
       this.props.operationName,
       this.props.label,
     );
@@ -99,8 +101,8 @@ export default class HistoryQuery extends React.Component {
       this.props.query,
       this.props.variables,
       this.props.operationName,
-      this.props.label,
       this.props.favorite,
+      this.props.response,
     );
   }
 

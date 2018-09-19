@@ -102,36 +102,44 @@ export class QueryHistory extends React.Component {
 
   createQueryNodes = (queryStore) => {
     const nodes = queryStore.slice().reverse();
-    return nodes.map((entry, i) => {
+    return nodes.map((node, i) => {
       return (
         <HistoryQuery
+          response={this.props.response}
           handleEditLabel={this.editLabel}
           handleToggleFavorite={this.toggleFavorite}
           key={i}
           onSelect={this.props.onSelectQuery}
-          {...query}
+          {...node}
         />
       );
     });
   };
 
-  toggleFavorite = (query, variables, operationName, label, favorite) => {
+  toggleFavorite = (query, variables, operationName, favorite, response) => {
     const item = {
       query,
       variables,
       operationName,
-      label,
+      response,
     };
-    if (!this.favoriteStore.contains(item)) {
+
+    // if the item does not exist in the selectedForTestingStore, create a property favorite on the item and set it to true. Add the item to the store and edit the same item in the historyStore. 
+    if (!this.selectedForTestingStore.contains(item)) {
       item.favorite = true;
-      this.favoriteStore.push(item);
+      this.selectedForTestingStore.push(item);
+      this.historyStore.edit(item);
     } else if (favorite) {
-      item.favorite = false;
-      this.favoriteStore.delete(item);
+      delete item.favorite;
+      this.historyStore.edit(item);
+      this.selectedForTestingStore.delete(item);
     }
-    this.setState({ ...this.historyStore.items, ...this.favoriteStore.items });
+    // set state with the changed queries
+    const historyQueries = this.historyStore.items;
+    this.setState({ historyQueries });
   };
 
+  // Jon: Label functionality not needed, will discuss with team before removal - 9/17/18
   editLabel = (query, variables, operationName, label, favorite) => {
     const item = {
       query,

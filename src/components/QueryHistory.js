@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import QueryStore from '../utility/QueryStore';
 import HistoryQuery from './HistoryQuery';
 
-const shouldSaveQuery = (nextProps, current, lastQuerySaved) => {
-  if (nextProps.queryID === current.queryID) {
+const shouldSaveQuery = (nextProps, currentProps, allHistoryQueries) => {
+  if (nextProps.queryID === currentProps.queryID) {
     return false;
   }
   try {
@@ -13,23 +13,30 @@ const shouldSaveQuery = (nextProps, current, lastQuerySaved) => {
   } catch (e) {
     return false;
   }
-  if (!lastQuerySaved) {
-    return true;
-  }
-  if (
-    JSON.stringify(nextProps.query) === JSON.stringify(lastQuerySaved.query)
-  ) {
-    if (
-      JSON.stringify(nextProps.variables) ===
-      JSON.stringify(lastQuerySaved.variables)
-    ) {
-      return false;
+
+  // change the value of execute if a duplicate is found below
+  let execute = true;
+
+  // iterate through all existing history queries and ensure no duplicates are created. 
+  allHistoryQueries.forEach((entry) => {
+    if (JSON.stringify(nextProps.operationName) === JSON.stringify(entry.operationName)) {
+      if (
+        JSON.stringify(nextProps.query) === JSON.stringify(entry.query)
+        ) {
+        if (
+          JSON.stringify(nextProps.variables) ===
+          JSON.stringify(entry.variables)
+        ) {
+          execute = false;
+        }
+        if (!nextProps.variables && !entry.variables) {
+          execute = false;
+        }
+        execute = false;
+      }
     }
-    if (!nextProps.variables && !lastQuerySaved.variables) {
-      return false;
-    }
-  }
-  return true;
+  })
+  return execute;
 };
 
 const MAX_HISTORY_LENGTH = 20;
@@ -48,16 +55,16 @@ export class QueryHistory extends React.Component {
   constructor(props) {
     super(props);
     this.historyStore = new QueryStore('queries', props.storage);
-    this.favoriteStore = new QueryStore('favorites', props.storage);
+    this.selectedForTestingStore = new QueryStore('testing', props.storage);
     const historyQueries = this.historyStore.fetchAll();
-    const favoriteQueries = this.favoriteStore.fetchAll();
-    const queries = historyQueries.concat(favoriteQueries);
-    this.state = { queries };
+    this.state = { historyQueries };
   }
 
   componentWillReceiveProps(nextProps) {
+    // ensure no duplicates will be created, pass all existing queries into shouldSaveQuery
+    const allHistoryQueries = this.historyStore.fetchAll() || [];
     if (
-      shouldSaveQuery(nextProps, this.props, this.historyStore.fetchRecent())
+      shouldSaveQuery(nextProps, this.props, allHistoryQueries)
     ) {
       const item = {
         query: nextProps.query,
@@ -69,28 +76,15 @@ export class QueryHistory extends React.Component {
       if (this.historyStore.length > MAX_HISTORY_LENGTH) {
         this.historyStore.shift();
       }
-      const historyQueries = this.historyStore.items;
-      const favoriteQueries = this.favoriteStore.items;
-      const queries = historyQueries.concat(favoriteQueries);
+      const newListOfHistoryQueries = this.historyStore.items;
       this.setState({
-        queries,
+        historyQueries: newListOfHistoryQueries,
       });
     }
   }
 
   render() {
-    const queries = this.state.queries.slice().reverse();
-    const queryNodes = queries.map((query, i) => {
-      return (
-        <HistoryQuery
-          handleEditLabel={this.editLabel}
-          handleToggleFavorite={this.toggleFavorite}
-          key={i}
-          onSelect={this.props.onSelectQuery}
-          {...query}
-        />
-      );
-    });
+    const queryNodes = this.createQueryNodes(this.state.historyQueries) 
     return (
       <div>
         <div className="history-title-bar">
@@ -106,23 +100,46 @@ export class QueryHistory extends React.Component {
     );
   }
 
-  toggleFavorite = (query, variables, operationName, label, favorite) => {
+  createQueryNodes = (queryStore) => {
+    const nodes = queryStore.slice().reverse();
+    return nodes.map((node, i) => {
+      return (
+        <HistoryQuery
+          response={this.props.response}
+          handleEditLabel={this.editLabel}
+          handleToggleFavorite={this.toggleFavorite}
+          key={i}
+          onSelect={this.props.onSelectQuery}
+          {...node}
+        />
+      );
+    });
+  };
+
+  toggleFavorite = (query, variables, operationName, favorite, response) => {
     const item = {
       query,
       variables,
       operationName,
-      label,
+      response,
     };
-    if (!this.favoriteStore.contains(item)) {
+
+    // if the item does not exist in the selectedForTestingStore, create a property favorite on the item and set it to true. Add the item to the store and edit the same item in the historyStore. 
+    if (!this.selectedForTestingStore.contains(item)) {
       item.favorite = true;
-      this.favoriteStore.push(item);
+      this.selectedForTestingStore.push(item);
+      this.historyStore.edit(item);
     } else if (favorite) {
       item.favorite = false;
-      this.favoriteStore.delete(item);
+      this.historyStore.edit(item);
+      this.selectedForTestingStore.delete(item);
     }
-    this.setState({ ...this.historyStore.items, ...this.favoriteStore.items });
+    // set state with the changed queries
+    const historyQueries = this.historyStore.items;
+    this.setState({ historyQueries });
   };
 
+  // Jon: Label functionality not needed, will discuss with team before removal - 9/17/18
   editLabel = (query, variables, operationName, label, favorite) => {
     const item = {
       query,

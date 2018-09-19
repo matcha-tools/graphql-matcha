@@ -55,9 +55,9 @@ export class GraphiQL extends React.Component {
       removeItem: PropTypes.func,
     }),
     defaultQuery: PropTypes.string,
-    onEditQuery: PropTypes.func,
-    onEditVariables: PropTypes.func,
-    onEditOperationName: PropTypes.func,
+    onEditQuery: PropTypes.func, // Jon: I might take this out, may not need 2PM - 9/17/18
+    onEditVariables: PropTypes.func, // Jon: I might take this out, may not need 2PM - 9/17/18
+    onEditOperationName: PropTypes.func, // Jon: I might take this out, may not need 2PM - 9/17/18
     onToggleDocs: PropTypes.func,
     getDefaultFieldNames: PropTypes.func,
     editorTheme: PropTypes.string,
@@ -288,6 +288,7 @@ export class GraphiQL extends React.Component {
       <div className="graphiql-container">
         <div className="historyPaneWrap" style={historyPaneStyle}>
           <QueryHistory
+            response={this.state.response}
             operationName={this.state.operationName}
             query={this.state.query}
             variables={this.state.variables}
@@ -617,11 +618,16 @@ export class GraphiQL extends React.Component {
     }
 
     try {
-      this.setState({
-        isWaitingForResponse: true,
-        response: null,
-        operationName,
-      });
+
+      /* commented out, response is unable to get captured in the query object if     this is active
+       *
+       * this.setState({
+       *   isWaitingForResponse: true,
+       *   response: null,
+       *   operationName,
+       * });
+       * 
+       ********************************************/ 
 
       // _fetchQuery may return a subscription.
       const subscription = this._fetchQuery(
@@ -635,10 +641,9 @@ export class GraphiQL extends React.Component {
               response: JSON.stringify(result, null, 2),
             });
           }
+          this.setState({ subscription }); // moved inside of callback in order for response to be captured in query object. 
         },
       );
-
-      this.setState({ subscription });
     } catch (error) {
       this.setState({
         isWaitingForResponse: false,

@@ -84,7 +84,7 @@ export class QueryHistory extends React.Component {
   }
 
   render() {
-    const queryNodes = this.createQueryNodes(this.state.history) 
+    const queryNodes = this.createQueryNodes(this.state.historyQueries) 
     return (
       <div>
         <div className="history-title-bar">

@@ -4,17 +4,23 @@ const chai = require('chai');
 
 const expect = chai.expect;
 
-describe('Pokemon integration', () => {
+describe('GraphQL Integration Tests', () => {
   let app;
 
   before((done) => {
     app = integrationServer.start(done);
   });
 
-  {$its}
-
   after((done) => {
     integrationServer.stop(app, done);
   });
+
+
+  describe('Queries...', () => {
+
+    ${its}
+
+  });
+ 
 
 });

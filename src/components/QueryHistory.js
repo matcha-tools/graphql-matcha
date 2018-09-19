@@ -84,18 +84,7 @@ export class QueryHistory extends React.Component {
   }
 
   render() {
-    const queries = this.state.queries.slice().reverse();
-    const queryNodes = queries.map((query, i) => {
-      return (
-        <HistoryQuery
-          handleEditLabel={this.editLabel}
-          handleToggleFavorite={this.toggleFavorite}
-          key={i}
-          onSelect={this.props.onSelectQuery}
-          {...query}
-        />
-      );
-    });
+    const queryNodes = this.createQueryNodes(this.state.history) 
     return (
       <div>
         <div className="history-title-bar">
@@ -110,6 +99,21 @@ export class QueryHistory extends React.Component {
       </div>
     );
   }
+
+  createQueryNodes = (queryStore) => {
+    const nodes = queryStore.slice().reverse();
+    return nodes.map((entry, i) => {
+      return (
+        <HistoryQuery
+          handleEditLabel={this.editLabel}
+          handleToggleFavorite={this.toggleFavorite}
+          key={i}
+          onSelect={this.props.onSelectQuery}
+          {...query}
+        />
+      );
+    });
+  };
 
   toggleFavorite = (query, variables, operationName, label, favorite) => {
     const item = {

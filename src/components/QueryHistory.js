@@ -55,16 +55,16 @@ export class QueryHistory extends React.Component {
   constructor(props) {
     super(props);
     this.historyStore = new QueryStore('queries', props.storage);
-    this.favoriteStore = new QueryStore('favorites', props.storage);
+    this.selectedForTestingStore = new QueryStore('testing', props.storage);
     const historyQueries = this.historyStore.fetchAll();
-    const favoriteQueries = this.favoriteStore.fetchAll();
-    const queries = historyQueries.concat(favoriteQueries);
-    this.state = { queries };
+    this.state = { historyQueries };
   }
 
   componentWillReceiveProps(nextProps) {
+    // ensure no duplicates will be created, pass all existing queries into shouldSaveQuery
+    const allHistoryQueries = this.historyStore.fetchAll() || [];
     if (
-      shouldSaveQuery(nextProps, this.props, this.historyStore.fetchRecent())
+      shouldSaveQuery(nextProps, this.props, allHistoryQueries)
     ) {
       const item = {
         query: nextProps.query,
@@ -76,11 +76,9 @@ export class QueryHistory extends React.Component {
       if (this.historyStore.length > MAX_HISTORY_LENGTH) {
         this.historyStore.shift();
       }
-      const historyQueries = this.historyStore.items;
-      const favoriteQueries = this.favoriteStore.items;
-      const queries = historyQueries.concat(favoriteQueries);
+      const newListOfHistoryQueries = this.historyStore.items;
       this.setState({
-        queries,
+        historyQueries: newListOfHistoryQueries,
       });
     }
   }

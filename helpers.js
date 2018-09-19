@@ -75,14 +75,13 @@ export function updateURL() {
 export function graphQLFetcher(graphQLParams) {
   // This example expects a GraphQL server at the path /graphql.
   // Change this to point wherever you host your GraphQL server.
-  return fetch("/graphql", {
+  return fetch("http://localhost:3000/graphql", {
     method: "post",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json"
     },
     body: JSON.stringify(graphQLParams),
-    credentials: "include"
   })
     .then(function(response) {
       return response.text();

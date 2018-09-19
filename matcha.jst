@@ -1,0 +1,20 @@
+const request = require('request');
+const integrationServer = require("./integrationServer");
+const chai = require('chai');
+
+const expect = chai.expect;
+
+describe('Pokemon integration', () => {
+  let app;
+
+  before((done) => {
+    app = integrationServer.start(done);
+  });
+
+  {$its}
+
+  after((done) => {
+    integrationServer.stop(app, done);
+  });
+
+});

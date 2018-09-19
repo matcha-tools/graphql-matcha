@@ -1,0 +1,26 @@
+const request = require('request');
+const integrationServer = require("./integrationServer");
+const chai = require('chai');
+
+const expect = chai.expect;
+
+describe('GraphQL Integration Tests', () => {
+  let app;
+
+  before((done) => {
+    app = integrationServer.start(done);
+  });
+
+  after((done) => {
+    integrationServer.stop(app, done);
+  });
+
+
+  describe('Queries...', () => {
+
+    ${its}
+
+  });
+ 
+
+});

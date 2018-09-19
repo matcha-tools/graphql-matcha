@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import QueryStore from '../utility/QueryStore';
 import HistoryQuery from './HistoryQuery';
 
-const shouldSaveQuery = (nextProps, current, lastQuerySaved) => {
-  if (nextProps.queryID === current.queryID) {
+const shouldSaveQuery = (nextProps, currentProps, allHistoryQueries) => {
+  if (nextProps.queryID === currentProps.queryID) {
     return false;
   }
   try {
@@ -13,23 +13,30 @@ const shouldSaveQuery = (nextProps, current, lastQuerySaved) => {
   } catch (e) {
     return false;
   }
-  if (!lastQuerySaved) {
-    return true;
-  }
-  if (
-    JSON.stringify(nextProps.query) === JSON.stringify(lastQuerySaved.query)
-  ) {
-    if (
-      JSON.stringify(nextProps.variables) ===
-      JSON.stringify(lastQuerySaved.variables)
-    ) {
-      return false;
+
+  // change the value of execute if a duplicate is found below
+  let execute = true;
+
+  // iterate through all existing history queries and ensure no duplicates are created. 
+  allHistoryQueries.forEach((entry) => {
+    if (JSON.stringify(nextProps.operationName) === JSON.stringify(entry.operationName)) {
+      if (
+        JSON.stringify(nextProps.query) === JSON.stringify(entry.query)
+        ) {
+        if (
+          JSON.stringify(nextProps.variables) ===
+          JSON.stringify(entry.variables)
+        ) {
+          execute = false;
+        }
+        if (!nextProps.variables && !entry.variables) {
+          execute = false;
+        }
+        execute = false;
+      }
     }
-    if (!nextProps.variables && !lastQuerySaved.variables) {
-      return false;
-    }
-  }
-  return true;
+  })
+  return execute;
 };
 
 const MAX_HISTORY_LENGTH = 20;

@@ -84,6 +84,10 @@ export class QueryHistory extends React.Component {
   }
 
   render() {
+    const downloadButton = {
+      display: (this.selectedForTestingStore.items.length === 0) ? 'none' : '',
+      marginLeft: '10px',
+    }
     const queryNodes = this.createQueryNodes(this.state.historyQueries) 
     return (
       <div>
@@ -96,7 +100,7 @@ export class QueryHistory extends React.Component {
         <div className="history-contents">
           {queryNodes}
           <div>
-            <button className="download-tests-button" onClick={this._downloadTestFile}>Download Tests</button>
+            <button className="download-tests-button" onClick={this._downloadTestFile} style={downloadButton}>Download Tests</button>
           </div>
         </div>
       </div>

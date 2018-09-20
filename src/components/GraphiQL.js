@@ -9,6 +9,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { buildClientSchema, GraphQLSchema, parse, print } from 'graphql';
+import {render} from "react-dom";
 
 import { ExecuteButton } from './ExecuteButton';
 import { ToolbarButton } from './ToolbarButton';
@@ -32,6 +33,7 @@ import {
   introspectionQuery,
   introspectionQuerySansSubscriptions,
 } from '../utility/introspectionQueries';
+import Viz from '../visualizer/viz';
 
 const DEFAULT_DOC_EXPLORER_WIDTH = 350;
 
@@ -63,6 +65,7 @@ export class GraphiQL extends React.Component {
     editorTheme: PropTypes.string,
     onToggleHistory: PropTypes.func,
     ResultsTooltip: PropTypes.any,
+    showVoya: PropTypes.bool,
   };
 
   constructor(props) {
@@ -119,6 +122,7 @@ export class GraphiQL extends React.Component {
       isWaitingForResponse: false,
       subscription: null,
       ...queryFacts,
+      showVoya: false,
     };
 
     // Ensure only the last executed editor query is rendered.
@@ -284,6 +288,27 @@ export class GraphiQL extends React.Component {
       height: variableOpen ? this.state.variableEditorHeight : null,
     };
 
+    const viz = document.getElementById('viz');
+    const graph = document.getElementById('graphiql');
+    const menu = document.getElementsByClassName('menu-content');
+    console.log(menu);
+
+    if (this.state.showVoya) {
+      viz.style.height = "60vh";
+      graph.style.height = "40vh";
+
+      render(
+        <Viz />,
+        document.getElementById("viz")
+      );
+    } 
+    else {
+      graph.style.height = "100vh";
+      viz.style.height = "0vh";
+      // don't use, don't make user re-render. 
+      // ReactDOM.unmountComponentAtNode(document.getElementById('viz'));
+    }
+
     return (
       <div className="graphiql-container">
         <div className="historyPaneWrap" style={historyPaneStyle}>
@@ -312,6 +337,7 @@ export class GraphiQL extends React.Component {
               />
               {toolbar}
             </div>
+            <button onClick={() => this.testing()}>test</button>
             {!this.state.docExplorerOpen &&
               <button
                 className="docExplorerShow"
@@ -396,6 +422,11 @@ export class GraphiQL extends React.Component {
         </div>
       </div>
     );
+  }
+
+  testing() {
+    let bool = !this.state.showVoya
+    this.setState({ showVoya: bool })
   }
 
   /**

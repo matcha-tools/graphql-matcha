@@ -25,21 +25,25 @@
             flex-direction:column;
             justify-content:center;
           }
-      
-          #viz {
+
+          .loading-box {
             height: 60vh;
           }
 
+          .type-info-popover {
+            display: none;
+          }
+      
           #graphiql {
-            height: 40vh;
+            height: 100vh;
           }
         </style>
     </head>
     <body>
        <main>
-          <div id="graphiql">Loading...</div>
-<div id="viz"></div>
-
+         <div id="viz"></div>
+         <div id="graphiql">Loading...</div>
+         
         </main> 
         
     </body>

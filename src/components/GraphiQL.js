@@ -7,9 +7,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
+import { ReactDOM, render } from 'react-dom';
 import { buildClientSchema, GraphQLSchema, parse, print } from 'graphql';
-
 import { ExecuteButton } from './ExecuteButton';
 import { ToolbarButton } from './ToolbarButton';
 import { ToolbarGroup } from './ToolbarGroup';
@@ -32,6 +31,7 @@ import {
   introspectionQuery,
   introspectionQuerySansSubscriptions,
 } from '../utility/introspectionQueries';
+import Viz from '../visualizer';
 
 const DEFAULT_DOC_EXPLORER_WIDTH = 350;
 
@@ -63,6 +63,7 @@ export class GraphiQL extends React.Component {
     editorTheme: PropTypes.string,
     onToggleHistory: PropTypes.func,
     ResultsTooltip: PropTypes.any,
+    showVoyager: PropTypes.bool,
   };
 
   constructor(props) {
@@ -119,6 +120,7 @@ export class GraphiQL extends React.Component {
       isWaitingForResponse: false,
       subscription: null,
       ...queryFacts,
+      showVoyager: false,
     };
 
     // Ensure only the last executed editor query is rendered.
@@ -284,6 +286,25 @@ export class GraphiQL extends React.Component {
       height: variableOpen ? this.state.variableEditorHeight : null,
     };
 
+    const vizDOMElement = document.getElementById('viz');
+    const graphiqlDOMElement = document.getElementById('graphiql');
+
+    if (this.state.showVoyager) {
+      // resize to display both components
+      vizDOMElement.style.height = "60vh";
+      graphiqlDOMElement.style.height = "40vh";
+
+      // display Voyageur
+      render(
+        <Viz />,
+        document.getElementById("viz")
+      );
+    } else {
+      // resize to only display graphiql
+      graphiqlDOMElement.style.height = "100vh";
+      vizDOMElement.style.height = "0vh";
+    }
+
     return (
       <div className="graphiql-container">
         <div className="historyPaneWrap" style={historyPaneStyle}>
@@ -312,6 +333,7 @@ export class GraphiQL extends React.Component {
               />
               {toolbar}
             </div>
+            <button onClick={() => this.showVoyager()}>Show Voyager</button>
             {!this.state.docExplorerOpen &&
               <button
                 className="docExplorerShow"
@@ -396,6 +418,11 @@ export class GraphiQL extends React.Component {
         </div>
       </div>
     );
+  }
+
+  showVoyager() {
+    const bool = !this.state.showVoyager;
+    this.setState({ showVoyager: bool });
   }
 
   /**

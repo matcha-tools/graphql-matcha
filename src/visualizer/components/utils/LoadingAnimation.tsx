@@ -4,8 +4,6 @@ import * as classNames from 'classnames';
 
 import './LoadingAnimation.css';
 
-import VoyagerIcon from '../icons/logo-with-signals.svg';
-
 interface LoadingAnimationProps {
   loading: boolean;
 }
@@ -31,8 +29,7 @@ class LoadingAnimation extends React.Component<LoadingAnimationProps> {
         })}
       >
         <span className="loading-animation">
-          <VoyagerIcon />
-          <h1> Transmitting... </h1>
+          <h1> Generating... </h1>
         </span>
       </div>
     );

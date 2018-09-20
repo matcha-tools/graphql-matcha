@@ -65,7 +65,7 @@ export default class HistoryQuery extends React.Component {
           : <span className="history-label">
               {displayName}
             </span>}
-        <span onClick={this.handleEditClick.bind(this)} style={editStyles}>
+        <span onClick={this.copyToClipboard} style={editStyles}>
           {'\u270e'}
         </span>
         <span onClick={this.handleStarClick.bind(this)} style={starStyles}>
@@ -139,5 +139,23 @@ export default class HistoryQuery extends React.Component {
         this.editField.focus();
       }
     });
+  }
+
+  copyToClipboard = () => {
+    function mochaTest (Q, R) {
+      const query = Q;
+      const expected = R;
+      const str = `it('', () => {\n                  \n  return integrationServer \n    .graphqlQuery(app, \`${query}\`) \n    .then((response) => { \n      expect(response.statusCode).to.equal(200); \n      expect(response.body).to.have.deep.equals(\`${expected}\`); \n  }); \n});`
+      return str;
+    };
+
+    let test = mochaTest(this.props.query, this.props.response);
+    const textField = document.createElement('textarea')
+    // textField.innerText = 'foo bar baz'
+    textField.innerText = test;
+    document.body.appendChild(textField)
+    textField.select()
+    document.execCommand('copy')
+    textField.remove()
   }
 }

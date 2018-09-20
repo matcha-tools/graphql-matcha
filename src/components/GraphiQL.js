@@ -286,25 +286,23 @@ export class GraphiQL extends React.Component {
       height: variableOpen ? this.state.variableEditorHeight : null,
     };
 
-    const viz = document.getElementById('viz');
-    const graph = document.getElementById('graphiql');
-    const menu = document.getElementsByClassName('menu-content');
-    console.log(menu);
+    const vizDOMElement = document.getElementById('viz');
+    const graphiqlDOMElement = document.getElementById('graphiql');
 
     if (this.state.showVoyager) {
-      viz.style.height = "60vh";
-      graph.style.height = "40vh";
+      // resize to display both components
+      vizDOMElement.style.height = "60vh";
+      graphiqlDOMElement.style.height = "40vh";
 
+      // display Voyageur
       render(
         <Viz />,
         document.getElementById("viz")
       );
-    } 
-    else {
-      graph.style.height = "100vh";
-      viz.style.height = "0vh";
-      // don't use, don't make user re-render. 
-      // ReactDOM.unmountComponentAtNode(document.getElementById('viz'));
+    } else {
+      // resize to only display graphiql
+      graphiqlDOMElement.style.height = "100vh";
+      vizDOMElement.style.height = "0vh";
     }
 
     return (
@@ -335,7 +333,7 @@ export class GraphiQL extends React.Component {
               />
               {toolbar}
             </div>
-            <button onClick={() => this.testing()}>test</button>
+            <button onClick={() => this.showVoyager()}>Show Voyager</button>
             {!this.state.docExplorerOpen &&
               <button
                 className="docExplorerShow"
@@ -422,9 +420,9 @@ export class GraphiQL extends React.Component {
     );
   }
 
-  testing() {
-    let bool = !this.state.showVoyager
-    this.setState({ showVoyager: bool })
+  showVoyager() {
+    const bool = !this.state.showVoyager;
+    this.setState({ showVoyager: bool });
   }
 
   /**

@@ -100,7 +100,6 @@ export default class HistoryQuery extends React.Component {
   }
 
   handleDeleteItem(e) {
-    console.log("hittin")
     e.stopPropagation();
     this.props.handleDeleteItem(
       this.props.query,

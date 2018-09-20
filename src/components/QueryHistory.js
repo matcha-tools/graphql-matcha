@@ -100,6 +100,9 @@ export class QueryHistory extends React.Component {
         </div>
         <div className="history-contents">
           {queryNodes}
+          <div>
+            <button className="download-tests-button" onClick={this._downloadTestFile}>Download Tests</button>
+          </div>
         </div>
       </div>
     );
@@ -159,4 +162,29 @@ export class QueryHistory extends React.Component {
     }
     this.setState({ ...this.historyStore.items, ...this.favoriteStore.items });
   };
+
+  _downloadTestFile = () => {
+    function mochaTest (Q, R) {
+      const query = Q;
+      const response = R;
+      const str = `it('', () => {\n                  \n  return integrationServer \n    .graphqlQuery(app, \`${query}\`) \n    .then((response) => { \n      expect(response.statusCode).to.equal(200); \n      expect(response.body).to.have.deep.equals(\`${response}\`); \n  }); \n});`
+      return str;
+    };
+    let arr = [];
+    let test = "";
+    let i = 0;
+    let len = this.selectedForTestingStore.items.length;
+
+    while (i < len){
+      test = test + mochaTest(this.selectedForTestingStore.items[i].query, this.selectedForTestingStore.items[i].response);
+      test = test + '\n';
+      i++;
+    }
+    arr.push(test);
+    const element = document.createElement("a");
+    const file = new Blob(arr, {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = "test.txt";
+    element.click();
+  }
 }

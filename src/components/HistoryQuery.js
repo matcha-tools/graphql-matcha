@@ -14,6 +14,7 @@ export default class HistoryQuery extends React.Component {
     favorite: PropTypes.bool,
     favoriteSize: PropTypes.number,
     handleEditLabel: PropTypes.func,
+    handleDeleteItem: PropTypes.func,
     handleToggleFavorite: PropTypes.func,
     operationName: PropTypes.string,
     onSelect: PropTypes.func,
@@ -65,6 +66,9 @@ export default class HistoryQuery extends React.Component {
           : <span className="history-label">
               {displayName}
             </span>}
+        <span onClick={this.handleDeleteItem.bind(this)} style={editStyles}>
+          {'\u2421'}
+        </span>     
         <span onClick={this.copyToClipboard} style={editStyles}>
           {'\u270e'}
         </span>
@@ -92,6 +96,17 @@ export default class HistoryQuery extends React.Component {
       this.props.operationName,
       this.props.response,
       this.props.label, // Jon: may not need, is not accepted as an argument in the function - refer to GraphiQL.js : HandleSelectHistoryQuery
+    );
+  }
+
+  handleDeleteItem(e) {
+    e.stopPropagation();
+    this.props.handleDeleteItem(
+      this.props.query,
+      this.props.variables,
+      this.props.operationName,
+      this.props.favorite,
+      this.props.response,
     );
   }
 
@@ -145,17 +160,28 @@ export default class HistoryQuery extends React.Component {
     function mochaTest (Q, R) {
       const query = Q;
       const expected = R;
-      const str = `it('', () => {\n                  \n  return integrationServer \n    .graphqlQuery(app, \`${query}\`) \n    .then((response) => { \n      expect(response.statusCode).to.equal(200); \n      expect(response.body).to.have.deep.equals(\`${expected}\`); \n  }); \n});`
-      return str;
+      const test = `it('', () => {
+        return integrationServer
+          .graphqlQuery(app, 
+            \`${query}\`
+          )
+          .then((response) => {
+            expect(response.statusCode).to.equal(200);
+            expect(response.body).to.have.deep.equals(
+              \`${expected}\`
+            );
+          });
+      });`
+      return test;
     };
-
-    let test = mochaTest(this.props.query, this.props.response);
-    const textField = document.createElement('textarea')
-    // textField.innerText = 'foo bar baz'
-    textField.innerText = test;
-    document.body.appendChild(textField)
-    textField.select()
-    document.execCommand('copy')
-    textField.remove()
-  }
+    let str = mochaTest(this.props.query, this.props.response);
+    function listener(e) {
+      e.clipboardData.setData("text/html", str);
+      e.clipboardData.setData("text/plain", str);
+      e.preventDefault();
+    }
+    document.addEventListener("copy", listener);
+    document.execCommand("copy");
+    document.removeEventListener("copy", listener);
+  };
 }

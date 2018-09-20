@@ -31,7 +31,7 @@ import {
   introspectionQuery,
   introspectionQuerySansSubscriptions,
 } from '../utility/introspectionQueries';
-import Viz from '../visualizer/viz';
+import Viz from '../visualizer';
 
 const DEFAULT_DOC_EXPLORER_WIDTH = 350;
 

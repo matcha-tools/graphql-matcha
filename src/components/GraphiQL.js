@@ -9,6 +9,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ReactDOM, render } from 'react-dom';
 import { buildClientSchema, GraphQLSchema, parse, print } from 'graphql';
+
 import { ExecuteButton } from './ExecuteButton';
 import { ToolbarButton } from './ToolbarButton';
 import { ToolbarGroup } from './ToolbarGroup';
@@ -825,10 +826,12 @@ export class GraphiQL extends React.Component {
     this.setState({ historyPaneOpen: !this.state.historyPaneOpen });
   };
 
-  handleSelectHistoryQuery = (query, variables, operationName) => {
+  handleSelectHistoryQuery = (query, variables, operationName, response) => {
     this.handleEditQuery(query);
     this.handleEditVariables(variables);
     this.handleEditOperationName(operationName);
+    // reset state with passed in response so it is displayed when query is selected
+    this.setState({ response });
   };
 
   handleResizeStart = downEvent => {

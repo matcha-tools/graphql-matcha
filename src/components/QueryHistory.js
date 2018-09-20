@@ -73,9 +73,14 @@ export class QueryHistory extends React.Component {
         response: nextProps.response,
       };
       this.historyStore.push(item);
+      
+      // -------  Jon 9/19/18 -----------
+      // revisit this section, if user favorites a query and the query is at the beginning of the array
+      // it will get removed
       if (this.historyStore.length > MAX_HISTORY_LENGTH) {
         this.historyStore.shift();
       }
+      // ------------------------------------
       const newListOfHistoryQueries = this.historyStore.items;
       this.setState({
         historyQueries: newListOfHistoryQueries,

@@ -89,9 +89,9 @@ export default class HistoryQuery extends React.Component {
     this.props.onSelect(
       this.props.query,
       this.props.variables,
-      this.props.response,
       this.props.operationName,
-      this.props.label,
+      this.props.response,
+      this.props.label, // Jon: may not need, is not accepted as an argument in the function - refer to GraphiQL.js : HandleSelectHistoryQuery
     );
   }
 

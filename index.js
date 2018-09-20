@@ -49,6 +49,7 @@ export class App extends React.Component {
   }
 
   toggleVoyager = () => {
+    console.log('testing ', this.state.showVoyager)
     const bool = !this.state.showVoyager;
     this.setState({ showVoyager: bool });
   }

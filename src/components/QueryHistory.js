@@ -142,6 +142,7 @@ export class QueryHistory extends React.Component {
       this.historyStore.edit(item);
       this.selectedForTestingStore.delete(item);
     }
+
     // set state with the changed queries
     const historyQueries = this.historyStore.items;
     this.setState({ historyQueries });

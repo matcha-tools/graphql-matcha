@@ -254,7 +254,7 @@ export class GraphiQL extends React.Component {
         <ToolbarButton
           onClick={this.handleToggleHistory}
           title="Show History"
-          label="History"
+          label="Queries"
         />
 
       </GraphiQL.Toolbar>;

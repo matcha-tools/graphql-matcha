@@ -9,6 +9,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ReactDOM, render } from 'react-dom';
 import { buildClientSchema, GraphQLSchema, parse, print } from 'graphql';
+
 import { ExecuteButton } from './ExecuteButton';
 import { ToolbarButton } from './ToolbarButton';
 import { ToolbarGroup } from './ToolbarGroup';
@@ -31,7 +32,7 @@ import {
   introspectionQuery,
   introspectionQuerySansSubscriptions,
 } from '../utility/introspectionQueries';
-import Viz from '../visualizer/viz';
+import Viz from '../visualizer';
 
 const DEFAULT_DOC_EXPLORER_WIDTH = 350;
 

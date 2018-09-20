@@ -1,31 +1,7 @@
 import * as React from "react";
 import {render} from "react-dom";
-import { MuiThemeProvider } from "@material-ui/core/styles";
-
-import { theme } from "./src/visualizer/components/MUITheme";
-import { GraphQLVoyager } from "./src/visualizer";
-
 import { GraphiQL } from "./src/components/GraphiQL";
-
-import schema from "./demo/schema/schema";
 import * as helpers from "./helpers.js";
-
-export default class Viz extends React.Component {
-  public render() {
-    return (
-      <MuiThemeProvider theme={theme}>
-        <GraphQLVoyager introspection={schema} />
-      </MuiThemeProvider>
-    );
-  }
-}
-
-
-
-render(
-    <Viz />,
-  document.getElementById("viz")
-);
 
 render(
   <GraphiQL 

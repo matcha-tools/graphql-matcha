@@ -25,21 +25,27 @@
             flex-direction:column;
             justify-content:center;
           }
-      
-          #viz {
+          
+          /* temporary hard-code solution to fix the height of loadingbox - Jon 9/18/17 */
+          .loading-box {
             height: 60vh;
           }
 
+          /* temporary hard-code solution to fix the popover box - Jon 9/18/17 */
+          .type-info-popover {
+            display: none;
+          }
+      
           #graphiql {
-            height: 40vh;
+            height: 100vh;
           }
         </style>
     </head>
     <body>
        <main>
-          <div id="graphiql">Loading...</div>
-<div id="viz"></div>
-
+         <div id="viz"></div>
+         <div id="graphiql">Loading...</div>
+         
         </main> 
         
     </body>

@@ -41,12 +41,6 @@ const DEFAULT_DOC_EXPLORER_WIDTH = 350;
  *
  * @see https://github.com/graphql/graphiql#usage
  */
-/**
- * The top-level React component for GraphiQL, intended to encompass the entire
- * browser viewport.
- *
- * @see https://github.com/graphql/graphiql#usage
- */
 export class GraphiQL extends React.Component {
   static propTypes = {
     fetcher: PropTypes.func.isRequired,

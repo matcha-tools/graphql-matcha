@@ -89,6 +89,10 @@ export class QueryHistory extends React.Component {
   }
 
   render() {
+    const downloadButton = {
+      display: (this.selectedForTestingStore.items.length === 0) ? 'none' : '',
+      marginLeft: '10px',
+    }
     const queryNodes = this.createQueryNodes(this.state.historyQueries) 
     return (
       <div>
@@ -101,7 +105,7 @@ export class QueryHistory extends React.Component {
         <div className="history-contents">
           {queryNodes}
           <div>
-            <button className="download-tests-button" onClick={this._downloadTestFile}>Download Tests</button>
+            <button className="download-tests-button" onClick={this._downloadTestFile} style={downloadButton}>Download Tests</button>
           </div>
         </div>
       </div>
@@ -116,6 +120,7 @@ export class QueryHistory extends React.Component {
           response={this.props.response}
           handleEditLabel={this.editLabel}
           handleToggleFavorite={this.toggleFavorite}
+          handleDeleteItem={this.deleteItem}
           key={i}
           onSelect={this.props.onSelectQuery}
           {...node}
@@ -123,6 +128,23 @@ export class QueryHistory extends React.Component {
       );
     });
   };
+
+  deleteItem = (query, variables, operationName, favorite, response) => {
+    const item = {
+      query,
+      variables,
+      operationName,
+      response,
+    };
+    if (this.historyStore.contains(item)) {
+      this.historyStore.delete(item);
+    }
+    if (this.selectedForTestingStore.contains(item)) {
+      this.selectedForTestingStore.delete(item);
+    }
+    const historyQueries = this.historyStore.items;
+    this.setState({ historyQueries });
+  }
 
   toggleFavorite = (query, variables, operationName, favorite, response) => {
     const item = {
@@ -168,7 +190,19 @@ export class QueryHistory extends React.Component {
     function mochaTest (Q, R) {
       const query = Q;
       const response = R;
-      const str = `it('', () => {\n                  \n  return integrationServer \n    .graphqlQuery(app, \`${query}\`) \n    .then((response) => { \n      expect(response.statusCode).to.equal(200); \n      expect(response.body).to.have.deep.equals(\`${response}\`); \n  }); \n});`
+      const str = 
+      `it('', () => {
+        return integrationServer
+        .graphqlQuery(app, 
+          \`${query}\`
+        )
+        .then((response) => {
+          expect(response.statusCode).to.equal(200);
+          expect(response.body).to.have.deep.equals(
+            \`${response}\`
+          );
+        });
+      });`
       return str;
     };
     let arr = [];

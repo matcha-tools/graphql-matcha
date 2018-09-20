@@ -7,10 +7,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
+import { ReactDOM, render } from 'react-dom';
 import { buildClientSchema, GraphQLSchema, parse, print } from 'graphql';
-import {render} from "react-dom";
-
 import { ExecuteButton } from './ExecuteButton';
 import { ToolbarButton } from './ToolbarButton';
 import { ToolbarGroup } from './ToolbarGroup';
@@ -65,7 +63,7 @@ export class GraphiQL extends React.Component {
     editorTheme: PropTypes.string,
     onToggleHistory: PropTypes.func,
     ResultsTooltip: PropTypes.any,
-    showVoya: PropTypes.bool,
+    showVoyager: PropTypes.bool,
   };
 
   constructor(props) {
@@ -122,7 +120,7 @@ export class GraphiQL extends React.Component {
       isWaitingForResponse: false,
       subscription: null,
       ...queryFacts,
-      showVoya: false,
+      showVoyager: false,
     };
 
     // Ensure only the last executed editor query is rendered.
@@ -293,7 +291,7 @@ export class GraphiQL extends React.Component {
     const menu = document.getElementsByClassName('menu-content');
     console.log(menu);
 
-    if (this.state.showVoya) {
+    if (this.state.showVoyager) {
       viz.style.height = "60vh";
       graph.style.height = "40vh";
 
@@ -425,8 +423,8 @@ export class GraphiQL extends React.Component {
   }
 
   testing() {
-    let bool = !this.state.showVoya
-    this.setState({ showVoya: bool })
+    let bool = !this.state.showVoyager
+    this.setState({ showVoyager: bool })
   }
 
   /**

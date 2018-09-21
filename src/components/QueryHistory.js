@@ -17,16 +17,11 @@ const shouldSaveQuery = (nextProps, currentProps, allHistoryQueries) => {
   // change the value of execute if a duplicate is found below
   let execute = true;
 
-  // iterate through all existing history queries and ensure no duplicates are created. 
-  allHistoryQueries.forEach((entry) => {
+  // iterate through all existing history queries and ensure no duplicates are created.
+  allHistoryQueries.forEach(entry => {
     if (JSON.stringify(nextProps.operationName) === JSON.stringify(entry.operationName)) {
-      if (
-        JSON.stringify(nextProps.query) === JSON.stringify(entry.query)
-        ) {
-        if (
-          JSON.stringify(nextProps.variables) ===
-          JSON.stringify(entry.variables)
-        ) {
+      if (JSON.stringify(nextProps.query) === JSON.stringify(entry.query)) {
+        if (JSON.stringify(nextProps.variables) === JSON.stringify(entry.variables)) {
           execute = false;
         }
         if (!nextProps.variables && !entry.variables) {
@@ -35,7 +30,7 @@ const shouldSaveQuery = (nextProps, currentProps, allHistoryQueries) => {
         execute = false;
       }
     }
-  })
+  });
   return execute;
 };
 
@@ -49,7 +44,7 @@ export class QueryHistory extends React.Component {
     operationName: PropTypes.string,
     queryID: PropTypes.number,
     onSelectQuery: PropTypes.func,
-    storage: PropTypes.object,
+    storage: PropTypes.object
   };
 
   constructor(props) {
@@ -63,17 +58,15 @@ export class QueryHistory extends React.Component {
   componentWillReceiveProps(nextProps) {
     // ensure no duplicates will be created, pass all existing queries into shouldSaveQuery
     const allHistoryQueries = this.historyStore.fetchAll() || [];
-    if (
-      shouldSaveQuery(nextProps, this.props, allHistoryQueries)
-    ) {
+    if (shouldSaveQuery(nextProps, this.props, allHistoryQueries)) {
       const item = {
         query: nextProps.query,
         variables: nextProps.variables,
         operationName: nextProps.operationName,
-        response: nextProps.response,
+        response: nextProps.response
       };
       this.historyStore.push(item);
-      
+
       // -------  Jon 9/19/18 -----------
       // revisit this section, if user favorites a query and the query is at the beginning of the array
       // it will get removed
@@ -83,36 +76,42 @@ export class QueryHistory extends React.Component {
       // ------------------------------------
       const newListOfHistoryQueries = this.historyStore.items;
       this.setState({
-        historyQueries: newListOfHistoryQueries,
+        historyQueries: newListOfHistoryQueries
       });
     }
   }
 
   render() {
     const downloadButton = {
-      display: (this.selectedForTestingStore.items.length === 0) ? 'none' : '',
-      marginLeft: '10px',
-    }
-    const queryNodes = this.createQueryNodes(this.state.historyQueries) 
+      display: this.selectedForTestingStore.items.length === 0 ? 'none' : '',
+      marginLeft: '10px'
+    };
+    const queryNodes = this.createQueryNodes(this.state.historyQueries);
     return (
       <div>
         <div className="history-title-bar">
           <div className="history-title">{'Test Drawer'}</div>
-          <div className="doc-explorer-rhs">
-            {this.props.children}
-          </div>
+          <div className="doc-explorer-rhs">{this.props.children}</div>
         </div>
         <div className="history-contents">
           {queryNodes}
           <div>
-            <button className="download-tests-button" onClick={this._downloadTestFile} style={downloadButton}>Download Tests</button>
+            <button
+              className="download-tests-button"
+              onClick={this._downloadTestFile}
+              style={downloadButton}>
+              Download Tests
+            </button>
+            <button className="delete-query-history-button" onClick={this._deleteQueryHistory}>
+              Delete Query History
+            </button>
           </div>
         </div>
       </div>
     );
   }
 
-  createQueryNodes = (queryStore) => {
+  createQueryNodes = queryStore => {
     const nodes = queryStore.slice().reverse();
     return nodes.map((node, i) => {
       return (
@@ -134,7 +133,7 @@ export class QueryHistory extends React.Component {
       query,
       variables,
       operationName,
-      response,
+      response
     };
     if (this.historyStore.contains(item)) {
       this.historyStore.delete(item);
@@ -144,17 +143,30 @@ export class QueryHistory extends React.Component {
     }
     const historyQueries = this.historyStore.items;
     this.setState({ historyQueries });
-  }
+  };
+
+  _deleteQueryHistory = () => {
+    this.historyStore.items = [];
+    this.selectedForTestingStore.items = [];
+
+    console.log('historyStore', this.historyStore);
+    console.log('historyStore.items', this.historyStore.items);
+    console.log('selectedForTestingStore', this.selectedForTestingStore);
+    console.log('selectedForTestingStore.item', this.selectedForTestingStore.items);
+
+    const historyQueries = this.historyStore.items;
+    this.setState({ historyQueries });
+  };
 
   toggleFavorite = (query, variables, operationName, favorite, response) => {
     const item = {
       query,
       variables,
       operationName,
-      response,
+      response
     };
 
-    // if the item does not exist in the selectedForTestingStore, create a property favorite on the item and set it to true. Add the item to the store and edit the same item in the historyStore. 
+    // if the item does not exist in the selectedForTestingStore, create a property favorite on the item and set it to true. Add the item to the store and edit the same item in the historyStore.
     if (!this.selectedForTestingStore.contains(item)) {
       item.favorite = true;
       this.selectedForTestingStore.push(item);
@@ -176,7 +188,7 @@ export class QueryHistory extends React.Component {
       query,
       variables,
       operationName,
-      label,
+      label
     };
     if (favorite) {
       this.favoriteStore.edit({ ...item, favorite });
@@ -187,11 +199,14 @@ export class QueryHistory extends React.Component {
   };
 
   _downloadTestFile = () => {
-    function mochaTest (Q, R) {
+    console.log('historyStore', this.historyStore);
+    console.log('historyStore.items', this.historyStore.items);
+    console.log('selectedForTestingStore', this.selectedForTestingStore);
+    console.log('selectedForTestingStore.item', this.selectedForTestingStore.items);
+    function mochaTest(Q, R) {
       const query = Q;
       const response = R;
-      const str = 
-      `it('', () => {
+      const str = `it('', () => {
         return integrationServer
         .graphqlQuery(app, 
           \`${query}\`
@@ -202,24 +217,29 @@ export class QueryHistory extends React.Component {
             \`${response}\`
           );
         });
-      });`
+      });`;
       return str;
-    };
+    }
     let arr = [];
-    let test = "";
+    let test = '';
     let i = 0;
     let len = this.selectedForTestingStore.items.length;
 
-    while (i < len){
-      test = test + mochaTest(this.selectedForTestingStore.items[i].query, this.selectedForTestingStore.items[i].response);
+    while (i < len) {
+      test =
+        test +
+        mochaTest(
+          this.selectedForTestingStore.items[i].query,
+          this.selectedForTestingStore.items[i].response
+        );
       test = test + '\n';
       i++;
     }
-    arr.push(test);
-    const element = document.createElement("a");
-    const file = new Blob(arr, {type: 'text/plain'});
-    element.href = URL.createObjectURL(file);
-    element.download = "test.txt";
-    element.click();
-  }
+    // arr.push(test);
+    // const element = document.createElement("a");
+    // const file = new Blob(arr, {type: 'text/plain'});
+    // element.href = URL.createObjectURL(file);
+    // element.download = "test.txt";
+    // element.click();
+  };
 }

@@ -92,6 +92,7 @@
 
     &:hover {
       background-color: var(--doc-panel-item-hover-color);
+      color: white;
     }
 
     &.-with-args {
@@ -122,7 +123,7 @@
 
     &.-selected {
       background-color: color(var(--doc-panel-item-hover-color) a(+ 0.15));
-      border-left: 3px solid var(--primary-color);
+      border-left: 3px solid var(--doc-panel-selected-item-color);
 
       & .args {
         display: block;

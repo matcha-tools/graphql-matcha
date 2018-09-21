@@ -11,13 +11,13 @@
   --background-color: #000;
   --dark-bg-color: #0b2840;
   --highlight-color: var(--primary-color);
-  --secondary-color: #aeefff;
+  --secondary-color: rgb(225, 0, 152);  /*#aeefff;*/
   --logo-color: #27535e;
   --link-color: #42a0dd;
   --link-hover-color: #0262a0;
-  --field-name-color: #224d6f;
-  --builtin-color: #711c1c;
-  --text-color: #666;
+  --field-name-color: rgb(255, 237, 134);
+  --builtin-color: white;
+  --text-color: #999;
   --shadow-color: rgba(0, 0, 0, 0.1);
   --alert-color: #b71c1c;
 
@@ -27,7 +27,8 @@
   --type-info-popover-width: 320px;
   --doc-panel-bg-color: rgb(18, 20, 20);
   --doc-panel-item-stripe-color: rgba(158, 158, 158, 0.07);
-  --doc-panel-item-hover-color: rgba(214, 236, 238, 0.6);
+  --doc-panel-item-hover-color: rgb(225, 0, 152);
+  --doc-panel-selected-item-color: white;
 
   --arg-default-color: #0B7FC7;
   --arg-name-color: #c77f53;
@@ -36,9 +37,9 @@
   --node-header-color: var(--secondary-color);
   --node-header-text-color: black;
 
-  --edge-color: color(var(--secondary-color) l(- 15%));
-  --selected-edge-color: red;
-  --selected-field-bg: rgba(255, 0, 0, 0.18);
+  --edge-color: color(var(--secondary-color) );
+  --selected-edge-color: rgb(255, 30, 184);
+  --selected-field-bg: rgb(255, 30, 184);
 }
 
 @custom-media --small-viewport (max-width: 780px);

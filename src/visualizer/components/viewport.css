@@ -7,7 +7,7 @@ g.graph > polygon {
 #svg-pan-zoom-controls {
   & path {
     fill-opacity: 0.75;
-    fill: var(--field-name-color);
+    fill: var(--secondary-color);
   }
 }
 

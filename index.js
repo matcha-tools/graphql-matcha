@@ -12,14 +12,14 @@ export class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { showVoyager: false }
+    this.state = { voyagerIsVisible: false }
   }
 
   render() {
     let voyager;
     let graphiqlHeight;
 
-    if (this.state.showVoyager) {
+    if (this.state.voyagerIsVisible) {
       // resize to display both components
       voyager = (
         <div id='viz' style={{ "height": "60vh" }}><Viz /></div>
@@ -41,17 +41,17 @@ export class App extends React.Component {
           onEditQuery={helpers.onEditQuery}
           onEditVariables={helpers.onEditVariables}
           onEditOperationName={helpers.onEditOperationName}
-          toggleVoyager={this.toggleVoyager}
+          onToggleVoyager={this.toggleVoyager}
+          voyagerIsVisible={this.state.voyagerIsVisible}
           />
         </div>
       </div>
     )
   }
 
-  toggleVoyager = () => {
-    console.log('testing ', this.state.showVoyager)
-    const bool = !this.state.showVoyager;
-    this.setState({ showVoyager: bool });
+  toggleVoyager = (e) => {
+    const voyagerIsVisible = !this.state.voyagerIsVisible;
+    this.setState({ voyagerIsVisible });
   }
 }
 

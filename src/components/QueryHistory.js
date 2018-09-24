@@ -96,6 +96,9 @@ export class QueryHistory extends React.Component {
       display: this.selectedForTestingStore.items.length === 0 ? "none" : "",
       marginLeft: "10px"
     };
+    const deleteAllButton = {
+      display: (this.historyStore.items.length === 0) ? "none" : "",
+    }
     const queryNodes = this.createQueryNodes(this.state.historyQueries);
     return (
       <div>
@@ -113,6 +116,9 @@ export class QueryHistory extends React.Component {
             >
               Download Tests
             </button>
+          </div>
+          <div>
+            <button className="deleteAll" onClick={this._deleteAll} style={deleteAllButton}>Delete All</button>
           </div>
         </div>
       </div>
@@ -236,5 +242,12 @@ export class QueryHistory extends React.Component {
     element.href = URL.createObjectURL(file);
     element.download = "test.js";
     element.click();
+  };
+
+  _deleteAll = () => {
+    this.historyStore.deleteAll();
+    this.selectedForTestingStore.deleteAll();
+    const historyQueries = this.historyStore.items;
+    this.setState({ historyQueries });
   };
 }

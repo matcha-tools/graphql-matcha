@@ -44,6 +44,11 @@ export default class QueryStore {
     }
   }
 
+  deleteAll() {
+    this.items = [];
+    this.save();
+  }
+
   fetchRecent() {
     return this.items[this.items.length - 1];
   }

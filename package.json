@@ -73,7 +73,6 @@
     "codemirror": "^5.40.0",
     "codemirror-graphql": "^0.7.1",
     "commonmark": "^0.28.1",
-    "es6-dynamic-template": "^1.0.5",
     "flow-bin": "^0.81.0",
     "lodash": "^4.17.11",
     "markdown-it": "^8.4.2",

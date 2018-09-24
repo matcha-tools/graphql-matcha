@@ -76,6 +76,7 @@
     "flow-bin": "^0.81.0",
     "lodash": "^4.17.11",
     "markdown-it": "^8.4.2",
+    "prettier": "^1.14.3",
     "prop-types": "^15.6.2",
     "react": "^16.5.1",
     "react-dom": "^16.5.1",

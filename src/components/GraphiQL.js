@@ -254,7 +254,7 @@ export class GraphiQL extends React.Component {
         <ToolbarButton
           onClick={this.handleToggleHistory}
           title="Show History"
-          label="History"
+          label="Queries"
         />
 
       </GraphiQL.Toolbar>;
@@ -285,6 +285,9 @@ export class GraphiQL extends React.Component {
       height: variableOpen ? this.state.variableEditorHeight : null,
     };
 
+    
+    const visualizerButtonText = this.props.voyagerIsVisible ? 'Hide Schema' : 'Show Schema';
+
     return (
       <div className="graphiql-container">
         <div className="historyPaneWrap" style={historyPaneStyle}>
@@ -304,7 +307,7 @@ export class GraphiQL extends React.Component {
         <div className="editorWrap">
           <div className="topBarWrap">
             <div className="topBar">
-              {logo}
+              {/* {logo} */}
               <ExecuteButton
                 isRunning={Boolean(this.state.subscription)}
                 onRun={this.handleRunQuery}
@@ -313,13 +316,23 @@ export class GraphiQL extends React.Component {
               />
               {toolbar}
             </div>
-            <button onClick={() => this.props.toggleVoyager()}>Toggle Voyager</button>
+            <button onClick={this.props.onToggleVoyager}>
+            {visualizerButtonText}
+            </button>
+
+            
+            {/* 
+            
+            This is the button to open the doc explorer drawer
+            we do not need this, as we have a visualizer for that
+            We might want to use the drawer in the future for RESOLVERS!!
+            
             {!this.state.docExplorerOpen &&
               <button
                 className="docExplorerShow"
                 onClick={this.handleToggleDocs}>
                 {'Docs'}
-              </button>}
+              </button>} */}
           </div>
           <div
             ref={n => {
@@ -1004,34 +1017,8 @@ GraphiQL.Footer = function GraphiQLFooter(props) {
   );
 };
 
-const defaultQuery = `# Welcome to GraphiQL
-#
-# GraphiQL is an in-browser tool for writing, validating, and
-# testing GraphQL queries.
-#
-# Type queries into this side of the screen, and you will see intelligent
-# typeaheads aware of the current GraphQL type schema and live syntax and
-# validation errors highlighted within the text.
-#
-# GraphQL queries typically start with a "{" character. Lines that starts
-# with a # are ignored.
-#
-# An example GraphQL query might look like:
-#
-#     {
-#       field(arg: "value") {
-#         subField
-#       }
-#     }
-#
-# Keyboard shortcuts:
-#
-#  Prettify Query:  Shift-Ctrl-P (or press the prettify button above)
-#
-#       Run Query:  Ctrl-Enter (or press the play button above)
-#
-#   Auto Complete:  Ctrl-Space (or just start typing)
-#
+const defaultQuery = `
+#I LOVE TESTING
 
 `;
 

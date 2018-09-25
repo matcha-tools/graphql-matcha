@@ -22,7 +22,7 @@ module.exports = function(_, { mode }) {
       stats: "errors-only"
     },
     output: {
-      path: root("demo-dist"),
+      path: root("build"),
       filename: "[name].js",
       sourceMapFilename: "[name].[id].map"
     },

@@ -3,6 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import QueryStore from "../utility/QueryStore";
 import HistoryQuery from "./HistoryQuery";
+import * as TestExport from "../utility/testExport"
 
 
 const shouldSaveQuery = (nextProps, currentProps, allHistoryQueries) => {
@@ -111,7 +112,7 @@ export class QueryHistory extends React.Component {
           <div>
             <button
               className="download-tests-button"
-              onClick={this._downloadTestFile}
+              onClick={this.downloadTestFile}
               style={downloadButton}
             >
               Download Tests
@@ -201,47 +202,21 @@ export class QueryHistory extends React.Component {
 
 
   
-  _downloadTestFile = () => {
-    function fillTestTemplate(query, response) {
-      const filledTemplate = 
-      `xit('', () => {
-        const query = 
-        \`${query}\`;
-        const expected = 
-        \`${response}\`;
-        return integrationServer.graphqlQuery(app,query)
-        .then((response) => {expect(response.statusCode).to.equal(200);
-          expect(response.body).to.have.deep.equals(expected);
-        });
-      });`;
-      return filledTemplate;
-    }
-
-    let fileContents = [];
-    let its = "";
+  downloadTestFile = () => {
+    let tests = "";
     let i = 0;
     let numTests = this.selectedForTestingStore.items.length;
-
     while (i < numTests) {
-      its =
-        its +
-        fillTestTemplate(
+      tests +=
+        TestExport.fillTestTemplate(
           this.selectedForTestingStore.items[i].query,
           this.selectedForTestingStore.items[i].response
         );
-      its = its + "\n";
+        tests += "\n";
       i++;
     }
-
-    const prettier = require("prettier/standalone");
-    const plugins = [require("prettier/parser-flow")]
-    let formattedIts = prettier.format(its, {parser:'flow',plugins});
-    fileContents.push(formattedIts);
-    const element = document.createElement("a");
-    const file = new Blob(fileContents, { type: "application/javascript" });
-    element.href = URL.createObjectURL(file);
-    element.download = "test.js";
-    element.click();
+    const integrationTests = TestExport.createTestFileContents(tests);
+    TestExport.downloadJSFile('gql-queries.test.js',integrationTests);
   };
 
   _deleteAll = () => {

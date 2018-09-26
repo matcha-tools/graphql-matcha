@@ -7,6 +7,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import * as TestExport from '../utility/testExport';
 
 export default class HistoryQuery extends React.Component {
   static propTypes = {
@@ -157,27 +158,10 @@ export default class HistoryQuery extends React.Component {
   }
 
   copyToClipboard = () => {
-    function mochaTest (Q, R) {
-      const query = Q;
-      const expected = R;
-      const test = `it('', () => {
-        return integrationServer
-          .graphqlQuery(app, 
-            \`${query}\`
-          )
-          .then((response) => {
-            expect(response.statusCode).to.equal(200);
-            expect(response.body).to.have.deep.equals(
-              \`${expected}\`
-            );
-          });
-      });`
-      return test;
-    };
-    let str = mochaTest(this.props.query, this.props.response);
+    let testStr = TestExport.fillTestTemplate(this.props.query, this.props.response);
     function listener(e) {
-      e.clipboardData.setData("text/html", str);
-      e.clipboardData.setData("text/plain", str);
+      e.clipboardData.setData("text/html", testStr);
+      e.clipboardData.setData("text/plain", testStr);
       e.preventDefault();
     }
     document.addEventListener("copy", listener);

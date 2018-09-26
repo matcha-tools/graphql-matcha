@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --config build/webpack.config.js --hot --inline --mode=development",
-    "build": "webpack --config build/webpack.config.js --mode=development"
+    "build": "webpack --config build/webpack.config.js --mode=development",
+    "cypress": "cypress open"
   },
   "repository": {
     "type": "git",
@@ -46,6 +47,7 @@
     "copy-webpack-plugin": "^4.5.2",
     "cors": "^2.8.4",
     "css-loader": "^1.0.0",
+    "cypress": "^3.1.0",
     "dataloader": "^1.4.0",
     "enzyme": "^3.6.0",
     "express-graphql": "^0.6.12",

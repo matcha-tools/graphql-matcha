@@ -13,3 +13,5 @@ app.use('/graphql', graphqlHTTP(() => ({ schema, graphiql: false })));
 app.listen(PORT, () => {
   console.log(`Server started at port ${PORT}`);
 });
+
+

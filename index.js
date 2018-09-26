@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render } from "react-dom";
-import { GraphiQL } from "./src/components/GraphiQL";
+import { GraphiQL } from "./src/queryRunner/components/GraphiQL";
 import * as helpers from "./helpers.js";
 import PropTypes from 'prop-types';
 import Viz from './src/visualizer';

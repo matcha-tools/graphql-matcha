@@ -129,9 +129,11 @@ export default class Voyager extends React.Component<VoyagerProps> {
           <div className="graphql-voyager">
             {!hideDocs && <DocPanel header={panelHeader} />}
             {!hideSettings && <Settings />}
-            <div ref="viewport" className="viewport" />
+            <div ref="viewport" className="viewport">
+              <LoadingAnimation />
+            </div>
             <ErrorBar />
-            <LoadingAnimation />
+            
           </div>
         </MuiThemeProvider>
       </Provider>

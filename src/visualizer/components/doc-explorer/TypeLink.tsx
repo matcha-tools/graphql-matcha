@@ -18,6 +18,7 @@ class TypeLink extends React.Component<TypeLinkProps> {
       <a
         className="type-name -object"
         onClick={event => {
+          console.log('type ', type)
           event.stopPropagation();
           dispatch(focusElement(type.id));
           dispatch(selectNode(type.id));

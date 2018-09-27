@@ -212,6 +212,8 @@ class TypeDoc extends React.Component<TypeDocProps> {
 
     let dispatch = this.props.dispatch;
 
+    // utilize the field.type to trigger a redirect, rather than utilizing the onclick functionality of wrapper container, this makes life easier for query mode. enable it on the onclick.
+
     return (
       <div className="doc-category">
         <div className="title">{'fields'}</div>
@@ -223,10 +225,13 @@ class TypeDoc extends React.Component<TypeDocProps> {
               '-selected': field.id === selectedId,
               '-with-args': !_.isEmpty(field.args),
             }),
-            onClick: () => {
-              dispatch(selectEdge(field.id));
+            onClick: (event) => {
+              dispatch(selectEdge(field.id)); // just need to capture id, don't need to select edge
+              event.stopPropagation() // helps with redirect for now
+              dispatch(focusElement(field.type.id)); // passing in node
+              dispatch(selectNode(field.type.id));
             },
-          };
+          }; // these onclicks pertain strictly to nodes in first selection of querymode
           if (field.id === selectedId) props.ref = 'selectedItem';
 
           return (

@@ -51,3 +51,11 @@ export function queryModeEnabled(boolean) {
     payload: boolean,
   };
 }
+
+// export const QUERY_SELECTION = 'QUERY_SELECTION';
+// export function querySelection() {
+//   return {
+//     type: QUERY_SELECTION,
+//     payload: ,
+//   };
+// }

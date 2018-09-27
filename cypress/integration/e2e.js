@@ -1,7 +1,9 @@
 describe("Integration tests", () => {
-  it("visits the site, opens the schema", () => {
+  it("visits the site, toggles the schema", () => {
     cy.visit("http://localhost:9090");
-    cy.contains("Show Schema").click();
+    cy.contains("View Schema").click();
+    cy.contains("Hide Schema").click();
+    cy.contains("View Schema").click();
 
   });
 

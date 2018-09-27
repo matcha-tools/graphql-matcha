@@ -25,6 +25,7 @@ export const CollapsibleVisualizer = props => {
     <Collapsible
       trigger={closedTrigger}
       triggerWhenOpen={openTrigger}
+      onClose={props.endQueryMode}
       lazyRender
     >
       {toggleDraftButton}

@@ -23,7 +23,7 @@ interface TypeDocProps {
   selectedEdgeId: string;
   typeGraph: any;
   dispatch: any;
-  queryModeEnabled: any;
+  queryMode: boolean;
 }
 
 function mapStateToProps(state) {
@@ -31,7 +31,7 @@ function mapStateToProps(state) {
     selectedType: getSelectedType(state),
     selectedEdgeId: state.selected.currentEdgeId,
     typeGraph: getTypeGraphSelector(state),
-    queryModeEnabled,
+    queryMode: state.queryMode
   };
 }
 
@@ -151,6 +151,107 @@ class TypeDoc extends React.Component<TypeDocProps> {
     );
   }
 
+  renderQueryModeTypesDef(type: SimplifiedTypeWithIDs, typeGraph, selectedId: string) {
+    let typesTitle;
+    let types: {
+      id: string;
+      type: SimplifiedTypeWithIDs;
+    }[];
+    let dispatch = this.props.dispatch;
+
+    switch (type.kind) {
+      case 'UNION':
+        typesTitle = 'possible types';
+        types = type.possibleTypes;
+        break;
+      case 'INTERFACE':
+        typesTitle = 'implementations';
+        types = type.derivedTypes;
+        break;
+      case 'OBJECT':
+        typesTitle = 'implements';
+        types = type.interfaces;
+        break;
+      default:
+        return null;
+    }
+
+    types = _.filter(types, type => typeGraph.nodes[type.type.id] !== undefined);
+    if (_.isEmpty(types)) return null;
+
+    return (
+      <div className="doc-category">
+        <div className="title">{typesTitle}</div>
+        {_.map(types, type => {
+          let props: any = {
+            key: type.id,
+            className: classNames('item', {
+              '-selected': type.id === selectedId,
+            }),
+            onClick: () => {
+              dispatch(selectEdge(type.id));
+            },
+          };
+          if (type.id === selectedId) props.ref = 'selectedItem';
+          return (
+            <div {...props}>
+              <TypeLink type={type.type} />
+              <Description text={type.type.description} className="-linked-type" />
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  renderQueryModeFields(type: SimplifiedTypeWithIDs, selectedId: string) {
+    if (_.isEmpty(type.fields)) return null;
+
+    let dispatch = this.props.dispatch;
+    return (
+      <div className="doc-category">
+        <div className="title">{'fields'}</div>
+
+        {_.map(type.fields, field => {
+          let props: any = {
+            key: field.name,
+            className: classNames('item', {
+              '-selected': field.id === selectedId,
+              '-with-args': !_.isEmpty(field.args),
+            }),
+            onClick: () => {
+              dispatch(selectEdge(field.id));
+            },
+          };
+          if (field.id === selectedId) props.ref = 'selectedItem';
+
+          return (
+            <div {...props}>
+              <a className="field-name">{field.name}</a>
+              <span
+                className={classNames('args-wrap', {
+                  '-empty': _.isEmpty(field.args),
+                })}
+              >
+                {!_.isEmpty(field.args) && (
+                  <span key="args" className="args">
+                    {_.map(field.args, arg => (
+                      <Argument key={arg.name} arg={arg} expanded={field.id === selectedId} />
+                    ))}
+                  </span>
+                )}
+              </span>
+              <WrappedTypeName container={field} />
+              {field.isDeprecated && <span className="doc-alert-text">{' (DEPRECATED)'}</span>}
+              <Markdown text={field.description} className="description-box -field" />
+            </div>
+          );
+
+        })}
+
+      </div>
+    );
+  }
   queryMode = () => { // arrow function to bind the context of this. 
 
     // selecting query mode should refocus to the root node and allow for selection process. 
@@ -169,7 +270,10 @@ class TypeDoc extends React.Component<TypeDocProps> {
   }
 
   render() {
-    const { selectedType, selectedEdgeId, typeGraph } = this.props;
+    const { selectedType, selectedEdgeId, typeGraph, queryMode } = this.props;
+
+    console.log('checking queryMode ', queryMode)
+    console.log('checking opposite of queryMode ', !queryMode)
 
     if (!typeGraph) {
       return (
@@ -184,7 +288,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
         <DocNavigation />
         <button onClick={this.queryMode}>QueryMode</button>
         <div className="scroll-area">
-          {!selectedType ? (
+          {!selectedType && !queryMode ? (
             <TypeList typeGraph={typeGraph} />
           ) : (
             <div>

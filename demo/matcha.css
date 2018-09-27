@@ -27,8 +27,14 @@ main {
   height: 60vh;
 }
 
-.vis-closed {
-  display: none;
+.vis-control{
+  display:flex;
+}
+.vis-control button{
+ display:flex;
+ flex:1;
+ padding:0px;
+ justify-content: center;
 }
 
 

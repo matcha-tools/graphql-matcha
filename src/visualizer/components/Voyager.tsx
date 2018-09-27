@@ -118,7 +118,6 @@ export default class Voyager extends React.Component<VoyagerProps> {
 
   shouldComponentUpdate(nextProps: VoyagerProps){
     if (nextProps.inQueryMode !== this.props.inQueryMode){
-      console.log('inside shouldCmpntnUpd IF');
       if(nextProps.inQueryMode){
         this.store.dispatch(focusElement('TYPE::Root'));
         this.store.dispatch(selectNode('TYPE::Root'));

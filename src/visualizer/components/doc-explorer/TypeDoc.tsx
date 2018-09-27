@@ -18,6 +18,8 @@ import TypeLink from './TypeLink';
 import WrappedTypeName from './WrappedTypeName';
 import Argument from './Argument';
 
+import { isNode } from '../../graph/'; // imported for redirect of nodes 
+
 interface TypeDocProps {
   selectedType: any;
   selectedEdgeId: string;
@@ -219,45 +221,81 @@ class TypeDoc extends React.Component<TypeDocProps> {
         <div className="title">{'fields'}</div>
 
         {_.map(type.fields, field => {
-          let props: any = {
-            key: field.name,
-            className: classNames('item', {
-              '-selected': field.id === selectedId,
-              '-with-args': !_.isEmpty(field.args),
-            }),
-            onClick: (event) => {
-              dispatch(selectEdge(field.id)); // just need to capture id, don't need to select edge
-              event.stopPropagation() // helps with redirect for now
-              dispatch(focusElement(field.type.id)); // passing in node
-              dispatch(selectNode(field.type.id));
-            },
-          }; // these onclicks pertain strictly to nodes in first selection of querymode
-          if (field.id === selectedId) props.ref = 'selectedItem';
+          // check for node
+          if (isNode(field)) { 
+            let props: any = {
+              key: field.name,
+              className: classNames('item', {
+                '-selected': field.id === selectedId,
+                '-with-args': !_.isEmpty(field.args),
+              }),
+              onClick: (event) => {
+                dispatch(selectEdge(field.id)); // just need to capture id, don't need to select edge
+                event.stopPropagation() // helps with redirect for now
+                dispatch(focusElement(field.type.id)); // passing in node
+                dispatch(selectNode(field.type.id));
+              },
+            }; // these onclicks pertain strictly to nodes in first selection of querymode
+            if (field.id === selectedId) props.ref = 'selectedItem';
 
-          return (
-            <div {...props}>
-              <a className="field-name">{field.name}</a>
-              <span
-                className={classNames('args-wrap', {
-                  '-empty': _.isEmpty(field.args),
-                })}
-              >
-                {!_.isEmpty(field.args) && (
-                  <span key="args" className="args">
-                    {_.map(field.args, arg => (
-                      <Argument key={arg.name} arg={arg} expanded={field.id === selectedId} />
-                    ))}
-                  </span>
-                )}
-              </span>
-              <WrappedTypeName container={field} />
-              {field.isDeprecated && <span className="doc-alert-text">{' (DEPRECATED)'}</span>}
-              <Markdown text={field.description} className="description-box -field" />
-            </div>
-          );
+            return (
+              <div {...props}>
+                <a className="field-name">{field.name}</a>
+                <span
+                  className={classNames('args-wrap', {
+                    '-empty': _.isEmpty(field.args),
+                  })}
+                >
+                  {!_.isEmpty(field.args) && (
+                    <span key="args" className="args">
+                      {_.map(field.args, arg => (
+                        <Argument key={arg.name} arg={arg} expanded={field.id === selectedId} />
+                      ))}
+                    </span>
+                  )}
+                </span>
+                <WrappedTypeName container={field} />
+                {field.isDeprecated && <span className="doc-alert-text">{' (DEPRECATED)'}</span>}
+                <Markdown text={field.description} className="description-box -field" />
+              </div>
+            );
+          } else {
+            // for fields
+            let props: any = {
+              key: field.name,
+              className: classNames('item', {
+                '-selected': field.id === selectedId,
+                '-with-args': !_.isEmpty(field.args),
+              }),
+              onClick: () => {
+                dispatch(selectEdge(field.id)); 
+              },
+            }; 
+            if (field.id === selectedId) props.ref = 'selectedItem';
 
+            return (
+              <div {...props}>
+                <a className="field-name">{field.name}</a>
+                <span
+                  className={classNames('args-wrap', {
+                    '-empty': _.isEmpty(field.args),
+                  })}
+                >
+                  {!_.isEmpty(field.args) && (
+                    <span key="args" className="args">
+                      {_.map(field.args, arg => (
+                        <Argument key={arg.name} arg={arg} expanded={field.id === selectedId} />
+                      ))}
+                    </span>
+                  )}
+                </span>
+                <WrappedTypeName container={field} />
+                {field.isDeprecated && <span className="doc-alert-text">{' (DEPRECATED)'}</span>}
+                <Markdown text={field.description} className="description-box -field" />
+              </div>
+            );
+          }            
         })}
-
       </div>
     );
   }

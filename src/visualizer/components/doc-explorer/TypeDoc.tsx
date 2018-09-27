@@ -7,7 +7,7 @@ import './TypeDoc.css';
 
 import { SimplifiedTypeWithIDs } from '../../introspection/types';
 
-import { selectEdge } from '../../actions';
+import { selectEdge, selectNode, focusElement } from '../../actions';
 import { getSelectedType } from '../../selectors';
 import { getTypeGraphSelector } from '../../graph';
 import TypeList from './TypeList';
@@ -150,6 +150,14 @@ class TypeDoc extends React.Component<TypeDocProps> {
     );
   }
 
+  queryMode = () => { // arrow function to bind the context of this. 
+    // selecting query mode should refocus to the root node and allow for selection process. 
+    this.props.dispatch(focusElement('TYPE::Root'))
+    this.props.dispatch(selectNode('TYPE::Root'))
+
+    // what does event progragation do? Would that be needed here?
+  }
+
   render() {
     const { selectedType, selectedEdgeId, typeGraph } = this.props;
 
@@ -164,6 +172,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
     return (
       <div className="type-doc">
         <DocNavigation />
+        <button onClick={this.queryMode}>QueryMode</button>
         <div className="scroll-area">
           {!selectedType ? (
             <TypeList typeGraph={typeGraph} />

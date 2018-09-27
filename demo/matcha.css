@@ -37,7 +37,11 @@ main {
  justify-content: center;
 }
 
-
+.Collapsible {
+  background-color: black;
+  color:white;
+  text-align:center;
+}
 
 
 /*legacy*/

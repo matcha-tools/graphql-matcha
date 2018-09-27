@@ -2,6 +2,7 @@ describe("Integration tests", () => {
   it("visits the site, toggles the schema", () => {
     cy.visit("http://localhost:9090");
     cy.contains("View Schema").click();
+    cy.wait(1500);
     cy.contains("Hide Schema").click();
     cy.contains("View Schema").click();
 

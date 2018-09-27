@@ -106,6 +106,9 @@ class TypeDoc extends React.Component<TypeDocProps> {
     if (_.isEmpty(type.fields)) return null;
 
     let dispatch = this.props.dispatch;
+
+    // wrapped type name is where the redirect happens
+
     return (
       <div className="doc-category">
         <div className="title">{'fields'}</div>
@@ -122,7 +125,6 @@ class TypeDoc extends React.Component<TypeDocProps> {
             },
           };
           if (field.id === selectedId) props.ref = 'selectedItem';
-
           return (
             <div {...props}>
               <a className="field-name">{field.name}</a>
@@ -205,9 +207,11 @@ class TypeDoc extends React.Component<TypeDocProps> {
   }
 
   renderQueryModeFields(type: SimplifiedTypeWithIDs, selectedId: string) {
+    // make sure there are fields to populate
     if (_.isEmpty(type.fields)) return null;
 
     let dispatch = this.props.dispatch;
+
     return (
       <div className="doc-category">
         <div className="title">{'fields'}</div>
@@ -272,9 +276,6 @@ class TypeDoc extends React.Component<TypeDocProps> {
   render() {
     const { selectedType, selectedEdgeId, typeGraph, queryMode } = this.props;
 
-    console.log('checking queryMode ', queryMode)
-    console.log('checking opposite of queryMode ', !queryMode)
-
     if (!typeGraph) {
       return (
         <div className="type-doc">
@@ -283,12 +284,27 @@ class TypeDoc extends React.Component<TypeDocProps> {
       );
     }
 
+    let displayQueryMode;
+    if (queryMode) {
+      displayQueryMode = (
+        <div>
+          <h1> Test </h1>
+          <Description className="-doc-type" text={selectedType.description} />
+          {this.renderQueryModeTypesDef(selectedType, typeGraph, selectedEdgeId)}
+          {this.renderQueryModeFields(selectedType, selectedEdgeId)}
+        </div>
+      )
+    }
+
+    // current method bugs out because cannot read description of null when clicking back to query mode. attaching to end for now. 
+    // error pops up: Cannot read property 'getPan' of undefinedCannot read property 'getPan' of undefinedCannot read property 'getPan' of undefined
+
     return (
       <div className="type-doc">
         <DocNavigation />
         <button onClick={this.queryMode}>QueryMode</button>
         <div className="scroll-area">
-          {!selectedType && !queryMode ? (
+          {!selectedType ? (
             <TypeList typeGraph={typeGraph} />
           ) : (
             <div>
@@ -297,6 +313,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
               {this.renderFields(selectedType, selectedEdgeId)}
             </div>
           )}
+        {displayQueryMode}
         </div>
       </div>
     );

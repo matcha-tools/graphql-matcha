@@ -286,7 +286,7 @@ export class GraphiQL extends React.Component {
     };
 
     
-    const visualizerButtonText = this.props.voyagerIsVisible ? 'Hide Schema' : 'Show Schema';
+    // const visualizerButtonText = this.props.voyagerIsVisible ? 'Hide Schema' : 'Show Schema';
 
     return (
       <div className="graphiql-container">
@@ -316,9 +316,9 @@ export class GraphiQL extends React.Component {
               />
               {toolbar}
             </div>
-            <button onClick={this.props.onToggleVoyager}>
+            {/* <button onClick={this.props.onToggleVoyager}>
             {visualizerButtonText}
-            </button>
+            </button> */}
 
             
             {/* 

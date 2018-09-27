@@ -1,3 +1,22 @@
+#matcha {
+  display: flex;
+  flex-direction: column;
+  height:100vh;
+}
+
+#query-runner{
+  display:flex;
+  flex: 1;
+}
+
+.vis-open {
+  height: 60vh;
+}
+
+.vis-closed {
+  display: none;
+}
+
 .graphiql-container,
 .graphiql-container button,
 .graphiql-container input {

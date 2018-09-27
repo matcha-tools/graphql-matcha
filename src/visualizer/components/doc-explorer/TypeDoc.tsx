@@ -7,7 +7,7 @@ import './TypeDoc.css';
 
 import { SimplifiedTypeWithIDs } from '../../introspection/types';
 
-import { selectEdge, selectNode, focusElement } from '../../actions';
+import { selectEdge, selectNode, focusElement, queryModeEnabled } from '../../actions';
 import { getSelectedType } from '../../selectors';
 import { getTypeGraphSelector } from '../../graph';
 import TypeList from './TypeList';
@@ -23,6 +23,7 @@ interface TypeDocProps {
   selectedEdgeId: string;
   typeGraph: any;
   dispatch: any;
+  queryModeEnabled: any;
 }
 
 function mapStateToProps(state) {
@@ -30,6 +31,7 @@ function mapStateToProps(state) {
     selectedType: getSelectedType(state),
     selectedEdgeId: state.selected.currentEdgeId,
     typeGraph: getTypeGraphSelector(state),
+    queryModeEnabled,
   };
 }
 
@@ -104,7 +106,6 @@ class TypeDoc extends React.Component<TypeDocProps> {
     if (_.isEmpty(type.fields)) return null;
 
     let dispatch = this.props.dispatch;
-    console.log('what the fuck ', type);
     return (
       <div className="doc-category">
         <div className="title">{'fields'}</div>
@@ -151,11 +152,20 @@ class TypeDoc extends React.Component<TypeDocProps> {
   }
 
   queryMode = () => { // arrow function to bind the context of this. 
+
     // selecting query mode should refocus to the root node and allow for selection process. 
     this.props.dispatch(focusElement('TYPE::Root'))
     this.props.dispatch(selectNode('TYPE::Root'))
 
+    // enable query mode
+    this.props.dispatch(queryModeEnabled(true))
+
     // what does event progragation do? Would that be needed here?
+    this.generateQueries()
+  }
+
+  generateQueries = () => {
+
   }
 
   render() {

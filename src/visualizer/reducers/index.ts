@@ -15,6 +15,7 @@ export type DisplayOptions = {
 
 export type StateInterface = {
   schema: any;
+  queryModeEnabled: boolean,
   displayOptions: DisplayOptions;
   selected: {
     previousTypesIds: string[];
@@ -33,6 +34,7 @@ export type StateInterface = {
 
 const initialState: StateInterface = {
   schema: null,
+  queryModeEnabled: false,
   displayOptions: {
     rootTypeId: undefined,
     skipRelay: true,
@@ -191,6 +193,11 @@ export function rootReducer(previousState = initialState, action) {
           typeinfo: action.payload,
         },
       };
+    case ActionTypes.QUERY_MODE_ENABLED:
+      return {
+        ...previousState,
+        queryModeEnabled: action.payload,
+      }  
     default:
       return previousState;
   }

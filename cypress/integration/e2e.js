@@ -8,16 +8,17 @@ describe("Integration tests", () => {
   });
 
   it("toggles in/out of query mode via button", () => {
+    cy.wait(1500);
     cy.contains("Draft Query").click();
     cy.wait(250);
-    cy.contains("Exit Draft").click();
+    cy.contains("Draft Query").click();
   });
 
   it("selects starship node, enters draft mode to focus on ROOT", () => {
     cy.contains("Starship").click();
     cy.wait(400);
     cy.contains("Draft Query").click();
-    cy.get(".active").should("have.text", "Root");
+    cy.get(".active").should("have.text", "Root ");
   });
 
   xit("clicks allFilms, and populates the query editor", () => {

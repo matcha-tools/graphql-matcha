@@ -17,6 +17,7 @@ export default class Matcha extends React.Component {
 
   toggleQueryMode() {
     const inQueryMode = !this.state.inQueryMode;
+    console.log('QMODE ==>', inQueryMode);
     this.setState({ inQueryMode });
   }
 
@@ -25,17 +26,13 @@ export default class Matcha extends React.Component {
   }
 
   render() {
-    let toggleDraftModeText = "Draft Query";
-    if (this.state.inQueryMode) {
-      toggleDraftModeText = "Exit Draft";
-    }
 
     return (
       <div id="matcha">
         <CollapsibleVisualizer 
         toggleQueryMode={this.toggleQueryMode} 
-        draftButtonText={toggleDraftModeText}
-        endQueryMode={this.endQueryMode}/>
+        endQueryMode={this.endQueryMode}
+        inQueryMode={this.state.inQueryMode}/>
         <div id="query-runner">
           <GraphiQL
             fetcher={helpers.graphQLFetcher}

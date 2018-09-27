@@ -3,13 +3,7 @@ import React from "react";
 import Viz from "../visualizer";
 
 export const CollapsibleVisualizer = props => {
-  const toggleDraftButton = (
-    <div className="vis-control">
-      <button type="button" onClick={props.toggleQueryMode}>
-        {props.draftButtonText}
-      </button>
-    </div>
-  );
+  
 
   const closedTrigger = (
     <div className="trigger">
@@ -21,6 +15,8 @@ export const CollapsibleVisualizer = props => {
       <span>Hide Schema</span>
     </div>
   );
+
+
   return (
     <Collapsible
       trigger={closedTrigger}
@@ -28,9 +24,8 @@ export const CollapsibleVisualizer = props => {
       onClose={props.endQueryMode}
       lazyRender
     >
-      {toggleDraftButton}
       <div id="viz" className="vis-open">
-        <Viz />
+        <Viz toggleQueryMode={props.toggleQueryMode} inQueryMode={props.inQueryMode}/>
       </div>
     </Collapsible>
   );

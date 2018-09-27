@@ -18,7 +18,7 @@ import DocPanel from './panel/DocPanel';
 import { SVGRender } from './../graph/';
 import { Viewport } from './../graph/';
 
-import { changeSchema, changeDisplayOptions } from '../actions/';
+import { changeSchema, changeDisplayOptions, focusElement, selectNode, clearSelection } from '../actions/';
 
 import { typeNameToId } from '../introspection/';
 import { StateInterface } from '../reducers';
@@ -45,7 +45,8 @@ export interface VoyagerProps {
   hideSettings?: boolean;
   workerURI?: string;
   loadWorker?: WorkerCallback;
-
+  toggleQueryMode: any;
+  inQueryMode: boolean;
   children?: React.ReactNode;
 }
 
@@ -68,8 +69,9 @@ export default class Voyager extends React.Component<VoyagerProps> {
     hideSettings: PropTypes.bool,
     workerURI: PropTypes.string,
     loadWorker: PropTypes.func,
+    toggleQueryMode: PropTypes.func,
   };
-
+  
   viewport: Viewport;
   renderer: SVGRender;
   store: Store<StateInterface>;
@@ -114,6 +116,19 @@ export default class Voyager extends React.Component<VoyagerProps> {
     }
   }
 
+  shouldComponentUpdate(nextProps: VoyagerProps){
+    if (nextProps.inQueryMode !== this.props.inQueryMode){
+      console.log('inside shouldCmpntnUpd IF');
+      if(nextProps.inQueryMode){
+        this.store.dispatch(focusElement('TYPE::Root'));
+        this.store.dispatch(selectNode('TYPE::Root'));
+      }else{
+        this.store.dispatch(clearSelection());
+      }
+      return false;
+    }
+  }
+
   render() {
     let { hideDocs = false, hideSettings } = this.props;
 
@@ -127,7 +142,7 @@ export default class Voyager extends React.Component<VoyagerProps> {
       <Provider store={this.store}>
         <MuiThemeProvider theme={theme}>
           <div className="graphql-voyager">
-            {!hideDocs && <DocPanel header={panelHeader} />}
+            {!hideDocs && <DocPanel header={panelHeader} toggleQueryMode={this.props.toggleQueryMode} />}
             {!hideSettings && <Settings />}
             <div ref="viewport" className="viewport">
               <LoadingAnimation />
@@ -144,11 +159,6 @@ export default class Voyager extends React.Component<VoyagerProps> {
     return props.children || null;
   };
 }
-
-// Duck-type promise detection.
-// function isPromise(value) {
-//   return typeof value === 'object' && typeof value.then === 'function';
-// }
 
 function normalizeDisplayOptions(opts: VoyagerDisplayOptions = {}) {
   return {

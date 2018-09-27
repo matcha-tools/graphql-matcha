@@ -2,6 +2,7 @@ import * as React from "react";
 import { GraphiQL } from "../queryRunner/components/GraphiQL";
 import * as helpers from "../helpers";
 import Viz from "../visualizer";
+import Collapsible from "react-collapsible";
 
 export default class Matcha extends React.Component {
   constructor(props) {
@@ -26,22 +27,24 @@ export default class Matcha extends React.Component {
   }
 
   render() {
-    console.log('RENDERING Matcha');
+    console.log("RENDERING Matcha");
     let visVisibility = "vis-closed";
     let toggleVisText = "View Schema";
     let visualizer;
     if (this.state.visualizerIsVisible) {
       visVisibility = "vis-open";
       visualizer = (
+        
+        <Collapsible trigger="View Schema">
         <div id="viz" className={visVisibility}>
           <Viz />
-        </div>
+          </div>
+        </Collapsible>
+     
       );
-      
+
       toggleVisText = "Hide Schema";
     }
-
- 
 
     const toggleVisButton = (
       <button type="button" onClick={this.toggleVisualizer}>
@@ -60,7 +63,7 @@ export default class Matcha extends React.Component {
       </button>
     );
 
-    console.log('Vis BUtton -== >', toggleVisText)
+    console.log("Vis BUtton -== >", toggleVisText);
 
     return (
       <div id="matcha">

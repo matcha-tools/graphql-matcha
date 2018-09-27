@@ -21,6 +21,7 @@ export type StateInterface = {
     currentNodeId: string | null;
     currentEdgeId: string | null;
     scalar: string | null;
+    queryModeHistory: string[]; // added in 
   };
   graphView: {
     svg: string;
@@ -44,6 +45,7 @@ const initialState: StateInterface = {
     currentNodeId: null,
     currentEdgeId: null,
     scalar: null,
+    queryModeHistory: [], // added in
   },
   graphView: {
     svg: null,

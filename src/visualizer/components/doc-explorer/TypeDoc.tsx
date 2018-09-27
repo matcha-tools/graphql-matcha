@@ -104,9 +104,11 @@ class TypeDoc extends React.Component<TypeDocProps> {
     if (_.isEmpty(type.fields)) return null;
 
     let dispatch = this.props.dispatch;
+    console.log('what the fuck ', type);
     return (
       <div className="doc-category">
         <div className="title">{'fields'}</div>
+
         {_.map(type.fields, field => {
           let props: any = {
             key: field.name,
@@ -119,6 +121,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
             },
           };
           if (field.id === selectedId) props.ref = 'selectedItem';
+
           return (
             <div {...props}>
               <a className="field-name">{field.name}</a>
@@ -140,7 +143,9 @@ class TypeDoc extends React.Component<TypeDocProps> {
               <Markdown text={field.description} className="description-box -field" />
             </div>
           );
+
         })}
+
       </div>
     );
   }

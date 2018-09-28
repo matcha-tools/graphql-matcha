@@ -24,7 +24,7 @@ interface TypeDocProps {
   selectedEdgeId: string;
   typeGraph: any;
   dispatch: any;
-  queryMode: boolean;
+  toggleQueryMode: any;
 }
 
 function mapStateToProps(state) {
@@ -35,6 +35,9 @@ function mapStateToProps(state) {
     queryMode: state.queryMode
   };
 }
+
+
+
 
 class TypeDoc extends React.Component<TypeDocProps> {
   componentDidUpdate(prevProps: TypeDocProps) {
@@ -189,10 +192,20 @@ class TypeDoc extends React.Component<TypeDocProps> {
       );
     }
 
+    const toggleDraftButton = () =>(
+      <div className="vis-control">
+        <button type="button" onClick={this.props.toggleQueryMode}>
+          Draft Query
+        </button>
+      </div>
+    );
+
+    
+
     return (
       <div className="type-doc">
         <DocNavigation />
-        <button onClick={this.queryMode}>QueryMode</button>
+        {toggleDraftButton()}
         <div className="scroll-area">
           {!selectedType ? (
             <TypeList typeGraph={typeGraph} />

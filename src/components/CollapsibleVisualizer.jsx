@@ -1,0 +1,34 @@
+import Collapsible from "react-collapsible";
+import React from "react";
+import Viz from "../visualizer";
+
+export const CollapsibleVisualizer = props => {
+  
+
+  const closedTrigger = (
+    <div className="trigger">
+      <span>View Schema</span>
+    </div>
+  );
+  const openTrigger = (
+    <div className="trigger">
+      <span>Hide Schema</span>
+    </div>
+  );
+
+
+  return (
+    <Collapsible
+      trigger={closedTrigger}
+      triggerWhenOpen={openTrigger}
+      onClose={props.endQueryMode}
+      lazyRender
+    >
+      <div id="viz" className="vis-open">
+        <Viz toggleQueryMode={props.toggleQueryMode} inQueryMode={props.inQueryMode}/>
+      </div>
+    </Collapsible>
+  );
+};
+
+//export default CollapsibleVisualizer;

@@ -52,10 +52,29 @@ export function queryModeEnabled(boolean) {
   };
 }
 
-// export const QUERY_SELECTION = 'QUERY_SELECTION';
-// export function querySelection() {
-//   return {
-//     type: QUERY_SELECTION,
-//     payload: ,
-//   };
-// }
+export const SELECT_MULTIPLE_EDGES = 'SELECT_MULTIPLE_EDGES';
+export function selectMultipleEdges(id) {
+  return {
+    type: SELECT_MULTIPLE_EDGES,
+    payload: id,
+  };
+}
+
+export const STORE_NODE = 'STORE_NODE';
+export function storeNode(id) {
+  return {
+    type: STORE_NODE,
+    payload: id,
+  };
+}
+
+export const STORE_EDGES = 'STORE_EDGES';
+export function storeEdges(id) {
+  return {
+    type: STORE_EDGES,
+    payload: id,
+  };
+}
+
+
+

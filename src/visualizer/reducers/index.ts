@@ -23,6 +23,7 @@ export type StateInterface = {
     currentEdgeId: string | null;
     scalar: string | null;
     queryModeHistory: string[]; // added in 
+    multipleEdgeIds: string[];
   };
   graphView: {
     svg: string;
@@ -48,6 +49,7 @@ const initialState: StateInterface = {
     currentEdgeId: null,
     scalar: null,
     queryModeHistory: [], // added in
+    multipleEdgeIds: [],
   },
   graphView: {
     svg: null,
@@ -65,6 +67,20 @@ function pushHistory(currentTypeId: string, previousState): string[] {
 
   if (_.last(previousTypesIds) !== previousTypeId) return [...previousTypesIds, previousTypeId];
 }
+
+// function pushEdges(currentEdgeId: string, previousState): string[] {
+
+//   // get array of edge id's
+//   let previousMultipleEdgeIds = previousState.selected.multipleEdgeIds; 
+
+//   // ensure no duplicates are being passed in
+//   if (_.includes(previousMultipleEdgeIds, currentEdgeId)) {
+//     // return if duplicate
+//     return previousMultipleEdgeIds
+//   } else {
+//     return [...previousMultipleEdgeIds, currentEdgeId]
+//   }
+// }
 
 export function rootReducer(previousState = initialState, action) {
   const { type } = action;
@@ -198,6 +214,54 @@ export function rootReducer(previousState = initialState, action) {
         ...previousState,
         queryMode: action.payload,
       }  
+    case ActionTypes.SELECT_MULTIPLE_EDGES:
+      return {
+        ...previousState,
+        selected: {
+          ...previousState.selected,
+        }
+      }
+    case ActionTypes.STORE_NODE:
+      // store into queryMode if the edges have values 
+      const edgeIds = previousState.selected.multipleEdgeIds
+      if (edgeIds.length > 0) {
+        return {
+          ...previousState,
+          selected: {
+            ...previousState.selected,
+            queryModeHistory: [...previousState.selected.queryModeHistory,  edgeIds, action.payload],
+            multipleEdgeIds: [] // reset to empty 
+          }
+        }  
+      } else {
+        return {
+          ...previousState,
+          selected: {
+            ...previousState.selected,
+            queryModeHistory: [...previousState.selected.queryModeHistory, action.payload]
+          }
+        }  
+      }
+
+    case ActionTypes.STORE_EDGES:
+      // get current node id 
+      let checkNode = extractTypeId(action.payload.id); 
+      let previousNode = previousState.selected.currentNodeId;
+
+      // if we're still on the current node, keep populating the value 
+      // might not need this, just reset value during select node 
+      if (checkNode === previousNode) {
+        // do not allow duplicates 
+        if (!_.includes(previousState.selected.multipleEdgeIds, action.payload.name)) {
+          return {  
+            ...previousState,
+            selected: {
+              ...previousState.selected, 
+              multipleEdgeIds: [...previousState.selected.multipleEdgeIds, action.payload.name],
+            }
+          }
+        }
+      } 
     default:
       return previousState;
   }

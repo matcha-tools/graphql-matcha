@@ -256,6 +256,43 @@ export function rootReducer(previousState = initialState, action) {
       } else {
         return previousState;
       }
+    case ActionTypes.PREVIOUS_NODE_AND_EDGES:
+    // create functionality to go backwards for queries 
+      // go back in Q history
+        // if array, go twice
+        // if string, once
+      const previousHistory = previousState.selected.queryModeHistory.slice();
+      // go back in Q history
+        // look at the last two elements in the array
+      if (previousHistory.length > 1) {
+        // get the last two  elements
+        const lastElement = previousHistory[previousHistory.length - 1];
+        const secondToLastElement = previousHistory[previousHistory.length - 2];
+
+        return  {
+          ...previousState,
+          selected: {
+            ...previousState.selected,
+            queryModeHistory: []
+          }
+        }
+
+      } else {
+        // if its the last element, means that there were no edges
+        const lastElement = previousHistory[0];
+        // ensure that it's a string
+        if (typeof lastElement === 'string') {
+          console.log('checking to see if its a string ', lastElement)
+        }
+
+      }
+
+      return {
+        ...previousState,
+        selected: {
+          ...previousState.selected,
+        }
+      }
     default:
       return previousState;
   }

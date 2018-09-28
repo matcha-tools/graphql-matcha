@@ -66,3 +66,10 @@ export function storePendingEdges() {
     type: STORE_PENDING_EDGES
   };
 }
+
+export const PREVIOUS_NODE_AND_EDGES  = 'PREVIOUS_NODE_AND_EDGES';
+export function previousNodeAndEdges() {
+  return {
+    type: PREVIOUS_NODE_AND_EDGES
+  };
+}

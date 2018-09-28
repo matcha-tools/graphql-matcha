@@ -190,7 +190,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
 
     return (
       <div className="type-doc">
-        <DocNavigation />
+        <DocNavigation inQueryMode={this.props.inQueryMode}/>
         {toggleDraftButton()}
         <div className="scroll-area">
           {!selectedType ? (

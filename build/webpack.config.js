@@ -29,7 +29,7 @@ module.exports = function(_, { mode }) {
     module: {
       rules: [
         {
-          test: /\.(js|js\.flow)$/,
+          test: /\.(jsx|js|js\.flow)$/,
           use: {
             loader: "babel-loader",
             options: {

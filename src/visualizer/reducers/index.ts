@@ -221,13 +221,24 @@ export function rootReducer(previousState = initialState, action) {
       }
 
     case ActionTypes.STORE_EDGES:
+      const previousEdgeIds = previousState.selected.multipleEdgeIds.slice();
       // do not allow duplicates 
-      if (!_.includes(previousState.selected.multipleEdgeIds, action.payload.name)) {
+      if (!_.includes(previousEdgeIds, action.payload.name)) {
         return {  
           ...previousState,
           selected: {
             ...previousState.selected, 
-            multipleEdgeIds: [...previousState.selected.multipleEdgeIds, action.payload.name],
+            multipleEdgeIds: [...previousEdgeIds, action.payload.name],
+          }
+        }
+      } else {
+        // remove reselected edges
+        _.pull(previousEdgeIds, action.payload.name);
+        return {  
+          ...previousState,
+          selected: {
+            ...previousState.selected, 
+            multipleEdgeIds: [...previousEdgeIds]
           }
         }
       }

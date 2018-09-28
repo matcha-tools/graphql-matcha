@@ -52,14 +52,6 @@ export function queryModeEnabled(boolean) {
   };
 }
 
-export const SELECT_MULTIPLE_EDGES = 'SELECT_MULTIPLE_EDGES';
-export function selectMultipleEdges(id) {
-  return {
-    type: SELECT_MULTIPLE_EDGES,
-    payload: id,
-  };
-}
-
 export const STORE_NODE = 'STORE_NODE';
 export function storeNode(id) {
   return {

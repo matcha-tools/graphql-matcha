@@ -18,7 +18,7 @@ import DocPanel from './panel/DocPanel';
 import { SVGRender } from './../graph/';
 import { Viewport } from './../graph/';
 
-import { changeSchema, changeDisplayOptions, focusElement, selectNode, clearSelection } from '../actions/';
+import { changeSchema, changeDisplayOptions, focusElement, selectNode, clearSelection, storePendingEdges } from '../actions/';
 
 import { typeNameToId } from '../introspection/';
 import { StateInterface } from '../reducers';
@@ -124,6 +124,8 @@ export default class Voyager extends React.Component<VoyagerProps> {
         this.store.dispatch(selectNode('TYPE::Root'));
         return true;
       }else{
+        // store all pending edges in query history before clearing
+        this.store.dispatch(storePendingEdges());
         this.store.dispatch(clearSelection());
       }
       return false;

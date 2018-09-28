@@ -59,3 +59,10 @@ export function storeEdges(name) {
     payload: name,
   };
 }
+
+export const STORE_PENDING_EDGES = 'STORE_PENDING_EDGES';
+export function storePendingEdges() {
+  return {
+    type: STORE_PENDING_EDGES
+  };
+}

@@ -228,7 +228,21 @@ export function rootReducer(previousState = initialState, action) {
             multipleEdgeIds: [...previousState.selected.multipleEdgeIds, action.payload.name],
           }
         }
-      } 
+      }
+    case ActionTypes.STORE_PENDING_EDGES:
+      // if user exits out of query mode or hides schema, grab all selected edges and push to queryModeHistory
+      const pendingEdgeIds = previousState.selected.multipleEdgeIds;
+      if (pendingEdgeIds.length > 0) {
+        return {
+          ...previousState,
+          selected: {
+            ...previousState.selected,
+            queryModeHistory: [...previousState.selected.queryModeHistory, pendingEdgeIds]
+          }
+        }
+      } else {
+        return previousState;
+      }
     default:
       return previousState;
   }

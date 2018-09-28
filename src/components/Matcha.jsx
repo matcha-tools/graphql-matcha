@@ -17,7 +17,6 @@ export default class Matcha extends React.Component {
 
   toggleQueryMode() {
     const inQueryMode = !this.state.inQueryMode;
-    console.log('testing ', inQueryMode)
     this.setState({ inQueryMode });
   }
 

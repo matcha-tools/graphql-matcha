@@ -7,7 +7,7 @@ import './TypeDoc.css';
 
 import { SimplifiedTypeWithIDs } from '../../introspection/types';
 
-import { selectEdge, selectNode, focusElement, queryModeEnabled, storeNode, storeEdges } from '../../actions';
+import { selectEdge, selectNode, focusElement, storeNode, storeEdges } from '../../actions';
 import { getSelectedType } from '../../selectors';
 import { getTypeGraphSelector } from '../../graph';
 import TypeList from './TypeList';
@@ -25,6 +25,7 @@ interface TypeDocProps {
   typeGraph: any;
   dispatch: any;
   toggleQueryMode: any;
+  inQueryMode: boolean;
 }
 
 function mapStateToProps(state) {
@@ -32,7 +33,6 @@ function mapStateToProps(state) {
     selectedType: getSelectedType(state),
     selectedEdgeId: state.selected.currentEdgeId,
     typeGraph: getTypeGraphSelector(state),
-    queryMode: state.queryMode
   };
 }
 
@@ -40,6 +40,10 @@ function mapStateToProps(state) {
 
 
 class TypeDoc extends React.Component<TypeDocProps> {
+  constructor(props) {
+    super(props)
+  }
+  
   componentDidUpdate(prevProps: TypeDocProps) {
     if (this.props.selectedEdgeId !== prevProps.selectedEdgeId) {
       this.ensureActiveVisible();
@@ -124,7 +128,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
             }),
             onClick: () => {
               // if query mode is on, on-clicks will help generate query 
-              if (this.props.queryMode) {
+              if (this.props.inQueryMode) {
                 // store selected scalars, to be added to history when navigating to a new node
                 if (isScalarType(field.type)) {
                   dispatch(storeEdges(field))
@@ -167,19 +171,6 @@ class TypeDoc extends React.Component<TypeDocProps> {
       </div>
     );
   }
-
-  queryMode = () => { // arrow function to bind the context of this. 
-
-    // selecting query mode should refocus to the root node and allow for selection process. 
-    this.props.dispatch(focusElement('TYPE::Root'))
-    this.props.dispatch(selectNode('TYPE::Root'))
-
-    // enable query mode
-    this.props.dispatch(queryModeEnabled(true))
-
-    // if queryMode is false, make sure to add the selected edge ids to the query history
-  }
-
 
   render() {
     const { selectedType, selectedEdgeId, typeGraph } = this.props;

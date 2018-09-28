@@ -15,7 +15,6 @@ export type DisplayOptions = {
 
 export type StateInterface = {
   schema: any;
-  queryMode: boolean,
   displayOptions: DisplayOptions;
   selected: {
     previousTypesIds: string[];
@@ -35,7 +34,6 @@ export type StateInterface = {
 
 const initialState: StateInterface = {
   schema: null,
-  queryMode: false,
   displayOptions: {
     rootTypeId: undefined,
     skipRelay: true,
@@ -195,11 +193,6 @@ export function rootReducer(previousState = initialState, action) {
           typeinfo: action.payload,
         },
       };
-    case ActionTypes.QUERY_MODE_ENABLED:
-      return {
-        ...previousState,
-        queryMode: action.payload,
-      }  
     case ActionTypes.STORE_NODE:
       const edgeIds = previousState.selected.multipleEdgeIds
       // Push into queryModeHistory if edges have been selected 

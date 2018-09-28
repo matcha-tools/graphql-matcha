@@ -8,6 +8,7 @@ import TypeInfoPopover from './TypeInfoPopover';
 export interface DocPanelProps {
   header: React.ReactChild;
   toggleQueryMode: any;
+  inQueryMode: boolean;
 }
 
 export default class DocPanel extends React.Component<DocPanelProps> {

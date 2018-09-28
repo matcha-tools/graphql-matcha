@@ -44,14 +44,6 @@ export function focusElementDone(id) {
   };
 }
 
-export const QUERY_MODE_ENABLED = 'QUERY_MODE_ENABLED';
-export function queryModeEnabled(boolean) {
-  return {
-    type: QUERY_MODE_ENABLED,
-    payload: boolean,
-  };
-}
-
 export const STORE_NODE = 'STORE_NODE';
 export function storeNode(name) {
   return {

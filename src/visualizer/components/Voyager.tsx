@@ -70,6 +70,7 @@ export default class Voyager extends React.Component<VoyagerProps> {
     workerURI: PropTypes.string,
     loadWorker: PropTypes.func,
     toggleQueryMode: PropTypes.func,
+    inQueryMode: PropTypes.bool
   };
   
   viewport: Viewport;
@@ -141,7 +142,10 @@ export default class Voyager extends React.Component<VoyagerProps> {
       <Provider store={this.store}>
         <MuiThemeProvider theme={theme}>
           <div className="graphql-voyager">
-            {!hideDocs && <DocPanel header={panelHeader} toggleQueryMode={this.props.toggleQueryMode} />}
+            {!hideDocs && <DocPanel 
+              header={panelHeader} 
+              toggleQueryMode={this.props.toggleQueryMode} 
+              inQueryMode={this.props.inQueryMode}/>}
             {!hideSettings && <Settings />}
             <div ref="viewport" className="viewport">
               <LoadingAnimation />

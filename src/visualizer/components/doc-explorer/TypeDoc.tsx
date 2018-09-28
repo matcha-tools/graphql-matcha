@@ -173,6 +173,8 @@ class TypeDoc extends React.Component<TypeDocProps> {
 
     // enable query mode
     this.props.dispatch(queryModeEnabled(true))
+
+    // if queryMode is false, make sure to add the selected edge ids to the query history
   }
 
 

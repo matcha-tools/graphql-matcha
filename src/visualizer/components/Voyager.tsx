@@ -76,7 +76,7 @@ export default class Voyager extends React.Component<VoyagerProps> {
   viewport: Viewport;
   renderer: SVGRender;
   store: Store<StateInterface>;
-
+  
   constructor(props) {
     super(props);
     this.store = configureStore();
@@ -122,6 +122,7 @@ export default class Voyager extends React.Component<VoyagerProps> {
       if(nextProps.inQueryMode){
         this.store.dispatch(focusElement('TYPE::Root'));
         this.store.dispatch(selectNode('TYPE::Root'));
+        return true;
       }else{
         this.store.dispatch(clearSelection());
       }

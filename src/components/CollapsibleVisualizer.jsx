@@ -1,34 +1,41 @@
 import Collapsible from "react-collapsible";
-import React from "react";
+import React, { Component } from "react";
 import Viz from "../visualizer";
 
-export const CollapsibleVisualizer = props => {
-  
+export default class CollapsibleVisualizer extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-  const closedTrigger = (
+  closedTrigger = () => {
+    return (
     <div className="trigger">
       <span>View Schema</span>
     </div>
-  );
-  const openTrigger = (
+    )
+  }
+
+  openTrigger = () => { 
+    return (
     <div className="trigger">
       <span>Hide Schema</span>
     </div>
-  );
+    )
+  }
 
-
-  return (
-    <Collapsible
-      trigger={closedTrigger}
-      triggerWhenOpen={openTrigger}
-      onClose={props.endQueryMode}
-      lazyRender
-    >
-      <div id="viz" className="vis-open">
-        <Viz toggleQueryMode={props.toggleQueryMode} inQueryMode={props.inQueryMode}/>
-      </div>
-    </Collapsible>
-  );
-};
-
-//export default CollapsibleVisualizer;
+  render() {
+    // why do we have to invoke the below functions? It wouldn't render unless invoked
+    return (
+      <Collapsible
+        trigger={this.closedTrigger()}
+        triggerWhenOpen={this.openTrigger()}
+        onClose={this.props.endQueryMode}
+        lazyRender
+      >
+        <div id="viz" className="vis-open">
+          <Viz toggleQueryMode={this.props.toggleQueryMode} inQueryMode={this.props.inQueryMode}/>
+        </div>
+      </Collapsible>
+    );
+  }
+}

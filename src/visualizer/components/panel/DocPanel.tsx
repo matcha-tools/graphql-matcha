@@ -17,7 +17,10 @@ export default class DocPanel extends React.Component<DocPanelProps> {
       <div className="doc-panel">
         <div className="contents">
           {this.props.header}
-          <TypeDoc toggleQueryMode={this.props.toggleQueryMode}/>
+          <TypeDoc 
+            toggleQueryMode={this.props.toggleQueryMode}
+            inQueryMode={this.props.inQueryMode}
+          />
           
         </div>
         <TypeInfoPopover />

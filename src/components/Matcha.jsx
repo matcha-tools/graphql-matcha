@@ -1,7 +1,7 @@
 import * as React from "react";
 import { GraphiQL } from "../queryRunner/components/GraphiQL";
 import * as helpers from "../helpers";
-import {CollapsibleVisualizer} from "./CollapsibleVisualizer.jsx";
+import CollapsibleVisualizer from "./CollapsibleVisualizer.jsx";
 
 export default class Matcha extends React.Component {
   constructor(props) {
@@ -17,6 +17,7 @@ export default class Matcha extends React.Component {
 
   toggleQueryMode() {
     const inQueryMode = !this.state.inQueryMode;
+    console.log('testing ', inQueryMode)
     this.setState({ inQueryMode });
   }
 

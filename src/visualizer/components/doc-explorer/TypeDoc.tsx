@@ -36,14 +36,11 @@ function mapStateToProps(state) {
   };
 }
 
-
-
-
 class TypeDoc extends React.Component<TypeDocProps> {
   constructor(props) {
     super(props)
   }
-  
+
   componentDidUpdate(prevProps: TypeDocProps) {
     if (this.props.selectedEdgeId !== prevProps.selectedEdgeId) {
       this.ensureActiveVisible();
@@ -175,6 +172,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
   render() {
     const { selectedType, selectedEdgeId, typeGraph } = this.props;
 
+    console.log('i must know what query mode is ', this.props)
     if (!typeGraph) {
       return (
         <div className="type-doc">

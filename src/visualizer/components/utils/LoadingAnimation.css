@@ -36,11 +36,12 @@
 }
 
 .loading-box {
-  position: absolute;;
+  /* position: absolute;;
   left: 320px;
   right: 0;
   top: 0;
-  bottom: 0;
+  bottom: 0; */
+
   background: rgba(0, 0, 0, 0.8);
   z-index: 10;
 
@@ -48,7 +49,7 @@
   justify-content: center;
 
   display: none;
-  color: white;
+  /* color: white; */
 
   @media (--small-viewport) {
     left: 0;
@@ -58,6 +59,7 @@
 
 .loading-box.visible {
   display: flex;
+  height:100%;
 }
 
 .loading-animation {

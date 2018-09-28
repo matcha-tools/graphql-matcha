@@ -286,7 +286,7 @@ export class GraphiQL extends React.Component {
     };
 
     
-    const visualizerButtonText = this.props.voyagerIsVisible ? 'Hide Schema' : 'Show Schema';
+    // const visualizerButtonText = this.props.voyagerIsVisible ? 'Hide Schema' : 'Show Schema';
 
     return (
       <div className="graphiql-container">
@@ -316,9 +316,9 @@ export class GraphiQL extends React.Component {
               />
               {toolbar}
             </div>
-            <button onClick={this.props.onToggleVoyager}>
+            {/* <button onClick={this.props.onToggleVoyager}>
             {visualizerButtonText}
-            </button>
+            </button> */}
 
             
             {/* 
@@ -1018,8 +1018,13 @@ GraphiQL.Footer = function GraphiQLFooter(props) {
 };
 
 const defaultQuery = `
-#I LOVE TESTING
-
+# There are those who love to get dirty and fix things. 
+# They drink coffee at dawn, beer after work. 
+# 
+# And those who stay clean, just appreciate things. 
+# At breakfast they have milk and juice at night. 
+#
+# There are those who do both, they drink tea.
 `;
 
 // Duck-type promise detection.

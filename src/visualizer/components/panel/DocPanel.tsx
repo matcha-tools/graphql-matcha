@@ -7,6 +7,7 @@ import TypeInfoPopover from './TypeInfoPopover';
 
 export interface DocPanelProps {
   header: React.ReactChild;
+  toggleQueryMode: any;
 }
 
 export default class DocPanel extends React.Component<DocPanelProps> {
@@ -15,7 +16,7 @@ export default class DocPanel extends React.Component<DocPanelProps> {
       <div className="doc-panel">
         <div className="contents">
           {this.props.header}
-          <TypeDoc />
+          <TypeDoc toggleQueryMode={this.props.toggleQueryMode}/>
           
         </div>
         <TypeInfoPopover />

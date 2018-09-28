@@ -17,8 +17,7 @@ import Description from './Description';
 import TypeLink from './TypeLink';
 import WrappedTypeName from './WrappedTypeName';
 import Argument from './Argument';
-
-import { isScalarType } from '../../introspection/utils'; // imported for redirect of nodes 
+import { isScalarType } from '../../introspection/utils'; 
 
 interface TypeDocProps {
   selectedType: any;
@@ -109,8 +108,6 @@ class TypeDoc extends React.Component<TypeDocProps> {
 
     let dispatch = this.props.dispatch;
 
-    // wrapped type name is where the redirect happens
-
     return (
       <div className="doc-category">
         <div className="title">{'fields'}</div>
@@ -123,125 +120,25 @@ class TypeDoc extends React.Component<TypeDocProps> {
               '-with-args': !_.isEmpty(field.args),
             }),
             onClick: () => {
-              dispatch(selectEdge(field.id));
-            },
-          };
-          if (field.id === selectedId) props.ref = 'selectedItem';
-          return (
-            <div {...props}>
-              <a className="field-name">{field.name}</a>
-              <span
-                className={classNames('args-wrap', {
-                  '-empty': _.isEmpty(field.args),
-                })}
-              >
-                {!_.isEmpty(field.args) && (
-                  <span key="args" className="args">
-                    {_.map(field.args, arg => (
-                      <Argument key={arg.name} arg={arg} expanded={field.id === selectedId} />
-                    ))}
-                  </span>
-                )}
-              </span>
-              <WrappedTypeName container={field} />
-              {field.isDeprecated && <span className="doc-alert-text">{' (DEPRECATED)'}</span>}
-              <Markdown text={field.description} className="description-box -field" />
-            </div>
-          );
-
-        })}
-
-      </div>
-    );
-  }
-
-  renderQueryModeTypesDef(type: SimplifiedTypeWithIDs, typeGraph, selectedId: string) {
-    let typesTitle;
-    let types: {
-      id: string;
-      type: SimplifiedTypeWithIDs;
-    }[];
-    let dispatch = this.props.dispatch;
-
-    switch (type.kind) {
-      case 'UNION':
-        typesTitle = 'possible types';
-        types = type.possibleTypes;
-        break;
-      case 'INTERFACE':
-        typesTitle = 'implementations';
-        types = type.derivedTypes;
-        break;
-      case 'OBJECT':
-        typesTitle = 'implements';
-        types = type.interfaces;
-        break;
-      default:
-        return null;
-    }
-
-    types = _.filter(types, type => typeGraph.nodes[type.type.id] !== undefined);
-    if (_.isEmpty(types)) return null;
-
-    return (
-      <div className="doc-category">
-        <div className="title">{typesTitle}</div>
-        {_.map(types, type => {
-          let props: any = {
-            key: type.id,
-            className: classNames('item', {
-              '-selected': type.id === selectedId,
-            }),
-            onClick: () => {
-              dispatch(selectEdge(type.id));
-            },
-          };
-          if (type.id === selectedId) props.ref = 'selectedItem';
-          return (
-            <div {...props}>
-              <TypeLink type={type.type} />
-              <Description text={type.type.description} className="-linked-type" />
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
-
-  renderQueryModeFields(type: SimplifiedTypeWithIDs, selectedId: string) {
-    // make sure there are fields to populate
-    if (_.isEmpty(type.fields)) return null;
-
-    let dispatch = this.props.dispatch;
-
-    // utilize the field.type to trigger a redirect, rather than utilizing the onclick functionality of wrapper container, this makes life easier for query mode. enable it on the onclick.
-
-    return (
-      <div className="doc-category">
-        <div className="title">{'fields'}</div>
-
-        {_.map(type.fields, field => {
-          let props: any = {
-            key: field.name,
-            className: classNames('item', {
-              '-selected': field.id === selectedId,
-              '-with-args': !_.isEmpty(field.args),
-            }),
-            onClick: () => {
-              if (isScalarType(field.type)) {
-                dispatch(storeEdges(field))
-                dispatch(selectEdge(field.id)); // just need to capture id, don't need to select edge
+              // if query mode is on, on-clicks will help generate query 
+              if (this.props.queryMode) {
+                // store selected scalars, to be added to history when navigating to a new node
+                if (isScalarType(field.type)) {
+                  dispatch(storeEdges(field))
+                  dispatch(selectEdge(field.id)); 
+                } else {
+                  // navigate to the new node, store previously selected edges and new node in history
+                  dispatch(focusElement(field.type.id));
+                  dispatch(selectNode(field.type.id));
+                  dispatch(storeNode(field.name))
+                }
               } else {
-                // need to check for kind
-                dispatch(focusElement(field.type.id)); // passing in node
-                // event.stopPropagation() // helps with redirect for now
-                dispatch(selectNode(field.type.id));
-                dispatch(storeNode(field.name))
+                // if query mode is not on, resume normal operations
+                dispatch(selectEdge(field.id));
               }
             },
-          }; // these onclicks pertain strictly to nodes in first selection of querymode
+          };
           if (field.id === selectedId) props.ref = 'selectedItem';
-
           return (
             <div {...props}>
               <a className="field-name">{field.name}</a>
@@ -267,6 +164,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
       </div>
     );
   }
+
   queryMode = () => { // arrow function to bind the context of this. 
 
     // selecting query mode should refocus to the root node and allow for selection process. 
@@ -275,19 +173,12 @@ class TypeDoc extends React.Component<TypeDocProps> {
 
     // enable query mode
     this.props.dispatch(queryModeEnabled(true))
-
-    // what does event progragation do? Would that be needed here?
-    this.generateQueries()
   }
 
-  generateQueries = () => {
-
-  }
 
   render() {
-    const { selectedType, selectedEdgeId, typeGraph, queryMode } = this.props;
+    const { selectedType, selectedEdgeId, typeGraph } = this.props;
 
-    console.log('what is the typeGraph' , typeGraph)
     if (!typeGraph) {
       return (
         <div className="type-doc">
@@ -295,21 +186,6 @@ class TypeDoc extends React.Component<TypeDocProps> {
         </div>
       );
     }
-
-    let displayQueryMode;
-    if (queryMode) {
-      displayQueryMode = (
-        <div>
-          <h1> Test </h1>
-          <Description className="-doc-type" text={selectedType.description} />
-          {this.renderQueryModeTypesDef(selectedType, typeGraph, selectedEdgeId)}
-          {this.renderQueryModeFields(selectedType, selectedEdgeId)}
-        </div>
-      )
-    }
-
-    // current method bugs out because cannot read description of null when clicking back to query mode. attaching to end for now. 
-    // error pops up: Cannot read property 'getPan' of undefinedCannot read property 'getPan' of undefinedCannot read property 'getPan' of undefined
 
     return (
       <div className="type-doc">
@@ -325,7 +201,6 @@ class TypeDoc extends React.Component<TypeDocProps> {
               {this.renderFields(selectedType, selectedEdgeId)}
             </div>
           )}
-        {displayQueryMode}
         </div>
       </div>
     );

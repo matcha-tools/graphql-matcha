@@ -53,20 +53,17 @@ export function queryModeEnabled(boolean) {
 }
 
 export const STORE_NODE = 'STORE_NODE';
-export function storeNode(id) {
+export function storeNode(name) {
   return {
     type: STORE_NODE,
-    payload: id,
+    payload: name,
   };
 }
 
 export const STORE_EDGES = 'STORE_EDGES';
-export function storeEdges(id) {
+export function storeEdges(name) {
   return {
     type: STORE_EDGES,
-    payload: id,
+    payload: name,
   };
 }
-
-
-

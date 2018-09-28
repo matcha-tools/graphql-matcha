@@ -195,14 +195,16 @@ export function rootReducer(previousState = initialState, action) {
       };
     case ActionTypes.STORE_NODE:
       const edgeIds = previousState.selected.multipleEdgeIds
-      // Push into queryModeHistory if edges have been selected 
-      if (edgeIds.length > 0) {
+      const previousQueryHistory = previousState.selected.queryModeHistory;
+      
+      // Push into queryModeHistory if edges have been selected & ensure previous selection was a node
+      if (edgeIds.length > 0 && !Array.isArray(previousQueryHistory[previousQueryHistory.length - 1])) {
         return {
           ...previousState,
           selected: {
             ...previousState.selected,
             // Push selected edgeIds on previous node before pushing new node into the queryModeHistory
-            queryModeHistory: [...previousState.selected.queryModeHistory,  edgeIds, action.payload],
+            queryModeHistory: [...previousQueryHistory, edgeIds, action.payload],
             // Initialize to an empty array when navigating to a new node
             multipleEdgeIds: [] 
           }

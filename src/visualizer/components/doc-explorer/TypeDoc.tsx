@@ -172,7 +172,6 @@ class TypeDoc extends React.Component<TypeDocProps> {
   render() {
     const { selectedType, selectedEdgeId, typeGraph } = this.props;
 
-    console.log('i must know what query mode is ', this.props)
     if (!typeGraph) {
       return (
         <div className="type-doc">
@@ -188,8 +187,6 @@ class TypeDoc extends React.Component<TypeDocProps> {
         </button>
       </div>
     );
-
-    
 
     return (
       <div className="type-doc">

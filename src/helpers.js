@@ -93,4 +93,23 @@ export function graphQLFetcher(graphQLParams) {
         return responseBody;
       }
     });
-}
+  }
+
+  export function parseQueryArray(queryArray) {
+    let count = queryArray.length - 1;
+    let queryString = "";
+    const wrap = (string) => {
+      return "{" + string + "}";
+    }
+    queryString = wrap(queryArray[count--].join(" "));
+    while (count >= 0) {
+      if (Array.isArray(queryArray[count])) {
+        queryString = wrap(queryArray[count].join(" ") + queryString);
+      } else {
+        queryString = wrap(queryArray[count] + queryString)
+      }
+      count--;
+    }
+    return (queryString)
+  }
+ 

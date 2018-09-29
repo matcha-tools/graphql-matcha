@@ -21,6 +21,8 @@ export type StateInterface = {
     currentNodeId: string | null;
     currentEdgeId: string | null;
     scalar: string | null;
+    queryModeHistory: string[];  
+    multipleEdgeIds: string[];
   };
   graphView: {
     svg: string;
@@ -44,6 +46,8 @@ const initialState: StateInterface = {
     currentNodeId: null,
     currentEdgeId: null,
     scalar: null,
+    queryModeHistory: [], 
+    multipleEdgeIds: [],
   },
   graphView: {
     svg: null,
@@ -189,6 +193,42 @@ export function rootReducer(previousState = initialState, action) {
           typeinfo: action.payload,
         },
       };
+    case ActionTypes.STORE_NODE:
+      const edgeIds = previousState.selected.multipleEdgeIds
+      // Push into queryModeHistory if edges have been selected 
+      if (edgeIds.length > 0) {
+        return {
+          ...previousState,
+          selected: {
+            ...previousState.selected,
+            // Push selected edgeIds on previous node before pushing new node into the queryModeHistory
+            queryModeHistory: [...previousState.selected.queryModeHistory,  edgeIds, action.payload],
+            // Initialize to an empty array when navigating to a new node
+            multipleEdgeIds: [] 
+          }
+        }  
+      } else {
+        // If no edges were selected in previous node, only push new node to the array
+        return {
+          ...previousState,
+          selected: {
+            ...previousState.selected,
+            queryModeHistory: [...previousState.selected.queryModeHistory, action.payload]
+          }
+        }  
+      }
+
+    case ActionTypes.STORE_EDGES:
+      // do not allow duplicates 
+      if (!_.includes(previousState.selected.multipleEdgeIds, action.payload.name)) {
+        return {  
+          ...previousState,
+          selected: {
+            ...previousState.selected, 
+            multipleEdgeIds: [...previousState.selected.multipleEdgeIds, action.payload.name],
+          }
+        }
+      } 
     default:
       return previousState;
   }

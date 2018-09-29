@@ -70,12 +70,13 @@ export default class Voyager extends React.Component<VoyagerProps> {
     workerURI: PropTypes.string,
     loadWorker: PropTypes.func,
     toggleQueryMode: PropTypes.func,
+    inQueryMode: PropTypes.bool
   };
   
   viewport: Viewport;
   renderer: SVGRender;
   store: Store<StateInterface>;
-
+  
   constructor(props) {
     super(props);
     this.store = configureStore();
@@ -116,16 +117,14 @@ export default class Voyager extends React.Component<VoyagerProps> {
     }
   }
 
-  shouldComponentUpdate(nextProps: VoyagerProps){
-    if (nextProps.inQueryMode !== this.props.inQueryMode){
-      if(nextProps.inQueryMode){
-        this.store.dispatch(focusElement('TYPE::Root'));
-        this.store.dispatch(selectNode('TYPE::Root'));
-      }else{
-        this.store.dispatch(clearSelection());
-      }
-      return false;
+  shouldComponentUpdate(nextProps: VoyagerProps) {
+    if (nextProps.inQueryMode) {
+      this.store.dispatch(focusElement('TYPE::Root'));
+      this.store.dispatch(selectNode('TYPE::Root'));
+    } else {
+      this.store.dispatch(clearSelection());
     }
+    return true;
   }
 
   render() {
@@ -141,7 +140,10 @@ export default class Voyager extends React.Component<VoyagerProps> {
       <Provider store={this.store}>
         <MuiThemeProvider theme={theme}>
           <div className="graphql-voyager">
-            {!hideDocs && <DocPanel header={panelHeader} toggleQueryMode={this.props.toggleQueryMode} />}
+            {!hideDocs && <DocPanel 
+              header={panelHeader} 
+              toggleQueryMode={this.props.toggleQueryMode} 
+              inQueryMode={this.props.inQueryMode}/>}
             {!hideSettings && <Settings />}
             <div ref="viewport" className="viewport">
               <LoadingAnimation />

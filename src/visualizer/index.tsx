@@ -7,7 +7,7 @@ import schema from "../../demo/schema/schema";
 
 
 export interface VizProps {
-  toggleQueryMode(): null;
+  toggleQueryMode(): null; // why is this a function call? Jon
   inQueryMode:boolean;
 }
 export default class Viz extends React.Component<VizProps> {

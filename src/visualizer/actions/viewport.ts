@@ -43,3 +43,19 @@ export function focusElementDone(id) {
     payload: id,
   };
 }
+
+export const STORE_NODE = 'STORE_NODE';
+export function storeNode(name) {
+  return {
+    type: STORE_NODE,
+    payload: name,
+  };
+}
+
+export const STORE_EDGES = 'STORE_EDGES';
+export function storeEdges(name) {
+  return {
+    type: STORE_EDGES,
+    payload: name,
+  };
+}

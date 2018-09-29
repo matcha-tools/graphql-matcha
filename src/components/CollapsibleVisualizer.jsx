@@ -3,7 +3,6 @@ import React from "react";
 import Viz from "../visualizer";
 
 export const CollapsibleVisualizer = props => {
-  
 
   const closedTrigger = (
     <div className="trigger">
@@ -30,5 +29,3 @@ export const CollapsibleVisualizer = props => {
     </Collapsible>
   );
 };
-
-//export default CollapsibleVisualizer;

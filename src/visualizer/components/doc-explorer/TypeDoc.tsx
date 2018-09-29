@@ -180,7 +180,9 @@ class TypeDoc extends React.Component<TypeDocProps> {
       );
     }
 
-    const toggleDraftButton = () =>(
+    //TODO: move this up to matcha, and pass down the whole button!
+    //won't need to pass down toggle function anymore.
+    const toggleDraftButton = (
       <div className="vis-control">
         <button type="button" onClick={this.props.toggleQueryMode}>
           Draft Query
@@ -191,7 +193,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
     return (
       <div className="type-doc">
         <DocNavigation />
-        {toggleDraftButton()}
+        {toggleDraftButton}
         <div className="scroll-area">
           {!selectedType ? (
             <TypeList typeGraph={typeGraph} />

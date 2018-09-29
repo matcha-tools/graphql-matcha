@@ -26,6 +26,7 @@ interface TypeDocProps {
   dispatch: any;
   toggleQueryMode: any;
   inQueryMode: boolean;
+  selectedFields: any;
 }
 
 function mapStateToProps(state) {
@@ -33,6 +34,7 @@ function mapStateToProps(state) {
     selectedType: getSelectedType(state),
     selectedEdgeId: state.selected.currentEdgeId,
     typeGraph: getTypeGraphSelector(state),
+    selectedFields: state.selected.multipleEdgeIds,
   };
 }
 
@@ -117,10 +119,22 @@ class TypeDoc extends React.Component<TypeDocProps> {
         <div className="title">{'fields'}</div>
 
         {_.map(type.fields, field => {
+          let highlight = field.id === selectedId;
+          if(this.props.inQueryMode && selectedId){
+            console.log('selected fields ->>', this.props.selectedFields);
+            console.log('selected id slice -->', selectedId.slice(field.id.lastIndexOf('::')+2));
+            highlight = _.includes(this.props.selectedFields, field.id.slice(selectedId.lastIndexOf('::')+2));
+          }
+          
           let props: any = {
             key: field.name,
             className: classNames('item', {
-              '-selected': field.id === selectedId,
+
+                //THIS is what sets the highlights. 
+              //so, when in query mode, we should be checking not selectedId, but the entire set of storedEdges
+              //okay, so selectedFields does not have Ids, it has names.
+              
+              '-selected': highlight,
               '-with-args': !_.isEmpty(field.args),
             }),
             onClick: () => {

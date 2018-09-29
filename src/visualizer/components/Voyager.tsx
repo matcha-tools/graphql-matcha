@@ -128,8 +128,11 @@ export default class Voyager extends React.Component<VoyagerProps> {
         const storedSelections = {history:selected.queryModeHistory, currentFields: selected.multipleEdgeIds};
         return this.props.queryModeListener(storedSelections);
       });
-      this.store.dispatch(focusElement('TYPE::Root'));
-      this.store.dispatch(selectNode('TYPE::Root'));
+
+      //TODO abstract this into getRootFromProps()
+      let root = 'TYPE::' + nextProps.introspection["_queryType"].name;
+      this.store.dispatch(focusElement(root));
+      this.store.dispatch(selectNode(root));
     } else {
       this.unsubscribe();
       this.store.dispatch(clearSelection());

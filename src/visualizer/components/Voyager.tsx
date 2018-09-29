@@ -119,8 +119,9 @@ export default class Voyager extends React.Component<VoyagerProps> {
 
   shouldComponentUpdate(nextProps: VoyagerProps) {
     if (nextProps.inQueryMode) {
-      this.store.dispatch(focusElement('TYPE::Root'));
-      this.store.dispatch(selectNode('TYPE::Root'));
+      let root = 'TYPE::' + nextProps.introspection["_queryType"].name;
+      this.store.dispatch(focusElement(root));
+      this.store.dispatch(selectNode(root));
     } else {
       this.store.dispatch(clearSelection());
     }

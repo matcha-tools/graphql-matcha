@@ -8,6 +8,7 @@
  */
 
 // Parse the search string to get url parameters.
+import { forEachRight } from 'lodash';
 const search = window.location.search;
 export const parameters = {};
 search
@@ -96,20 +97,13 @@ export function graphQLFetcher(graphQLParams) {
   }
 
   export function parseQueryArray(queryArray) {
-    let count = queryArray.length - 1;
     let queryString = "";
-    const wrap = (string) => {
-      return "{" + string + "}";
-    }
-    queryString = wrap(queryArray[count--].join(" "));
-    while (count >= 0) {
-      if (Array.isArray(queryArray[count])) {
-        queryString = wrap(queryArray[count].join(" ") + queryString);
-      } else {
-        queryString = wrap(queryArray[count] + queryString)
-      }
-      count--;
-    }
+    const wrap = (string) => "{" + string + "}";
+    (queryArray[queryArray.length - 1].length === 0) ? (queryString = wrap("id")) : (queryString = wrap(queryArray[queryArray.length - 1].join(" ")));
+    let newQueryArray = queryArray.slice(0, queryArray.length - 1);
+    forEachRight(newQueryArray, (current) => {
+      (Array.isArray(current)) ? (queryString = wrap(current.join(" ") + queryString)) : (queryString = wrap(current + queryString));
+    });
     return (queryString)
   }
  

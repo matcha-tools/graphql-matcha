@@ -20,18 +20,25 @@ export default class Matcha extends React.Component {
     this.setState({ inQueryMode });
   }
 
-  endQueryMode(){
-    this.setState({inQueryMode:false});
+  endQueryMode() {
+    this.setState({ inQueryMode: false });
+  }
+
+  queryModeListener(store) {
+    //pass this down to Voya to listen for state changes.
+    //when state.
+    console.log('matcha', store);
   }
 
   render() {
-
     return (
       <div id="matcha">
-        <CollapsibleVisualizer 
-        toggleQueryMode={this.toggleQueryMode} 
-        endQueryMode={this.endQueryMode}
-        inQueryMode={this.state.inQueryMode}/>
+        <CollapsibleVisualizer
+          toggleQueryMode={this.toggleQueryMode}
+          endQueryMode={this.endQueryMode}
+          queryModeListener={this.queryModeListener}
+          inQueryMode={this.state.inQueryMode}
+        />
         <div id="query-runner">
           <GraphiQL
             fetcher={helpers.graphQLFetcher}

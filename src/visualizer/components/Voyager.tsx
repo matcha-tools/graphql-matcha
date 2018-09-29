@@ -45,7 +45,8 @@ export interface VoyagerProps {
   hideSettings?: boolean;
   workerURI?: string;
   loadWorker?: WorkerCallback;
-  toggleQueryMode: any;
+  toggleQueryMode(): undefined;
+  queryModeListener(store: Object): undefined;
   inQueryMode: boolean;
   children?: React.ReactNode;
 }
@@ -70,16 +71,19 @@ export default class Voyager extends React.Component<VoyagerProps> {
     workerURI: PropTypes.string,
     loadWorker: PropTypes.func,
     toggleQueryMode: PropTypes.func,
+    queryModeLisener: PropTypes.func,
     inQueryMode: PropTypes.bool
   };
   
   viewport: Viewport;
   renderer: SVGRender;
   store: Store<StateInterface>;
+  unsubscribe: Function;
   
   constructor(props) {
     super(props);
     this.store = configureStore();
+    this.unsubscribe = null;
   }
 
   componentDidMount() {
@@ -96,7 +100,6 @@ export default class Voyager extends React.Component<VoyagerProps> {
   }
 
   updateIntrospection() {
-    console.log('UPDATING INTRO');
     let displayOpts = normalizeDisplayOptions(this.props.displayOptions);
 
     this.store.dispatch(changeSchema(this.props.introspection, displayOpts));
@@ -119,9 +122,16 @@ export default class Voyager extends React.Component<VoyagerProps> {
 
   shouldComponentUpdate(nextProps: VoyagerProps) {
     if (nextProps.inQueryMode) {
+      // this.unsubscribe = this.store.subscribe(()=> this.props.queryModeListener(this.store.getState()));
+      this.unsubscribe = this.store.subscribe(()=> {
+        const {selected} = this.store.getState();
+        const storedSelections = {history:selected.queryModeHistory, currentFields: selected.multipleEdgeIds};
+        return this.props.queryModeListener(storedSelections);
+      });
       this.store.dispatch(focusElement('TYPE::Root'));
       this.store.dispatch(selectNode('TYPE::Root'));
     } else {
+      this.unsubscribe();
       this.store.dispatch(clearSelection());
     }
     return true;

@@ -132,9 +132,9 @@ class TypeDoc extends React.Component<TypeDocProps> {
                   dispatch(selectEdge(field.id)); 
                 } else {
                   // navigate to the new node, store previously selected edges and new node in history
+                  dispatch(storeNode(field.name));
                   dispatch(focusElement(field.type.id));
                   dispatch(selectNode(field.type.id));
-                  dispatch(storeNode(field.name))
                 }
               } else {
                 // if query mode is not on, resume normal operations

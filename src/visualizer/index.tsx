@@ -4,20 +4,25 @@ import { theme } from "./components/MUITheme";
 import { Voyager } from "./components";
 import schema from "../../demo/schema/schema";
 
-
-
 export interface VizProps {
-  toggleQueryMode(): null; // why is this a function call? Jon
-  inQueryMode:boolean;
+  queryModeListener(): undefined;
+  toggleQueryMode(): undefined; 
+  inQueryMode: boolean;
 }
 export default class Viz extends React.Component<VizProps> {
-  constructor(props){
+  constructor(props) {
     super(props);
   }
   public render() {
+    console.log('Viz IQM ==>',this.props.inQueryMode)
     return (
       <MuiThemeProvider theme={theme}>
-        <Voyager introspection={schema} toggleQueryMode={this.props.toggleQueryMode} inQueryMode={this.props.inQueryMode}/>
+        <Voyager
+          introspection={schema}
+          toggleQueryMode={this.props.toggleQueryMode}
+          inQueryMode={this.props.inQueryMode}
+          queryModeListener={this.props.queryModeListener}
+        />
       </MuiThemeProvider>
     );
   }

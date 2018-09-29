@@ -3,7 +3,6 @@ import React from "react";
 import Viz from "../visualizer";
 
 export const CollapsibleVisualizer = props => {
-
   const closedTrigger = (
     <div className="trigger">
       <span>View Schema</span>
@@ -15,7 +14,6 @@ export const CollapsibleVisualizer = props => {
     </div>
   );
 
-
   return (
     <Collapsible
       trigger={closedTrigger}
@@ -24,7 +22,11 @@ export const CollapsibleVisualizer = props => {
       lazyRender
     >
       <div id="viz" className="vis-open">
-        <Viz toggleQueryMode={props.toggleQueryMode} inQueryMode={props.inQueryMode}/>
+        <Viz
+          queryModeListener={props.queryModeListener}
+          toggleQueryMode={props.toggleQueryMode}
+          inQueryMode={props.inQueryMode}
+        />
       </div>
     </Collapsible>
   );

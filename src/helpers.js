@@ -103,6 +103,7 @@ export function graphQLFetcher(graphQLParams) {
    * @returns {string} queryString
    */
 
+//TODO readability
   export function parseQueryArray(queryArray) {
     let queryString = "";
     const wrap = (string) => "{" + string + "}";
@@ -114,4 +115,6 @@ export function graphQLFetcher(graphQLParams) {
     return (queryString)
   }
 
+ 
+  
  

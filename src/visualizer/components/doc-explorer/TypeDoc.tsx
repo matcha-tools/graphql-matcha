@@ -7,7 +7,7 @@ import './TypeDoc.css';
 
 import { SimplifiedTypeWithIDs } from '../../introspection/types';
 
-import { selectEdge, selectNode, focusElement, storeNode, storeEdges } from '../../actions';
+import { selectEdge, selectNode, focusElement, storeNodeAndEdges, storeEdges } from '../../actions';
 import { getSelectedType } from '../../selectors';
 import { getTypeGraphSelector } from '../../graph';
 import TypeList from './TypeList';
@@ -128,13 +128,13 @@ class TypeDoc extends React.Component<TypeDocProps> {
               if (this.props.inQueryMode) {
                 // store selected scalars, to be added to history when navigating to a new node
                 if (isScalarType(field.type)) {
-                  dispatch(storeEdges(field))
+                  dispatch(storeEdges(field.name))
                   dispatch(selectEdge(field.id)); 
                 } else {
                   // navigate to the new node, store previously selected edges and new node in history
-                  dispatch(storeNode(field.name));
                   dispatch(focusElement(field.type.id));
                   dispatch(selectNode(field.type.id));
+                  dispatch(storeNodeAndEdges(field))
                 }
               } else {
                 // if query mode is not on, resume normal operations
@@ -192,7 +192,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
 
     return (
       <div className="type-doc">
-        <DocNavigation />
+        <DocNavigation inQueryMode={this.props.inQueryMode}/>
         {toggleDraftButton}
         <div className="scroll-area">
           {!selectedType ? (

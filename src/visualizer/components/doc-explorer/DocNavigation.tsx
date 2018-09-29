@@ -4,13 +4,14 @@ import { connect } from 'react-redux';
 import './DocNavigation.css';
 
 import { getSelectedType, getPreviousType } from '../../selectors';
-import { selectPreviousType, clearSelection, focusElement } from '../../actions/';
+import { selectPreviousType, clearSelection, focusElement, previousNodeAndEdges } from '../../actions/';
 import FocusTypeButton from './FocusTypeButton';
 
 interface DocNavigationProps {
   selectedType: any;
   previousType: any;
   dispatch: any;
+  inQueryMode: boolean;
 }
 
 function mapStateToProps(state) {
@@ -22,13 +23,19 @@ function mapStateToProps(state) {
 
 class DocNavigation extends React.Component<DocNavigationProps> {
   render() {
-    const { selectedType, previousType, dispatch } = this.props;
+    const { selectedType, previousType, dispatch, inQueryMode } = this.props;
 
     let clickHandler = () => {
       if (!previousType) return dispatch(clearSelection());
-
-      dispatch(focusElement(previousType.id));
-      dispatch(selectPreviousType());
+      // if in query mode, go back to original node and return edges as pending
+      if (inQueryMode) {
+        dispatch(previousNodeAndEdges());
+        dispatch(focusElement(previousType.id));
+        dispatch(selectPreviousType());
+      } else {
+        dispatch(focusElement(previousType.id));
+        dispatch(selectPreviousType());
+      }
     };
 
     return (

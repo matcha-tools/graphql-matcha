@@ -7,7 +7,7 @@ import './TypeDoc.css';
 
 import { SimplifiedTypeWithIDs } from '../../introspection/types';
 
-import { selectEdge, selectNode, focusElement, storeNode, storeEdges } from '../../actions';
+import { selectEdge, selectNode, focusElement, storeNodeAndEdges, storeEdges } from '../../actions';
 import { getSelectedType } from '../../selectors';
 import { getTypeGraphSelector } from '../../graph';
 import TypeList from './TypeList';
@@ -29,7 +29,6 @@ interface TypeDocProps {
 }
 
 function mapStateToProps(state) {
-  console.log('what is state ', state);
   return {
     selectedType: getSelectedType(state),
     selectedEdgeId: state.selected.currentEdgeId,
@@ -127,16 +126,15 @@ class TypeDoc extends React.Component<TypeDocProps> {
             onClick: () => {
               // if query mode is on, on-clicks will help generate query 
               if (this.props.inQueryMode) {
-                console.log(field)
                 // store selected scalars, to be added to history when navigating to a new node
                 if (isScalarType(field.type)) {
-                  dispatch(storeEdges(field))
+                  dispatch(storeEdges(field.name))
                   dispatch(selectEdge(field.id)); 
                 } else {
                   // navigate to the new node, store previously selected edges and new node in history
                   dispatch(focusElement(field.type.id));
                   dispatch(selectNode(field.type.id));
-                  dispatch(storeNode(field.name))
+                  dispatch(storeNodeAndEdges(field))
                 }
               } else {
                 // if query mode is not on, resume normal operations

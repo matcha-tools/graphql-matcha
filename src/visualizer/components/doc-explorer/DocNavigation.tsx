@@ -25,6 +25,7 @@ class DocNavigation extends React.Component<DocNavigationProps> {
   render() {
     const { selectedType, previousType, dispatch, inQueryMode } = this.props;
 
+    console.log('checking to see what props are ', this.props)
     let clickHandler = () => {
       if (!previousType) return dispatch(clearSelection());
       // if in query mode, go back to original node and return edges as pending

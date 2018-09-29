@@ -44,11 +44,11 @@ export function focusElementDone(id) {
   };
 }
 
-export const STORE_NODE = 'STORE_NODE';
-export function storeNode(name) {
+export const STORE_NODE_AND_EDGES = 'STORE_NODE_AND_EDGES';
+export function storeNodeAndEdges(field) {
   return {
-    type: STORE_NODE,
-    payload: name,
+    type: STORE_NODE_AND_EDGES,
+    payload: field,
   };
 }
 

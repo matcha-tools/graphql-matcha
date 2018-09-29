@@ -116,20 +116,17 @@ export default class Voyager extends React.Component<VoyagerProps> {
       this.viewport.resize();
     }
   }
-
-  shouldComponentUpdate(nextProps: VoyagerProps){
-    if (nextProps.inQueryMode !== this.props.inQueryMode){
-      if(nextProps.inQueryMode){
+  
+  shouldComponentUpdate(nextProps: VoyagerProps) {
+      if (nextProps.inQueryMode) {
         this.store.dispatch(focusElement('TYPE::Root'));
         this.store.dispatch(selectNode('TYPE::Root'));
-        return true;
-      }else{
+      } else {
         // store all pending edges in query history before clearing
         this.store.dispatch(storePendingEdges());
         this.store.dispatch(clearSelection());
       }
-      return false;
-    }
+    return true;
   }
 
   render() {

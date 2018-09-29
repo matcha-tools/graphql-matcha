@@ -29,6 +29,7 @@ interface TypeDocProps {
 }
 
 function mapStateToProps(state) {
+  console.log('what is state ', state);
   return {
     selectedType: getSelectedType(state),
     selectedEdgeId: state.selected.currentEdgeId,

@@ -257,17 +257,31 @@ export function rootReducer(previousState = initialState, action) {
         return previousState;
       }
     case ActionTypes.PREVIOUS_NODE_AND_EDGES:
-    // create functionality to go backwards for queries 
-      // go back in Q history
-        // if array, go twice
-        // if string, once
+      // if on query mode, revert back to previous node/edges
       const previousHistory = previousState.selected.queryModeHistory.slice();
-      // go back in Q history
-        // look at the last two elements in the array
+      // look at the last two elements in the array
       if (previousHistory.length > 1) {
         // get the last two  elements
         const lastElement = previousHistory[previousHistory.length - 1];
         const secondToLastElement = previousHistory[previousHistory.length - 2];
+
+        // check to see if the last Element is an array
+        if (Array.isArray(lastElement) && typeof secondToLastElement === 'string') {
+          // if so, remove that last element and place it in the edges when updating store
+          const removedLastTwoElements = previousState.selected.queryModeHistory.slice(0, previousState.selected.queryModeHistory.length - 3);
+          // check
+          console.log('checking the newly updated array ', removedLastTwoElements);
+
+          return {
+            ...previousState,
+            selected: {
+              ...previousState.selected,
+              queryModeHistory: [...removedLastTwoElements],
+              multipleEdgeIds: lastElement,
+            }
+          }
+        }
+
 
         return  {
           ...previousState,
@@ -278,19 +292,20 @@ export function rootReducer(previousState = initialState, action) {
         }
 
       } else {
-        // if its the last element, means that there were no edges
+        // if the last element is a string it means no edges were selected
         const lastElement = previousHistory[0];
         // ensure that it's a string
         if (typeof lastElement === 'string') {
-          console.log('checking to see if its a string ', lastElement)
-        }
-
-      }
-
-      return {
-        ...previousState,
-        selected: {
-          ...previousState.selected,
+          return {
+            ...previousState,
+            selected: {
+              ...previousState.selected,
+              previousTypesIds: _.initial(previousState.selected.previousTypesIds),
+              currentNodeId: _.last(previousState.selected.previousTypesIds),
+              currentEdgeId: null,
+              scalar: null,
+            },
+          };
         }
       }
     default:

@@ -295,6 +295,7 @@ export function rootReducer(previousState = initialState, action) {
           }
         }
       }
+      //TODO clean up,
     case ActionTypes.PREVIOUS_NODE_AND_EDGES:
       // if on query mode, revert back to previous node/edges
       const previousHistory = previousState.selected.queryModeHistory.slice();

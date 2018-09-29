@@ -96,6 +96,13 @@ export function graphQLFetcher(graphQLParams) {
     });
   }
 
+
+  /**
+   * Takes in queryArray generated from query mode and parses it into a string that can be processed as a query
+   * @param {array} queryArray
+   * @returns {string} queryString
+   */
+
   export function parseQueryArray(queryArray) {
     let queryString = "";
     const wrap = (string) => "{" + string + "}";
@@ -106,5 +113,5 @@ export function graphQLFetcher(graphQLParams) {
     });
     return (queryString)
   }
-  
+
  

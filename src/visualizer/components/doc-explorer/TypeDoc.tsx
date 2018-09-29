@@ -127,6 +127,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
             onClick: () => {
               // if query mode is on, on-clicks will help generate query 
               if (this.props.inQueryMode) {
+                console.log(field)
                 // store selected scalars, to be added to history when navigating to a new node
                 if (isScalarType(field.type)) {
                   dispatch(storeEdges(field))

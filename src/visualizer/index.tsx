@@ -14,7 +14,6 @@ export default class Viz extends React.Component<VizProps> {
     super(props);
   }
   public render() {
-    console.log('Viz IQM ==>',this.props.inQueryMode)
     return (
       <MuiThemeProvider theme={theme}>
         <Voyager

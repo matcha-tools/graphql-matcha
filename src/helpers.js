@@ -8,6 +8,7 @@
  */
 
 // Parse the search string to get url parameters.
+import { forEachRight } from 'lodash';
 const search = window.location.search;
 export const parameters = {};
 search
@@ -93,4 +94,17 @@ export function graphQLFetcher(graphQLParams) {
         return responseBody;
       }
     });
-}
+  }
+//TODO readability
+  export function parseQueryArray(queryArray) {
+    let queryString = "";
+    const wrap = (string) => "{" + string + "}";
+    (queryArray[queryArray.length - 1].length === 0) ? (queryString = wrap("id")) : (queryString = wrap(queryArray[queryArray.length - 1].join(" ")));
+    let newQueryArray = queryArray.slice(0, queryArray.length - 1);
+    forEachRight(newQueryArray, (current) => {
+      (Array.isArray(current)) ? (queryString = wrap(current.join(" ") + queryString)) : (queryString = wrap(current + queryString));
+    });
+    return (queryString)
+  }
+  
+ 

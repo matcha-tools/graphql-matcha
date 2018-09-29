@@ -118,14 +118,16 @@ export default class Voyager extends React.Component<VoyagerProps> {
   }
   
   shouldComponentUpdate(nextProps: VoyagerProps) {
-      if (nextProps.inQueryMode) {
-        this.store.dispatch(focusElement('TYPE::Root'));
-        this.store.dispatch(selectNode('TYPE::Root'));
-      } else {
-        // store all pending edges in query history before clearing
-        this.store.dispatch(storePendingEdges());
-        this.store.dispatch(clearSelection());
-      }
+    if (nextProps.inQueryMode) {
+      //TODO abstract this into getRootFromProps()
+      let root = 'TYPE::' + nextProps.introspection["_queryType"].name;
+      this.store.dispatch(focusElement(root));
+      this.store.dispatch(selectNode(root));
+    } else {
+      // store all pending edges in query history before clearing
+      this.store.dispatch(storePendingEdges());
+      this.store.dispatch(clearSelection());
+    }
     return true;
   }
 

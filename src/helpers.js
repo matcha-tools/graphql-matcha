@@ -95,7 +95,7 @@ export function graphQLFetcher(graphQLParams) {
       }
     });
   }
-
+//TODO readability
   export function parseQueryArray(queryArray) {
     let queryString = "";
     const wrap = (string) => "{" + string + "}";

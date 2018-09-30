@@ -354,6 +354,7 @@ export class GraphiQL extends React.Component {
                 onPrettifyQuery={this.handlePrettifyQuery}
                 onRunQuery={this.handleEditorRunQuery}
                 editorTheme={this.props.editorTheme}
+                readOnly={this.props.inQueryMode}
               />
               <div className="variable-editor" style={variableStyle}>
                 <div

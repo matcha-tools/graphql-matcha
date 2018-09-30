@@ -7,13 +7,14 @@ import schema from "../../demo/schema/schema";
 
 
 export interface VizProps {
-  toggleQueryMode(): null; // why is this a function call? Jon
-  inQueryMode:boolean;
+  toggleQueryMode(): null;
+  inQueryMode: boolean;
 }
 export default class Viz extends React.Component<VizProps> {
   constructor(props){
     super(props);
   }
+  
   public render() {
     return (
       <MuiThemeProvider theme={theme}>

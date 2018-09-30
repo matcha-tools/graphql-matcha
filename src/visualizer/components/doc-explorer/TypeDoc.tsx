@@ -38,7 +38,7 @@ function mapStateToProps(state) {
 
 class TypeDoc extends React.Component<TypeDocProps> {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   componentDidUpdate(prevProps: TypeDocProps) {
@@ -128,13 +128,14 @@ class TypeDoc extends React.Component<TypeDocProps> {
               if (this.props.inQueryMode) {
                 // store selected scalars, to be added to history when navigating to a new node
                 if (isScalarType(field.type)) {
-                  dispatch(storeEdges(field.name))
+                  dispatch(storeEdges(field.name));
                   dispatch(selectEdge(field.id)); 
                 } else {
                   // navigate to the new node, store previously selected edges and new node in history
+                  console.log('selecting node ', field.type.id)
                   dispatch(focusElement(field.type.id));
                   dispatch(selectNode(field.type.id));
-                  dispatch(storeNodeAndEdges(field))
+                  dispatch(storeNodeAndEdges(field));
                 }
               } else {
                 // if query mode is not on, resume normal operations
@@ -175,7 +176,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
     if (!typeGraph) {
       return (
         <div className="type-doc">
-          <span className="loading"> Loading... </span>;
+          <span className="loading"> Loading... </span>
         </div>
       );
     }

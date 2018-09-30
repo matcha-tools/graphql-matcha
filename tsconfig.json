@@ -17,5 +17,5 @@
   },
   "compileOnSave": false,
   "exclude": ["node_modules", ".tmp", "dist", "demo-dist", "**/**/voyager.worker.js"],
-  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./manual-types.d.ts", "demo/**/*.tsx", "src/components/CollapsibleVisualizer.jsx", "src/components/Matcha.jsx", "src/components/CollapsibleVisualizer.jsx", "src/components/Matcha.jsx"]
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./manual-types.d.ts", "demo/**/*.tsx", "src/components/CollapsibleVisualizer.jsx", "src/components/Matcha.jsx", "src/components/CollapsibleVisualizer.jsx", "src/components/Matcha.jsx", "cypress/integration/unit/unit.test.js"]
 }

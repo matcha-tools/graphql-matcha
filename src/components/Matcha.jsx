@@ -13,7 +13,6 @@ export default class Matcha extends React.Component {
 
     this.toggleQueryMode = this.toggleQueryMode.bind(this);
     this.endQueryMode = this.endQueryMode.bind(this);
-    // this.sendDummy = this.sendDummy.bind(this);
   }
 
   toggleQueryMode() {
@@ -25,13 +24,8 @@ export default class Matcha extends React.Component {
   endQueryMode(){
     this.setState({inQueryMode:false});
   }
-  // For Testing
-  // sendDummy(){
-  //   this.setState({queryStr:"hello"});
-  // }
 
   render() {
-    // setTimeout(this.sendDummy, 10000);
     
     return (
       <div id="matcha">

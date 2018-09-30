@@ -95,6 +95,14 @@ export function graphQLFetcher(graphQLParams) {
       }
     });
   }
+
+
+  /**
+   * Takes in queryArray generated from query mode and parses it into a string that can be processed as a query
+   * @param {array} queryArray
+   * @returns {string} queryString
+   */
+
 //TODO readability
   export function parseQueryArray(queryArray) {
     let queryString = "";
@@ -106,5 +114,7 @@ export function graphQLFetcher(graphQLParams) {
     });
     return (queryString)
   }
+
+ 
   
  

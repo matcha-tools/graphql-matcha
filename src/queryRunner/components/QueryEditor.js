@@ -82,7 +82,7 @@ export class QueryEditor extends React.Component {
       autoCloseBrackets: true,
       matchBrackets: true,
       showCursorWhenSelecting: true,
-      readOnly: this.props.readOnly ? 'nocursor' : false,
+      readOnly: this.props.readOnly ? true : false,
       foldGutter: {
         minFoldSize: 4,
       },

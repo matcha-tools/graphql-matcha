@@ -1,2 +1,4 @@
 /node_modules/
 /cypress/integration/examples/
+/cypress/fixtures/
+/cypress/support/

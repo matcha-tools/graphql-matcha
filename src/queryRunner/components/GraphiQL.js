@@ -64,6 +64,8 @@ export class GraphiQL extends React.Component {
     onToggleHistory: PropTypes.func,
     ResultsTooltip: PropTypes.any,
     toggleVoyager: PropTypes.func,
+    inQueryMode: PropTypes.bool,
+    queryModeQuery: PropTypes.string
   };
 
   constructor(props) {
@@ -213,7 +215,13 @@ export class GraphiQL extends React.Component {
     );
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(previousProps, previousState) {
+    let previousQueryModeQuery = previousProps.queryModeQuery;
+    if (this.props.queryModeQuery !== ''){
+      if (previousQueryModeQuery !== this.props.queryModeQuery){
+        this.setState({query: this.props.queryModeQuery})
+      }
+    }
     // If this update caused DOM nodes to have changed sizes, update the
     // corresponding CodeMirror instance sizes to match.
     this.codeMirrorSizer.updateSizes([
@@ -354,6 +362,7 @@ export class GraphiQL extends React.Component {
                 onPrettifyQuery={this.handlePrettifyQuery}
                 onRunQuery={this.handleEditorRunQuery}
                 editorTheme={this.props.editorTheme}
+                readOnly={this.props.inQueryMode}
               />
               <div className="variable-editor" style={variableStyle}>
                 <div

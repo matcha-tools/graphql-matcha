@@ -6,8 +6,8 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const root = require("./helpers").root;
 const VERSION = JSON.stringify(require("../package.json").version);
 
-module.exports = function(_, { mode }) {
-  return {
+module.exports = {
+    mode: "development",
     performance: {
       hints: false
     },
@@ -24,7 +24,7 @@ module.exports = function(_, { mode }) {
     output: {
       path: root("demo-dist"),
       filename: "[name].js",
-      sourceMapFilename: "[name].[id].map"
+      //sourceMapFilename: "[name].[id].map"
     },
     module: {
       rules: [
@@ -51,7 +51,7 @@ module.exports = function(_, { mode }) {
         {
           test: /\.tsx?$/,
           use: "ts-loader",
-          exclude: [/\.(spec|e2e)\.ts$/]
+          exclude: [/\.(spec|e2e)\.ts$/, /node_modules/]
         },
 
         {
@@ -146,4 +146,4 @@ module.exports = function(_, { mode }) {
       ])
     ]
   };
-};
+;

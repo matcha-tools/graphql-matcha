@@ -1,4 +1,4 @@
-import { parseQueryArray } from "../../../src/utils/parsers";
+import { parseQueryArray } from "../../src/utils/parsers";
 import {expect} from 'chai';
 
 describe("Unit tests", () => {

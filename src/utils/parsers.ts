@@ -1,11 +1,11 @@
 //TODO readability
 import { forEachRight } from 'lodash';
 
-export function parseQueryArray(queryArray) {
+export function parseQueryArray(queryArray:Array<any>) {
   if(queryArray.length === 0) return;
   let queryString = "";
   let newQueryArray;
-  const wrap = (string) => "{" + string + "}";
+  const wrap = (string:string) => "{" + string + "}";
   if (Array.isArray(queryArray[queryArray.length - 1])){
     (queryArray[queryArray.length - 1].length === 0) ? (queryString = wrap("id")) : (queryString = wrap(queryArray[queryArray.length - 1].join(" ")));
     newQueryArray = queryArray.slice(0, queryArray.length -1);

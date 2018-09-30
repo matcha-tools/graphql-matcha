@@ -1,9 +1,17 @@
 import * as React from "react";
-import { GraphiQL } from "../queryRunner/components/GraphiQL";
 import * as helpers from "../helpers";
+import { GraphiQL } from "../queryRunner/components/GraphiQL";
 import { CollapsibleVisualizer } from "./CollapsibleVisualizer.jsx";
+import { parseQueryArray} from "../utils/parsers"
 
-export default class Matcha extends React.Component {
+interface MatchaStateTypes {
+  inQueryMode: boolean;
+  queryStr: string;
+}
+
+
+export default class Matcha extends React.Component<null,MatchaStateTypes>{
+
   constructor(props) {
     super(props);
     this.state = {
@@ -23,11 +31,18 @@ export default class Matcha extends React.Component {
   endQueryMode() {
     this.setState({ inQueryMode: false });
   }
+  
 
-  queryModeListener(store) {
-    //pass this down to Voya to listen for state changes.
-    //when state.
-    console.log('matcha', store);
+  queryModeListener(queryStack) {
+    //queryStack.history --> the stack of nodes the person wants
+    //".currentFields --> the selected edges of the current 
+    let queryArray = queryStack.history;
+    if(queryStack.currentFields && queryStack.currentFields.length){
+       queryArray = queryStack.history.concat([queryStack.currentFields]);
+    }
+    const queryStr = parseQueryArray(queryArray);
+    console.log('matcha', queryStr);
+    
   }
 
   render() {

@@ -1,5 +1,5 @@
 export const SELECT_NODE = 'SELECT_NODE';
-export function selectNode(id) {
+export function selectNode(id:any) {
   return {
     type: SELECT_NODE,
     payload: id,
@@ -7,7 +7,7 @@ export function selectNode(id) {
 }
 
 export const SELECT_EDGE = 'SELECT_EDGE';
-export function selectEdge(id) {
+export function selectEdge(id:any) {
   return {
     type: SELECT_EDGE,
     payload: id,
@@ -29,7 +29,7 @@ export function clearSelection() {
 }
 
 export const FOCUS_ELEMENT = 'FOCUS_ELEMENT';
-export function focusElement(id) {
+export function focusElement(id:any) {
   return {
     type: FOCUS_ELEMENT,
     payload: id,
@@ -37,7 +37,7 @@ export function focusElement(id) {
 }
 
 export const FOCUS_ELEMENT_DONE = 'FOCUS_ELEMENT_DONE';
-export function focusElementDone(id) {
+export function focusElementDone(id:any) {
   return {
     type: FOCUS_ELEMENT_DONE,
     payload: id,
@@ -45,7 +45,7 @@ export function focusElementDone(id) {
 }
 
 export const STORE_NODE_AND_EDGES = 'STORE_NODE_AND_EDGES';
-export function storeNodeAndEdges(field) {
+export function storeNodeAndEdges(field:any) {
   return {
     type: STORE_NODE_AND_EDGES,
     payload: field,
@@ -53,7 +53,7 @@ export function storeNodeAndEdges(field) {
 }
 
 export const STORE_EDGES = 'STORE_EDGES';
-export function storeEdges(name) {
+export function storeEdges(name:string) {
   return {
     type: STORE_EDGES,
     payload: name,

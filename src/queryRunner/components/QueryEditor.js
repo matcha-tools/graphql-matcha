@@ -93,14 +93,15 @@ export class QueryEditor extends React.Component {
         closeOnUnfocus: false,
         completeSingle: false,
       },
+      //TODO voya
       info: {
         schema: this.props.schema,
         renderDescription: text => md.render(text),
-        onClick: reference => this.props.onClickReference(reference),
+        // onClick: reference => this.props.onClickReference(reference),
       },
       jump: {
         schema: this.props.schema,
-        onClick: reference => this.props.onClickReference(reference),
+        // onClick: reference => this.props.onClickReference(reference),
       },
       gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
       extraKeys: {

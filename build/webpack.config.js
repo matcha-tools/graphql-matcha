@@ -6,10 +6,13 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const root = require("./helpers").root;
 const VERSION = JSON.stringify(require("../package.json").version);
 
-module.exports = function(_, { mode }) {
-  return {
+module.exports = {
+    mode: "development",
     performance: {
       hints: false
+    },
+    node: {
+      fs: 'empty'
     },
     resolve: {
       extensions: [".ts", ".tsx", ".mjs", ".js", ".json", ".css", ".svg"]
@@ -22,8 +25,8 @@ module.exports = function(_, { mode }) {
       stats: "errors-only"
     },
     output: {
-      path: root("demo-dist"),
-      filename: "[name].js",
+      path: root("build"),
+      filename: "bundle.js",
       sourceMapFilename: "[name].[id].map"
     },
     module: {
@@ -51,7 +54,7 @@ module.exports = function(_, { mode }) {
         {
           test: /\.tsx?$/,
           use: "ts-loader",
-          exclude: [/\.(spec|e2e)\.ts$/]
+          exclude: [/\.(spec|e2e)\.ts$/, /node_modules/]
         },
 
         {
@@ -146,4 +149,4 @@ module.exports = function(_, { mode }) {
       ])
     ]
   };
-};
+;

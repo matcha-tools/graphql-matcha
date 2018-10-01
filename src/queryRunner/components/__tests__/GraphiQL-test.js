@@ -62,6 +62,7 @@ const wait = () =>
     .then(() => Promise.resolve())
     .then(() => Promise.resolve());
 
+    
 Object.defineProperty(window, 'localStorage', {
   value: mockStorage,
 });

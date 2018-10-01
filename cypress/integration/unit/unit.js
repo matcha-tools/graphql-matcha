@@ -17,4 +17,5 @@ describe("Unit tests", () => {
       expect(result).to.equal(expectedString);
     });
   });
+
 });

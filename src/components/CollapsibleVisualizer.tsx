@@ -1,5 +1,5 @@
 import Collapsible from "react-collapsible";
-import React from "react";
+import * as React from "react";
 import Viz from "../visualizer";
 
 export const CollapsibleVisualizer = props => {

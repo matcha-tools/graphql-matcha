@@ -17,6 +17,7 @@ export default class Viz extends React.Component<VizProps> {
     return (
       <MuiThemeProvider theme={theme}>
         <Voyager
+          hideSettings={true}
           introspection={schema}
           toggleQueryMode={this.props.toggleQueryMode}
           inQueryMode={this.props.inQueryMode}

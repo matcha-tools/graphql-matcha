@@ -17,7 +17,7 @@ import Description from './Description';
 import TypeLink from './TypeLink';
 import WrappedTypeName from './WrappedTypeName';
 import Argument from './Argument';
-import { isScalarType } from '../../introspection/utils'; 
+import { isScalarType } from '../../introspection/utils';
 
 interface TypeDocProps {
   selectedType: any;
@@ -27,6 +27,7 @@ interface TypeDocProps {
   toggleQueryMode: any;
   inQueryMode: boolean;
   selectedFields: any;
+  svg: string;
 }
 
 function mapStateToProps(state) {
@@ -35,7 +36,6 @@ function mapStateToProps(state) {
     selectedEdgeId: state.selected.currentEdgeId,
     typeGraph: getTypeGraphSelector(state),
     selectedFields: state.selected.multipleEdgeIds,
-    //TODO, disable button if svg is null
     svg: state.graphView.svg,
   };
 }
@@ -145,7 +145,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
                 // store selected scalars, to be added to history when navigating to a new node
                 if (isScalarType(field.type)) {
                   dispatch(storeEdges(field.name));
-                  dispatch(selectEdge(field.id)); 
+                  dispatch(selectEdge(field.id));
                 } else {
                   // navigate to the new node, store previously selected edges and new node in history
                   dispatch(focusElement(field.type.id));
@@ -198,28 +198,33 @@ class TypeDoc extends React.Component<TypeDocProps> {
 
     //TODO: move this up to matcha, and pass down the whole button!
     //won't need to pass down toggle function anymore.
-    const toggleDraftButton = (
-      <div className="vis-control">
-        <button type="button" onClick={this.props.toggleQueryMode}>
-          Draft Query
+
+    const toggleDraftButton = props => {
+      let disabled = true;
+      if (props.svg) disabled = false;
+      return (
+        <div className="vis-control">
+          <button disabled={disabled} type="button" onClick={props.toggleQueryMode}>
+            Draft Query
         </button>
-      </div>
-    );
+        </div>
+      )
+    }
 
     return (
       <div className="type-doc">
-        <DocNavigation inQueryMode={this.props.inQueryMode}/>
-        {toggleDraftButton}
+        <DocNavigation inQueryMode={this.props.inQueryMode} />
+        {toggleDraftButton(this.props)}
         <div className="scroll-area">
           {!selectedType ? (
             <TypeList typeGraph={typeGraph} />
           ) : (
-            <div>
-              <Description className="-doc-type" text={selectedType.description} />
-              {this.renderTypesDef(selectedType, typeGraph, selectedEdgeId)}
-              {this.renderFields(selectedType, selectedEdgeId)}
-            </div>
-          )}
+              <div>
+                <Description className="-doc-type" text={selectedType.description} />
+                {this.renderTypesDef(selectedType, typeGraph, selectedEdgeId)}
+                {this.renderFields(selectedType, selectedEdgeId)}
+              </div>
+            )}
         </div>
       </div>
     );

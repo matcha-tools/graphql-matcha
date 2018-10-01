@@ -32,18 +32,7 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
     this.setState({  inQueryMode: false });
   }
 
-  componentDidUpdate(){
-    // console.log('Matcha did update');
-  }
-
-  shouldComponentUpdate(){
-    // console.log('Sholdmatcha update? true');
-    return true;
-  }
-
   queryModeListener(queryStack) {
-    //queryStack.history --> the stack of nodes the person wants
-    //".currentFields --> the selected edges of the current
     if (this.state) {
       if (!queryStack.history.length) return;
       let queryArray = queryStack.history;

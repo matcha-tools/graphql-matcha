@@ -4,7 +4,7 @@
   "description": "create tests, visualize schema",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:build && npm run test:unit && rm cypress/integration/unit.built.test.js",
+    "test": "npm run test:build && npm run test:unit && rm cypress/integration/unit.built.test.js && rm cypress/integration/index.html",
     "test:unit": "mocha cypress/integration/*.built.test.js",
     "test:build": "webpack --config cypress/webpack.test.config.js ./cypress/integration/unit.test.ts",
     "start": "webpack-dev-server --config build/webpack.config.js --hot --inline --mode=development",

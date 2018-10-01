@@ -13,6 +13,7 @@ export default class Viz extends React.Component<VizProps> {
   constructor(props) {
     super(props);
   }
+  
   public render() {
     return (
       <MuiThemeProvider theme={theme}>

@@ -7,7 +7,7 @@ import './TypeDoc.css';
 
 import { SimplifiedTypeWithIDs } from '../../introspection/types';
 
-import { selectEdge, selectNode, focusElement, storeNode, storeEdges } from '../../actions';
+import { selectEdge, selectNode, focusElement, storeNodeAndEdges, storeEdges } from '../../actions';
 import { getSelectedType } from '../../selectors';
 import { getTypeGraphSelector } from '../../graph';
 import TypeList from './TypeList';
@@ -35,12 +35,14 @@ function mapStateToProps(state) {
     selectedEdgeId: state.selected.currentEdgeId,
     typeGraph: getTypeGraphSelector(state),
     selectedFields: state.selected.multipleEdgeIds,
+    //TODO, disable button if svg is null
+    svg: state.graphView.svg,
   };
 }
 
 class TypeDoc extends React.Component<TypeDocProps> {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   componentDidUpdate(prevProps: TypeDocProps) {
@@ -142,13 +144,13 @@ class TypeDoc extends React.Component<TypeDocProps> {
               if (this.props.inQueryMode) {
                 // store selected scalars, to be added to history when navigating to a new node
                 if (isScalarType(field.type)) {
-                  dispatch(storeEdges(field))
+                  dispatch(storeEdges(field.name));
                   dispatch(selectEdge(field.id)); 
                 } else {
                   // navigate to the new node, store previously selected edges and new node in history
                   dispatch(focusElement(field.type.id));
                   dispatch(selectNode(field.type.id));
-                  dispatch(storeNode(field.name))
+                  dispatch(storeNodeAndEdges(field));
                 }
               } else {
                 // if query mode is not on, resume normal operations
@@ -189,12 +191,14 @@ class TypeDoc extends React.Component<TypeDocProps> {
     if (!typeGraph) {
       return (
         <div className="type-doc">
-          <span className="loading"> Loading... </span>;
+          <span className="loading"> Loading... </span>
         </div>
       );
     }
 
-    const toggleDraftButton = () =>(
+    //TODO: move this up to matcha, and pass down the whole button!
+    //won't need to pass down toggle function anymore.
+    const toggleDraftButton = (
       <div className="vis-control">
         <button type="button" onClick={this.props.toggleQueryMode}>
           Draft Query
@@ -204,8 +208,8 @@ class TypeDoc extends React.Component<TypeDocProps> {
 
     return (
       <div className="type-doc">
-        <DocNavigation />
-        {toggleDraftButton()}
+        <DocNavigation inQueryMode={this.props.inQueryMode}/>
+        {toggleDraftButton}
         <div className="scroll-area">
           {!selectedType ? (
             <TypeList typeGraph={typeGraph} />

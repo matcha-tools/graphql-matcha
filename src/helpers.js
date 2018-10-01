@@ -1,13 +1,14 @@
-/**
- * This GraphiQL example illustrates how to use some of GraphiQL's props
- * in order to enable reading and updating the URL parameters, making
- * link sharing of queries a little bit easier.
- *
- * This is only one example of this kind of feature, GraphiQL exposes
- * various React params to enable interesting integrations.
- */
+// /**
+//  * This GraphiQL example illustrates how to use some of GraphiQL's props
+//  * in order to enable reading and updating the URL parameters, making
+//  * link sharing of queries a little bit easier.
+//  *
+//  * This is only one example of this kind of feature, GraphiQL exposes
+//  * various React params to enable interesting integrations.
+//  */
 
 // Parse the search string to get url parameters.
+
 const search = window.location.search;
 export const parameters = {};
 search
@@ -93,4 +94,7 @@ export function graphQLFetcher(graphQLParams) {
         return responseBody;
       }
     });
-}
+  }
+
+  
+ 

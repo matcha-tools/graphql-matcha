@@ -16,6 +16,7 @@ export default class Matcha extends React.Component {
   }
 
   toggleQueryMode() {
+    console.log(this.state.inQueryMode);
     const inQueryMode = !this.state.inQueryMode;
     this.setState({ inQueryMode });
   }
@@ -25,7 +26,7 @@ export default class Matcha extends React.Component {
   }
 
   render() {
-
+    
     return (
       <div id="matcha">
         <CollapsibleVisualizer 

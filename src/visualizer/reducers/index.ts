@@ -82,6 +82,28 @@ function grabArgs(field:any): boolean {
   }
 }
 
+function verifyStateChange(prevHistory, lastElement, length) {
+  let newLength = length;
+  let indexHelper;
+  let newElement;
+
+  // Set value accordingly to help locate the element in the array that needs to be verified.
+  lastElement === 'node' 
+    // Value set to 4 to check the element before the original node name, edges, and node at the end of the array.
+    ? (indexHelper = 4, newElement = prevHistory[newLength - indexHelper])
+    // If not a node, value is a type. Check the element before the type.
+    : (indexHelper = 2, newElement = prevHistory[newLength - indexHelper]);
+  
+  // Check if element is an array of previously selected fields
+  Array.isArray(newElement) 
+    // if so, array will be stored as the new state's multipleEdgeIds and should no longer be in queryModeHistory. 
+    ? newLength -= indexHelper 
+    // else, intialize to empty array and navigate to that element in queryModeHistory
+    : (newLength -= indexHelper - 1, newElement = []);
+
+  return { newElement, newLength };
+}
+
 export function rootReducer(previousState = initialState, action) {
   const { type } = action;
   switch (type) {
@@ -265,7 +287,7 @@ export function rootReducer(previousState = initialState, action) {
         }
       } else {
         // remove reselected edges
-        _.pull(previousEdgeIds, action.payload.name);
+        _.pull(previousEdgeIds, action.payload);
         return {  
           ...previousState,
           selected: {
@@ -298,80 +320,32 @@ export function rootReducer(previousState = initialState, action) {
     case ActionTypes.PREVIOUS_NODE_AND_EDGES:
       // if on query mode, revert back to previous node/edges
       const previousHistory = previousState.selected.queryModeHistory.slice();
-
-      // get the last element of the array
+      const length  = previousHistory.length;
       const lastElement = _.last(previousHistory);
 
-      // check to see if the last element in history is a node
-      if (lastElement === 'node') {
-        // First check to see if length of array is 3, this will usually indicate start of query mode. 
-        if (previousHistory.length === 3) {
-          // reset to initial values for query mode
-          return {
-            ...previousState,
-            selected: {
-              ...previousState.selected,
-              queryModeHistory: [],
-              multipleEdgeIds: [],
-            }
-          }
-        }
-
-        // If length is greater than 3, multiple entries performed, then the previous element should contain edges and type.
-        // skip those elements and go straight to the element before it
-        const elementBeforeEdges = previousHistory[previousHistory.length - 4];
-
-        // check to see if that element is an array of fields, node, or type
-        if (Array.isArray(elementBeforeEdges)) {
-          // if it is, store that array as your current edgeId's
-          // return a slice of queryModeHistory up to the index of that element
-          const newQueryHistory = previousHistory.slice(0, previousHistory.length - 4);
-          return {
-            ...previousState,
-            selected: {
-              ...previousState.selected,
-              queryModeHistory: newQueryHistory,
-              multipleEdgeIds: elementBeforeEdges
-            }
-          }
-        } else {
-          // if a node, create a slice of the queryModeHistory retaining up to that node
-          const newQueryHistory = previousHistory.slice(0, previousHistory.length - 3);
-          return {
-            ...previousState,
-            selected: {
-              ...previousState.selected,
-              queryModeHistory: newQueryHistory,
-            }
-          }
-        } 
-      } else {
-      // last element is not a node, should only be a type
-      const secondToLastElement = previousHistory[previousHistory.length - 2];
-      
-      // check second to last element to ensure it's not an array
-      if (Array.isArray(secondToLastElement)) {
-        // if it is an array, need to store array in multiple edges and update history up to that point
+      // first check to see if length of array is 3 and the last element is a node, this will usually indicate start of query mode. 
+      if (lastElement === 'node' && length === 3) {
+        // reset to initial values for query mode
         return {
           ...previousState,
           selected: {
             ...previousState.selected,
-            queryModeHistory: [...previousHistory.slice(0, previousHistory.length - 2)],
-            multipleEdgeIds: secondToLastElement,
+            queryModeHistory: [],
+            multipleEdgeIds: [],
           }
         }
       } else {
-        // if the second to last element is not an array, then update history up to that point
+        // verify how state should be changed 
+        const { newElement, newLength } = verifyStateChange(previousHistory,lastElement, length);
         return {
           ...previousState,
           selected: {
             ...previousState.selected,
-            queryModeHistory: [...previousHistory.slice(0, previousHistory.length - 1)],
-            multipleEdgeIds: []
+            queryModeHistory: previousHistory.slice(0, newLength),
+            multipleEdgeIds: newElement
           }
         }
       }
-    }
     default:
       return previousState;
   }

@@ -33,6 +33,8 @@ function mapStateToProps(state) {
     selectedType: getSelectedType(state),
     selectedEdgeId: state.selected.currentEdgeId,
     typeGraph: getTypeGraphSelector(state),
+    //TODO, disable button if svg is null
+    svg: state.graphView.svg,
   };
 }
 

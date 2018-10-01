@@ -3,6 +3,7 @@ import * as helpers from "../helpers";
 import { GraphiQL } from "../queryRunner/components/GraphiQL";
 import { CollapsibleVisualizer } from "./CollapsibleVisualizer";
 import { parseQueryStack } from "../utils/parsers";
+import { debounce } from "lodash";
 
 interface MatchaStateTypes {
   inQueryMode: boolean;
@@ -25,7 +26,8 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
 
   toggleQueryMode() {
     const inQueryMode = !this.state.inQueryMode;
-    this.setState({ inQueryMode });
+    const delayedSetState = debounce(() => this.setState({ inQueryMode }), 50);
+    delayedSetState();
   }
 
   endQueryMode() {

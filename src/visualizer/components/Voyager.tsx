@@ -71,7 +71,7 @@ export default class Voyager extends React.Component<VoyagerProps> {
     workerURI: PropTypes.string,
     loadWorker: PropTypes.func,
     toggleQueryMode: PropTypes.func,
-    queryModeListener: PropTypes.func,
+    queryModeHandler: PropTypes.func,
     inQueryMode: PropTypes.bool
   };
   

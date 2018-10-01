@@ -56,7 +56,7 @@ describe("Integration tests", () => {
     .contains('The Empire Strikes Back')
   });
 
-  it("clears the current querytext, types in a query, runs it",()=>{
+  it("clears the current querytext, types in a query, runs it",() => {
     cy.get('.query-editor textarea')
     .type('{ctrl}a{del}',{delay:50,force:true});
     cy.get('.query-editor textarea')
@@ -65,7 +65,7 @@ describe("Integration tests", () => {
     cy.wait(1200);
   });
 
-  it("goes back in to QMode, selects allPlanets > population", ()=>{
+  it("goes back in to QMode, selects allPlanets > population", () => {
     cy.get('.vis-control > button').click();
     cy.get(".active").should("have.text", "Root ");
     cy.get('.doc-category > :nth-child(6)').click();
@@ -74,7 +74,7 @@ describe("Integration tests", () => {
   })
 
   
-  xit("PRETTY goes back in to QMode, selects allPlanets > population", ()=>{
+  xit("PRETTY goes back in to QMode, selects allPlanets > population", () => {
     cy.get('.vis-control > button').click();
     cy.get(".active").should("have.text", "Root ");
     cy.get('.doc-category > :nth-child(6)').click();
@@ -85,12 +85,12 @@ describe("Integration tests", () => {
     cy.contains('.query-editor','population');
   })
 
-  it("exits query mode, and keeps the last generated query", ()=>{
+  it("exits query mode, and keeps the last generated query", () => {
     cy.get('.vis-control > button').click();
     cy.contains('.query-editor','{allPlanets{edges{node{population}}}}');
   })
 
-  xit("PRETTY exits query mode, and keeps the last generated query", ()=>{
+  xit("PRETTY exits query mode, and keeps the last generated query", () => {
     cy.get('.vis-control > button').click();
     cy.contains('.query-editor','allPlanets {');
     cy.contains('.query-editor','edges {');

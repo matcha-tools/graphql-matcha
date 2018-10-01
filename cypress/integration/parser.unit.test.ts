@@ -47,7 +47,7 @@ describe("Unit tests", () => {
 
   
 
-    xit("should properly parse out a Connection after adding fields", () => {
+    it("should properly parse out a Connection after adding fields", () => {
       const array = [
         "allFilms",
         "edges",

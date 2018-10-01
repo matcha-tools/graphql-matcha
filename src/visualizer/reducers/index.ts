@@ -57,53 +57,6 @@ const initialState: StateInterface = {
   errorMessage: null,
 };
 
-function pushHistory(currentTypeId: string, previousState): string[] {
-  let previousTypesIds = previousState.selected.previousTypesIds;
-  let previousTypeId = previousState.selected.currentNodeId;
-
-  if (previousTypeId === null || previousTypeId === currentTypeId) return previousTypesIds;
-
-  if (_.last(previousTypesIds) !== previousTypeId) return [...previousTypesIds, previousTypeId];
-}
-
-function isRelay(field:any): boolean {
-  if (field.relayType) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-function grabArgs(field:any): boolean {
-  if (Object.keys(field.args).length !== 0) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-function verifyStateChange(prevHistory: any, lastElement: any, length: number): { newElement: string, newLength: number } {
-  let newLength = length;
-  let indexHelper;
-  let newElement;
-
-  // Set value accordingly to help locate the element in the array that needs to be verified.
-  lastElement === 'node' 
-    // Value set to 4 to check the element before the original node name, edges, and node at the end of the array.
-    ? (indexHelper = 4, newElement = prevHistory[newLength - indexHelper])
-    // If not a node, value is a type. Check the element before the type.
-    : (indexHelper = 2, newElement = prevHistory[newLength - indexHelper]);
-  
-  // Check if element is an array of previously selected fields
-  Array.isArray(newElement) 
-    // if so, array will be stored as the new state's multipleEdgeIds and should no longer be in queryModeHistory. 
-    ? newLength -= indexHelper 
-    // else, intialize to empty array and navigate to that element in queryModeHistory
-    : (newLength -= indexHelper - 1, newElement = []);
-
-  return { newElement, newLength };
-}
-
 export function rootReducer(previousState = initialState, action) {
   const { type } = action;
   switch (type) {
@@ -336,8 +289,8 @@ export function rootReducer(previousState = initialState, action) {
           }
         }
       } else {
-        // verify how state should be changed 
-        const { newElement, newLength } = verifyStateChange(previousHistory,lastElement, length);
+        // revert to previous node+edges
+        const { newElement, newLength } = revertQueryHistory(previousHistory,lastElement, length);
         return {
           ...previousState,
           selected: {
@@ -350,4 +303,57 @@ export function rootReducer(previousState = initialState, action) {
     default:
       return previousState;
   }
+}
+
+
+
+// ***** HELPERS ***** //
+function grabArgs(field:any): boolean {
+  if (Object.keys(field.args).length !== 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function pushHistory(currentTypeId: string, previousState): string[] {
+  let previousTypesIds = previousState.selected.previousTypesIds;
+  let previousTypeId = previousState.selected.currentNodeId;
+
+  if (previousTypeId === null || previousTypeId === currentTypeId) return previousTypesIds;
+
+  if (_.last(previousTypesIds) !== previousTypeId) return [...previousTypesIds, previousTypeId];
+}
+
+function isRelay(field:any): boolean {
+  if (field.relayType) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function revertQueryHistory(prevHistory: any, lastElement: any, length: number): { newElement: string, newLength: number } {
+  let newLength = length;
+  // If not a node, value is a type. Check the element before the type.
+  let indexHelper = 2;
+  let newElement = prevHistory[newLength - indexHelper]);
+
+  // Set value accordingly to help locate the element in the array that needs to be verified.
+  if(lastElement === 'node'){
+     // Value set to 4 to check the element before the original node name, edges, and node at the end of the array.
+    indexHelper = 4;
+     newElement = prevHistory[newLength - indexHelper];
+  }
+   
+    
+  
+  // Check if element is an array of previously selected fields
+  Array.isArray(newElement) 
+    // if so, array will be stored as the new state's multipleEdgeIds and should no longer be in queryModeHistory. 
+    ? newLength -= indexHelper 
+    // else, intialize to empty array and navigate to that element in queryModeHistory
+    : (newLength -= indexHelper - 1, newElement = []);
+
+  return { newElement, newLength };
 }

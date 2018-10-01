@@ -1,20 +1,34 @@
-//TODO readability
-import { forEachRight } from 'lodash';
+//TODO adds an extra
+import { forEachRight, isEmpty, last as lastElementOf } from "lodash";
+import { format } from "prettier";
 
-export function parseQueryArray(queryArray:Array<any>) {
-  if(queryArray.length === 0) return;
+export function parseQueryArray(queryArray: Array<any>) {
+  if (queryArray.length === 0) return;
   let queryString = "";
-  let newQueryArray;
-  const wrap = (string:string) => "{" + string + "}";
-  if (Array.isArray(queryArray[queryArray.length - 1])){
-    (queryArray[queryArray.length - 1].length === 0) ? (queryString = wrap("id")) : (queryString = wrap(queryArray[queryArray.length - 1].join(" ")));
-    newQueryArray = queryArray.slice(0, queryArray.length -1);
+  let newQueryArray = queryArray.slice();
+
+  if (lastElementIsArray(queryArray)) {
+    queryString = isEmpty(lastElementOf(queryArray))
+      ? wrapWithBraces("...fields")
+      : wrapWithBraces(lastElementOf(queryArray).join(" "));
+    newQueryArray.pop();
   } else {
-   queryString = "{FIELDS}";
-   newQueryArray = queryArray; 
+    queryString = "{...fields}";
   }
-  forEachRight(newQueryArray, (current) => {
-    (Array.isArray(current)) ? (queryString = wrap(current.join(" ") + queryString)) : (queryString = wrap(current + queryString));
+  forEachRight(newQueryArray, element => {
+    queryString = Array.isArray(element)
+      ? wrapWithBraces(element.join(" ") + queryString)
+      : wrapWithBraces(element + queryString);
   });
-  return queryString;
+
+  const formattedQstr = format(queryString, { parser: "graphql" });
+  return formattedQstr;
+}
+
+function wrapWithBraces(string: string) {
+  return `{${string}}`;
+}
+
+function lastElementIsArray(array: Array<any>) {
+  return Array.isArray(lastElementOf(array));
 }

@@ -83,7 +83,7 @@ export default class Voyager extends React.Component<VoyagerProps> {
   constructor(props) {
     super(props);
     this.store = configureStore();
-    this.unsubscribe = null;
+    this.unsubscribe = ()=>{};
   }
 
   componentDidMount() {
@@ -121,19 +121,18 @@ export default class Voyager extends React.Component<VoyagerProps> {
   }
   
   shouldComponentUpdate(nextProps: VoyagerProps) {
-    if (nextProps.inQueryMode) {
-      // this.unsubscribe = this.store.subscribe(()=> this.props.queryModeListener(this.store.getState()));
+    if (nextProps.inQueryMode && !this.props.inQueryMode) {
+      console.log('VOYA going into QM, currently not in QM');
       this.unsubscribe = this.store.subscribe(()=> {
         const {selected} = this.store.getState();
         const storedSelections = {history:selected.queryModeHistory, currentFields: selected.multipleEdgeIds};
         return this.props.queryModeListener(storedSelections);
       });
-
       //TODO abstract this into getRootFromProps()
       let root = 'TYPE::' + nextProps.introspection["_queryType"].name;
       this.store.dispatch(focusElement(root));
       this.store.dispatch(selectNode(root));
-    } else {
+    } else if(!nextProps.inQueryMode && this.props.inQueryMode){
       this.unsubscribe();
       // store all pending edges in query history before clearing
       this.store.dispatch(storePendingEdges());

@@ -46,7 +46,7 @@ export interface VoyagerProps {
   workerURI?: string;
   loadWorker?: WorkerCallback;
   toggleQueryMode(): undefined;
-  queryModeListener(store: Object): undefined;
+  queryModeHandler(store: Object): undefined;
   inQueryMode: boolean;
   children?: React.ReactNode;
 }
@@ -125,7 +125,7 @@ export default class Voyager extends React.Component<VoyagerProps> {
       this.unsubscribe = this.store.subscribe(()=> {
         const {selected} = this.store.getState();
         const storedSelections = {history:selected.queryModeHistory, currentFields: selected.multipleEdgeIds};
-        return this.props.queryModeListener(storedSelections);
+        return this.props.queryModeHandler(storedSelections);
       });
       //TODO abstract this into getRootFromProps()
       let root = 'TYPE::' + nextProps.introspection["_queryType"].name;

@@ -5,7 +5,7 @@ import { Voyager } from "./components";
 import schema from "../../demo/schema/schema";
 
 export interface VizProps {
-  queryModeListener(): undefined;
+  queryModeHandler(): undefined;
   toggleQueryMode(): undefined; 
   inQueryMode: boolean;
 }
@@ -22,7 +22,7 @@ export default class Viz extends React.Component<VizProps> {
           introspection={schema}
           toggleQueryMode={this.props.toggleQueryMode}
           inQueryMode={this.props.inQueryMode}
-          queryModeListener={this.props.queryModeListener}
+          queryModeHandler={this.props.queryModeHandler}
         />
       </MuiThemeProvider>
     );

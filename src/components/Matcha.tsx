@@ -20,7 +20,7 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
 
     this.toggleQueryMode = this.toggleQueryMode.bind(this);
     this.endQueryMode = this.endQueryMode.bind(this);
-    this.queryModeListener = this.queryModeListener.bind(this);
+    this.queryModeHandler = this.queryModeHandler.bind(this);
   }
 
   toggleQueryMode() {
@@ -32,7 +32,7 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
     this.setState({  inQueryMode: false });
   }
 
-  queryModeListener(connections) {
+  queryModeHandler(connections): void {
     if (this.state) {
       if (!connections.history.length) return;
       let queryStack = connections.history;
@@ -51,7 +51,7 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
         <CollapsibleVisualizer
           toggleQueryMode={this.toggleQueryMode}
           endQueryMode={this.endQueryMode}
-          queryModeListener={this.queryModeListener}
+          queryModeHandler={this.queryModeHandler}
           inQueryMode={this.state.inQueryMode}
         />
         <div id="query-runner">

@@ -23,7 +23,7 @@ export const CollapsibleVisualizer = props => {
     >
       <div id="viz" className="vis-open">
         <Viz
-          queryModeListener={props.queryModeListener}
+          queryModeHandler={props.queryModeHandler}
           toggleQueryMode={props.toggleQueryMode}
           inQueryMode={props.inQueryMode}
         />

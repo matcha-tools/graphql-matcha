@@ -13,9 +13,9 @@ describe("Integration tests", () => {
 
   it("toggles in/out of query mode via button", () => {
     cy.contains("View Schema").click();
-    cy.wait(500);
+    cy.wait(1500);
     cy.get('.vis-control > button').click();
-    cy.wait(250);
+    cy.wait(600);
     cy.get('.vis-control > button').click();
   });
 
@@ -26,7 +26,16 @@ describe("Integration tests", () => {
     cy.get(".active").should("have.text", "Root ");
   });
 
+
   it("clicks allFilms, and populates the query editor", () => {
+    cy.get(":nth-child(1) > .doc-category > :nth-child(2)").click();
+    cy.get('.query-editor').contains('{');
+    cy.contains('.query-editor','{allFilms{edges{node{...fields}}}}');
+  });
+
+
+
+  xit("PRETTY clicks allFilms, and populates the query editor", () => {
     cy.get(":nth-child(1) > .doc-category > :nth-child(2)").click();
     cy.get('.query-editor').contains('{');
     cy.contains('.query-editor','allFilms {');
@@ -51,12 +60,21 @@ describe("Integration tests", () => {
     cy.get('.query-editor textarea')
     .type('{ctrl}a{del}',{delay:50,force:true});
     cy.get('.query-editor textarea')
-    .type('{{}allVehicles{{}vehicles{{}crew}}}',{delay:100,force:true});
+    .type('{{}allVehicles{{}vehicles{{}crew}}}',{delay:50,force:true});
     cy.get('.execute-button').click();
     cy.wait(1200);
   });
 
   it("goes back in to QMode, selects allPlanets > population", ()=>{
+    cy.get('.vis-control > button').click();
+    cy.get(".active").should("have.text", "Root ");
+    cy.get('.doc-category > :nth-child(6)').click();
+    cy.get('.doc-category > :nth-child(7)').click();
+    cy.contains('.query-editor','{allPlanets{edges{node{population}}}}');
+  })
+
+  
+  xit("PRETTY goes back in to QMode, selects allPlanets > population", ()=>{
     cy.get('.vis-control > button').click();
     cy.get(".active").should("have.text", "Root ");
     cy.get('.doc-category > :nth-child(6)').click();
@@ -68,6 +86,11 @@ describe("Integration tests", () => {
   })
 
   it("exits query mode, and keeps the last generated query", ()=>{
+    cy.get('.vis-control > button').click();
+    cy.contains('.query-editor','{allPlanets{edges{node{population}}}}');
+  })
+
+  xit("PRETTY exits query mode, and keeps the last generated query", ()=>{
     cy.get('.vis-control > button').click();
     cy.contains('.query-editor','allPlanets {');
     cy.contains('.query-editor','edges {');

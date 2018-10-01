@@ -17,10 +17,10 @@ export function parseQueryStack(queryArray: Array<any>): string {
 
 function appendFragmentIfNoFields(queryArray: Array<any>): Array<any>{
   const lastEle = lastElementOf(queryArray);
-  if(isEmpty(lastEle))
+  if (isEmpty(lastEle))
     queryArray[queryArray.length-1] = '...fields';
-  else if(typeof lastEle === 'string'){
-    queryArray.push('...fields')
+  else if (typeof lastEle === 'string') {
+    queryArray.push('...fields');
   }
   return queryArray;
 }
@@ -41,9 +41,9 @@ function brace(string: string) {
 
 const areFields = Array.isArray;
 
-function braceRemainingElements (array:Array<any>, queryStr:string): string {
+function braceRemainingElements(array:Array<any>, queryStr:string): string {
   const secondToLastIdx = array.length - 2;
-  for(let i = secondToLastIdx ; i >=0 ; i--){
+  for (let i = secondToLastIdx; i >=0; i--) {
     let element = array[i];
     let nextEle = array[i-1];
     console.log('parsing ', element);

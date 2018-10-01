@@ -230,7 +230,6 @@ export class GraphiQL extends React.Component {
       this.resultComponent
     ]);
     let previousQueryModeQuery = previousProps.queryModeQuery;
-    // console.log('q passed from Matcha')
     if (this.props.queryModeQuery !== "") {
       if (previousQueryModeQuery !== this.props.queryModeQuery) {
         this.setState({ query: this.props.queryModeQuery });

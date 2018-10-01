@@ -74,7 +74,7 @@ function isRelay(field:any): boolean {
   }
 }
 
-function grabArgs(field:any): boolean {
+function getArgs(field:any): boolean {
   if (Object.keys(field.args).length !== 0) {
     return true;
   } else {
@@ -213,21 +213,14 @@ export function rootReducer(previousState = initialState, action) {
       const edgeIds = previousState.selected.multipleEdgeIds;
       const previousQueryHistory = previousState.selected.queryModeHistory;
 
-      let name;
+      let name = action.payload.name ;
       // check for args, if it has arguments append '(args)' to the name
-      if (grabArgs(action.payload)) {
-        name = `${action.payload.name}(args)`;
-      } else {
-        name = action.payload.name;
-      }
+      if (getArgs(action.payload)) name = `${name}(args)`;
       
-      let payload;
+      let payload = [name];
       // check to see if the node has relay, if so append edges and node to the array
-      if (isRelay(action.payload)) {
-        payload = [name, "edges", "node"];
-      } else {
-        payload = [name];
-      }
+      if (isRelay(action.payload)) payload = [name, "edges", "node"];
+
 
       // Push into queryModeHistory if edges have been selected & ensure previous selection was a node
       if (edgeIds.length > 0 && !Array.isArray(previousQueryHistory[previousQueryHistory.length - 1])) {

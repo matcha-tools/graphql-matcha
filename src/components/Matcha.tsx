@@ -2,7 +2,7 @@ import * as React from "react";
 import * as helpers from "../helpers";
 import { GraphiQL } from "../queryRunner/components/GraphiQL";
 import { CollapsibleVisualizer } from "./CollapsibleVisualizer";
-import { parseQueryArray } from "../utils/parsers";
+import { parseQueryStack } from "../utils/parsers";
 
 interface MatchaStateTypes {
   inQueryMode: boolean;
@@ -32,14 +32,14 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
     this.setState({  inQueryMode: false });
   }
 
-  queryModeListener(queryStack) {
+  queryModeListener(connections) {
     if (this.state) {
-      if (!queryStack.history.length) return;
-      let queryArray = queryStack.history;
-      if (queryStack.currentFields && queryStack.currentFields.length) {
-        queryArray = queryArray.concat([queryStack.currentFields]);
+      if (!connections.history.length) return;
+      let queryStack = connections.history;
+      if (connections.currentFields && connections.currentFields.length) {
+        queryStack = queryStack.concat([connections.currentFields]);
       }
-      const queryStr = parseQueryArray(queryArray);
+      const queryStr = parseQueryStack(queryStack);
       //TODO make sure we are checking for diffs 
       if(queryStr) this.setState({queryStr});
     }

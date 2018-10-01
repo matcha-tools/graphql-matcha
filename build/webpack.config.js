@@ -11,6 +11,9 @@ module.exports = {
     performance: {
       hints: false
     },
+    node: {
+      fs: 'empty'
+    },
     resolve: {
       extensions: [".ts", ".tsx", ".mjs", ".js", ".json", ".css", ".svg"]
     },

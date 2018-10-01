@@ -334,7 +334,7 @@ export function rootReducer(previousState = initialState, action) {
               multipleEdgeIds: elementBeforeEdges
             }
           }
-        } else if (elementBeforeEdges === 'node') {
+        } else {
           // if a node, create a slice of the queryModeHistory retaining up to that node
           const newQueryHistory = previousHistory.slice(0, previousHistory.length - 3);
           return {
@@ -344,50 +344,7 @@ export function rootReducer(previousState = initialState, action) {
               queryModeHistory: newQueryHistory,
             }
           }
-        }
-
-        // Still inside of checking last element as a node, check to see if the element before the edges is not a node
-        if (elementBeforeEdges !== 'node') {
-          // have to check if the previous element before edges is a node
-          const elementBeforeType = previousHistory[previousHistory.length - 5];
-
-          // if an array, store that array as your current edgeId's and update queryHistory
-          if (Array.isArray(elementBeforeType)) {
-            const newQueryHistory = previousHistory.slice(0, previousHistory.length - 5);
-            return {
-              ...previousState,
-              selected: {
-                ...previousState.selected,
-                queryModeHistory: newQueryHistory,
-                multipleEdgeIds: elementBeforeType
-              }
-            }
-          } else { 
-            // this else checks to see if the element before TYPE is a node
-            const newQueryHistory = previousHistory.slice(0, previousHistory.length - 3);
-            // need to backtrack by removing the node, edges, and type
-            // slice of array up to that point should be returned in state
-            return {
-              ...previousState,
-              selected: {
-                ...previousState.selected,
-                queryModeHistory: newQueryHistory,
-              }
-            }
-          }
-        } else { 
-          // this else is checking to see if the element before EDGES is a node 
-          const newQueryHistory = previousHistory.slice(0, previousHistory.length - 4);
-          // need to backtrack by removing the node, edges, and type
-          // slice of array up to that point should be returned in state
-          return {
-            ...previousState,
-            selected: {
-              ...previousState.selected,
-              queryModeHistory: newQueryHistory,
-            }
-          }
-        }
+        } 
       } else {
       // last element is not a node, should only be a type
       const secondToLastElement = previousHistory[previousHistory.length - 2];

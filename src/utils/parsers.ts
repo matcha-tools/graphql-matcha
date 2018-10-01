@@ -1,6 +1,5 @@
 //TODO adds an extra
 import { forEachRight, isEmpty, last as lastElementOf } from "lodash";
-import { format } from "prettier";
 
 export function parseQueryArray(queryArray: Array<any>) {
   if (queryArray.length === 0) return;
@@ -20,9 +19,11 @@ export function parseQueryArray(queryArray: Array<any>) {
       ? wrapWithBraces(element.join(" ") + queryString)
       : wrapWithBraces(element + queryString);
   });
-
-  const formattedQstr = format(queryString, { parser: "graphql" });
-  return formattedQstr;
+  //TODO use prettier for production, not dev
+  // const prettier = require("prettier/standalone");
+  // const plugins = [require("prettier/parser-graphql")];
+  // const formattedQstr = prettier.format(queryString, { parser: "graphql", plugins });
+  return queryString;
 }
 
 function wrapWithBraces(string: string) {

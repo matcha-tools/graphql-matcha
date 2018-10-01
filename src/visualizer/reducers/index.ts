@@ -82,7 +82,7 @@ function grabArgs(field:any): boolean {
   }
 }
 
-function verifyStateChange(prevHistory, lastElement, length) {
+function verifyStateChange(prevHistory: any, lastElement: any, length: number): { newElement: string, newLength: number } {
   let newLength = length;
   let indexHelper;
   let newElement;

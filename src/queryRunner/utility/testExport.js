@@ -24,8 +24,8 @@ export function createTestFileContents(its){
 }
 
 function wrapIts(its){
-  const mochaWrap = 
-  `const request = require('request');
+  const mochaWrap = `
+  const request = require('request');
   const integrationServer = require("./integrationServer");
   const chai = require('chai');
   

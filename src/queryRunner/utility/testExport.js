@@ -13,9 +13,6 @@ export function fillTestTemplate(query, response) {
   return filledTemplate;
 }
 
-
-
-
 export function createTestFileContents(its){
   const prettier = require("prettier/standalone");
   const plugins = [require("prettier/parser-flow")];
@@ -51,8 +48,6 @@ function wrapIts(its){
   });`
   return mochaWrap;
 }
-
-
 
 export function downloadJSFile(fname,contents){
   const fileContents = [contents];

@@ -1,4 +1,3 @@
-//TODO adds an extra
 import { isEmpty, last as lastElementOf } from "lodash";
 
 

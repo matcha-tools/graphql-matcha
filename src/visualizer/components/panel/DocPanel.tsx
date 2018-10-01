@@ -3,7 +3,7 @@ import * as React from 'react';
 import './DocPanel.css';
 
 import TypeDoc from '../doc-explorer/TypeDoc';
-import TypeInfoPopover from './TypeInfoPopover';
+// import TypeInfoPopover from './TypeInfoPopover';
 
 export interface DocPanelProps {
   header: React.ReactChild;
@@ -23,7 +23,7 @@ export default class DocPanel extends React.Component<DocPanelProps> {
           />
           
         </div>
-        <TypeInfoPopover />
+        {/* <TypeInfoPopover /> */}
       </div>
     );
   }

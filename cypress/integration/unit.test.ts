@@ -39,7 +39,7 @@ describe("Unit tests", () => {
       expect(result).to.equal(format(expectedString, { parser: "graphql" }));
     });
 
-    it("should properly parse out a Connection after adding fields", () => {
+    xit("should properly parse out a Connection after adding fields", () => {
       let array = [
         "allFilms",
         "edges",

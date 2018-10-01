@@ -45,12 +45,11 @@ function braceRemainingElements(array:Array<any>, queryStr:string): string {
   for (let i = secondToLastIdx; i >=0; i--) {
     let element = array[i];
     let nextEle = array[i-1];
-    console.log('parsing ', element);
     queryStr = areFields(element)
     ? brace(element.join(" ") + queryStr)
     : !areFields(nextEle)
       ? brace(element + queryStr)
-      : element + queryStr;
+      : ' ' + element + queryStr;
   }
   return queryStr;
 }

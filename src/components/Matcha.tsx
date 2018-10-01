@@ -39,7 +39,6 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
       if (queryStack.currentFields && queryStack.currentFields.length) {
         queryArray = queryArray.concat([queryStack.currentFields]);
       }
-      console.log('QM LISTENER CALLED, stack-->', queryArray);
       const queryStr = parseQueryArray(queryArray);
       //TODO make sure we are checking for diffs 
       if(queryStr) this.setState({queryStr});

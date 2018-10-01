@@ -736,7 +736,6 @@ export class GraphiQL extends React.Component {
       this.state.operations,
       this.state.schema
     );
-    console.log('HANDLING EDITS TO QUERY');
     this.setState({
       query: value,
       ...queryFacts
@@ -954,7 +953,6 @@ export class GraphiQL extends React.Component {
       }
 
       didMove = true;
-      console.log("TESTING ===>", ReactDOM);
       const editorBar = ReactDOM.findDOMNode(this.editorBarComponent);
       const topSize = moveEvent.clientY - getTop(editorBar) - offset;
       const bottomSize = editorBar.clientHeight - topSize;

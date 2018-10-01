@@ -122,7 +122,6 @@ export default class Voyager extends React.Component<VoyagerProps> {
   
   shouldComponentUpdate(nextProps: VoyagerProps) {
     if (nextProps.inQueryMode && !this.props.inQueryMode) {
-      console.log('VOYA going into QM, currently not in QM');
       this.unsubscribe = this.store.subscribe(()=> {
         const {selected} = this.store.getState();
         const storedSelections = {history:selected.queryModeHistory, currentFields: selected.multipleEdgeIds};

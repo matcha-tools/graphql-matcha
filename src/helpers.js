@@ -1,14 +1,14 @@
-/**
- * This GraphiQL example illustrates how to use some of GraphiQL's props
- * in order to enable reading and updating the URL parameters, making
- * link sharing of queries a little bit easier.
- *
- * This is only one example of this kind of feature, GraphiQL exposes
- * various React params to enable interesting integrations.
- */
+// /**
+//  * This GraphiQL example illustrates how to use some of GraphiQL's props
+//  * in order to enable reading and updating the URL parameters, making
+//  * link sharing of queries a little bit easier.
+//  *
+//  * This is only one example of this kind of feature, GraphiQL exposes
+//  * various React params to enable interesting integrations.
+//  */
 
 // Parse the search string to get url parameters.
-import { forEachRight } from 'lodash';
+
 const search = window.location.search;
 export const parameters = {};
 search
@@ -96,25 +96,5 @@ export function graphQLFetcher(graphQLParams) {
     });
   }
 
-
-  /**
-   * Takes in queryArray generated from query mode and parses it into a string that can be processed as a query
-   * @param {array} queryArray
-   * @returns {string} queryString
-   */
-
-//TODO readability
-  export function parseQueryArray(queryArray) {
-    let queryString = "";
-    const wrap = (string) => "{" + string + "}";
-    (queryArray[queryArray.length - 1].length === 0) ? (queryString = wrap("id")) : (queryString = wrap(queryArray[queryArray.length - 1].join(" ")));
-    let newQueryArray = queryArray.slice(0, queryArray.length - 1);
-    forEachRight(newQueryArray, (current) => {
-      (Array.isArray(current)) ? (queryString = wrap(current.join(" ") + queryString)) : (queryString = wrap(current + queryString));
-    });
-    return (queryString)
-  }
-
- 
   
  

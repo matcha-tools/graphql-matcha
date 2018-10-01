@@ -193,7 +193,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
       if (props.svg) disabled = false;
       return (
         <div className="vis-control">
-          <button disabled={disabled} type="button" onClick={this.props.toggleQueryMode}>
+          <button disabled={disabled} type="button" onClick={props.toggleQueryMode}>
             Draft Query
         </button>
         </div>

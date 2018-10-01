@@ -4,10 +4,11 @@ describe("Integration tests", () => {
     cy.visit("http://localhost:9090");
   });
 
-  xit("disables the Draft button until the schema has generated", () => {
+  it("disables the Draft button until the schema has generated", () => {
     cy.contains("View Schema").click();
     cy.get('.vis-control > button').should('be.disabled');
     cy.wait(1500);
+    cy.get('.vis-control > button').should('be.enabled');
     cy.contains("Hide Schema").click();
   })
 

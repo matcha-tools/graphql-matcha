@@ -7,7 +7,7 @@ import { getSelectedType, getPreviousType } from '../../selectors';
 import { selectPreviousType, clearSelection, focusElement, previousNodeAndEdges } from '../../actions/';
 import FocusTypeButton from './FocusTypeButton';
 
-import Logo from '../../../loader/Logo.js';
+import GraphQLLogo from './GraphQLLogo';
 
 interface DocNavigationProps {
   selectedType: any;
@@ -54,7 +54,7 @@ class DocNavigation extends React.Component<DocNavigationProps> {
 
       if (this.props.inQueryMode) {
         display = (
-          <Logo toggleQueryMode={this.props.toggleQueryMode}/>
+          <GraphQLLogo toggleQueryMode={this.props.toggleQueryMode}/>
         )
       }
 

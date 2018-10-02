@@ -8,7 +8,7 @@ export default class Logo extends React.Component {
   render() {
     return (
       <div className="loader" type="button" onClick={this.props.toggleQueryMode}>
-      <div  className="hexContainer">
+      <div className="hexContainer">
           <div className="hex">
               <div className="hex inner"></div>
           </div>

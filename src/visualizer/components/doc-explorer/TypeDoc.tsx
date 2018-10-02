@@ -17,7 +17,7 @@ import Description from './Description';
 import TypeLink from './TypeLink';
 import WrappedTypeName from './WrappedTypeName';
 import Argument from './Argument';
-import { isScalarType } from '../../introspection/utils';
+import { isScalarType, getNameFromFieldId } from '../../introspection/utils';
 
 interface TypeDocProps {
   selectedType: any;
@@ -123,19 +123,12 @@ class TypeDoc extends React.Component<TypeDocProps> {
         {_.map(type.fields, field => {
           let highlight = field.id === selectedId;
           if(this.props.inQueryMode && field.id && this.props.selectedFields){
-            console.log('selected fields ->>', this.props.selectedFields);
-            //console.log('selected id slice -->', selectedId.slice(field.id.lastIndexOf('::')+2));
-            highlight = _.includes(this.props.selectedFields, field.id.slice(field.id.lastIndexOf('::')+2));
+            highlight = _.includes(this.props.selectedFields, getNameFromFieldId(field.id));
           }
           
           let props: any = {
             key: field.name,
             className: classNames('item', {
-
-                //THIS is what sets the highlights. 
-              //so, when in query mode, we should be checking not selectedId, but the entire set of storedEdges
-              //okay, so selectedFields does not have Ids, it has names.
-              
               '-selected': highlight,
               '-with-args': !_.isEmpty(field.args),
             }),

@@ -14,7 +14,9 @@ export function stringifyWrappers(wrappers) {
     ['', ''],
   );
 }
-
+export function getNameFromFieldId(fieldId: string): string{
+  return fieldId.slice(fieldId.lastIndexOf('::')+2);
+}
 export function buildId(...parts) {
   return parts.join('::');
 }

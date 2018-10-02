@@ -124,7 +124,7 @@ export default class Voyager extends React.Component<VoyagerProps> {
     if (nextProps.inQueryMode && !this.props.inQueryMode) {
       this.unsubscribe = this.store.subscribe(() => {
         const { selected } = this.store.getState();
-        const storedSelections = { history:selected.queryModeHistory, currentFields: selected.multipleEdgeIds };
+        const storedSelections = { history:selected.queryModeHistory, currentFields: selected.multipleEdgeIds, currentNodeId: selected.currentNodeId};
         return this.props.queryModeHandler(storedSelections);
       });
       //TODO abstract this into getRootFromProps()

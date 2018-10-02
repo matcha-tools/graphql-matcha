@@ -4,12 +4,12 @@ import Viz from "../visualizer";
 
 export const CollapsibleVisualizer = props => {
   const closedTrigger = (
-    <div className="trigger">
+    <div className="trigger-open">
       <span>View Schema</span>
     </div>
   );
   const openTrigger = (
-    <div className="trigger">
+    <div className="trigger-close">
       <span>Hide Schema</span>
     </div>
   );

@@ -31,6 +31,7 @@ main {
   display:flex;
 }
 .vis-control button{
+ color: red; 
  display:flex;
  flex:1;
  padding-bottom: 3%;
@@ -38,10 +39,41 @@ main {
  justify-content: center;
 }
 
+.trigger-open {
+  border-bottom: 1px solid black;
+}
+
+.trigger-close {
+  background:darkslategray;
+  border-bottom: 1px solid white;
+}
+
 .Collapsible {
   background-color: black;
   color:white;
   text-align:center;
+}
+.typelist-item {
+  border-bottom: 1px solid #e0e0e0;
+  background: darkslategray;
+}
+
+.doc-navigation {
+  background: darkslategray;
+}
+
+.scroll-area {
+  background: darkslategray;
+}
+
+
+/* Styling for when CodeMirror is disabled */
+.input-disabled {
+  background-color:red;
+  border:1px solid rgb(225, 0, 152);
+  padding:2px 1px;
+  opacity: .7;
+  z-index: 9;
 }
 
 
@@ -115,8 +147,9 @@ main {
     from(#f7f7f7),
     to(#e2e2e2)
   );
-  background: linear-gradient(#f7f7f7, #e2e2e2);
+  background: darkslategray;
   border-bottom: 1px solid #d0d0d0;
+  border-top: 1px solid #d0d0d0;
   cursor: default;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -248,10 +281,10 @@ main {
 }
 
 .graphiql-container .variable-editor-title {
-  background: #eeeeee;
+  background: darkslategray;
   border-bottom: 1px solid #d6d6d6;
   border-top: 1px solid #e0e0e0;
-  color: #777;
+  color: white;
   font-variant: small-caps;
   font-weight: bold;
   letter-spacing: 1px;
@@ -300,11 +333,11 @@ main {
 
 /* No `.graphiql-container` here so themes can overwrite */
 .result-window .CodeMirror {
-  background: #f6f7f8;
+  background: black;
 }
 
 .graphiql-container .result-window .CodeMirror-gutters {
-  background-color: #eeeeee;
+  background-color: darkslategray;
   border-color: #e0e0e0;
   cursor: col-resize;
 }
@@ -774,8 +807,9 @@ div.CodeMirror-lint-tooltip > * + * {
 /* GUTTER */
 
 .CodeMirror-gutters {
+  background: darkslategray;
   border-right: 1px solid #ddd;
-  background-color: #f7f7f7;
+  background-color: darkslategray;
   white-space: nowrap;
 }
 .CodeMirror-linenumbers {
@@ -798,7 +832,7 @@ div.CodeMirror-lint-tooltip > * + * {
 /* CURSOR */
 
 .CodeMirror .CodeMirror-cursor {
-  border-left: 1px solid black;
+  border-left: 1px solid white;
 }
 /* Shown when moving in bi-directional text */
 .CodeMirror div.CodeMirror-secondarycursor {
@@ -973,7 +1007,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
    the editor. You probably shouldn't touch them. */
 
 .CodeMirror {
-  background: white;
+  background: black;
   overflow: hidden;
   position: relative;
 }
@@ -1027,6 +1061,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 .CodeMirror-gutters {
+  background: darkslategray;
   min-height: 100%;
   position: absolute;
   left: 0;
@@ -1252,11 +1287,15 @@ span.CodeMirror-selectedtext {
 
 .graphiql-container .doc-explorer-title-bar,
 .graphiql-container .history-title-bar {
+  border-top: 1px solid #d3d6db;
+  border-right: 1px solid #d3d6db;
+  color: white;
+  background: darkslategray;
   cursor: default;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  height: 34px;
+  height: 35px;
   line-height: 14px;
   padding: 8px 8px 5px;
   position: relative;
@@ -1316,8 +1355,10 @@ span.CodeMirror-selectedtext {
 
 .graphiql-container .doc-explorer-contents,
 .graphiql-container .history-contents {
-  background-color: #ffffff;
+  background: darkslategray;
+  background-color:darkslategray;
   border-top: 1px solid #d6d6d6;
+  border-right: 1px solid white;
   bottom: 0;
   left: 0;
   overflow-y: auto;
@@ -1325,6 +1366,8 @@ span.CodeMirror-selectedtext {
   position: absolute;
   right: 0;
   top: 47px;
+  color:white;
+  margin-top: 1px;
 }
 
 .graphiql-container .doc-explorer-contents {
@@ -1554,6 +1597,7 @@ span.CodeMirror-selectedtext {
 }
 .CodeMirror-foldgutter {
   width: 0.7em;
+  background:darkslategray;
 }
 .CodeMirror-foldgutter-open,
 .CodeMirror-foldgutter-folded {
@@ -1569,6 +1613,22 @@ span.CodeMirror-selectedtext {
 .graphiql-container .history-contents input {
   font-family: "Consolas", "Inconsolata", "Droid Sans Mono", "Monaco", monospace;
   padding: 0;
+}
+
+.graphiql-container .history-contents-buttons {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+  padding: 8px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .graphiql-container .history-contents p {

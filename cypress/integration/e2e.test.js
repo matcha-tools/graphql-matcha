@@ -99,7 +99,7 @@ describe("Integration tests", () => {
   });
 
   it("navigates to residentConnection, selects name, birth year", () => {
-    cy.get(".doc-category > :nth-child(11)");
+    cy.get(".doc-category > :nth-child(11)").click();
     cy.get(".doc-category > :nth-child(2)").click();
     cy.get(".doc-category > :nth-child(2)").should('have.class','-selected');
     cy.get(".doc-category > :nth-child(3)").click();
@@ -119,7 +119,7 @@ describe("Integration tests", () => {
 
   it("exits query mode, and keeps the last generated query", () => {
     cy.get(".vis-control > button").click();
-    cy.contains(".query-editor", "{allPlanets{edges{node{climates}}}}");
+    cy.contains(".query-editor", "{allPlanets{edges{node{climates name}}}}");
   });
 
   xit("PRETTY exits query mode, and keeps the last generated query", () => {

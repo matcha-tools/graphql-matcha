@@ -4,7 +4,7 @@
     "emitDecoratorMetadata": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "target": "esnext",
+    "target": "es5",
     "noImplicitAny": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -28,7 +28,7 @@
     "./src/**/*.tsx",
     "./manual-types.d.ts",
     "demo/**/*.tsx",
-    "src/components/CollapsibleVisualizer.jsx",
-    "src/components/Matcha.tsx"
+    "src/components/CollapsibleVisualizer.tsx",
+    "src/components/Matcha.tsx", "cypress/integration/e2e.test.js"
   ]
 }

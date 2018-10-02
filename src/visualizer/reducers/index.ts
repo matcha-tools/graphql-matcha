@@ -57,31 +57,6 @@ const initialState: StateInterface = {
   errorMessage: null,
 };
 
-function pushHistory(currentTypeId: string, previousState): string[] {
-  let previousTypesIds = previousState.selected.previousTypesIds;
-  let previousTypeId = previousState.selected.currentNodeId;
-
-  if (previousTypeId === null || previousTypeId === currentTypeId) return previousTypesIds;
-
-  if (_.last(previousTypesIds) !== previousTypeId) return [...previousTypesIds, previousTypeId];
-}
-
-function isRelay(field:any): boolean {
-  if (field.relayType) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-function grabArgs(field:any): boolean {
-  if (Object.keys(field.args).length !== 0) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 export function rootReducer(previousState = initialState, action) {
   const { type } = action;
   switch (type) {
@@ -213,21 +188,14 @@ export function rootReducer(previousState = initialState, action) {
       const edgeIds = previousState.selected.multipleEdgeIds;
       const previousQueryHistory = previousState.selected.queryModeHistory;
 
-      let name;
+      let name = action.payload.name ;
       // check for args, if it has arguments append '(args)' to the name
-      if (grabArgs(action.payload)) {
-        name = `${action.payload.name}(args)`;
-      } else {
-        name = action.payload.name;
-      }
+      if (getArgs(action.payload)) name = `${name}(args)`;
       
-      let payload;
+      let payload = [name];
       // check to see if the node has relay, if so append edges and node to the array
-      if (isRelay(action.payload)) {
-        payload = [name, "edges", "node"];
-      } else {
-        payload = [name];
-      }
+      if (isRelay(action.payload)) payload = [name, "edges", "node"];
+
 
       // Push into queryModeHistory if edges have been selected & ensure previous selection was a node
       if (edgeIds.length > 0 && !Array.isArray(previousQueryHistory[previousQueryHistory.length - 1])) {
@@ -265,7 +233,7 @@ export function rootReducer(previousState = initialState, action) {
         }
       } else {
         // remove reselected edges
-        _.pull(previousEdgeIds, action.payload.name);
+        _.pull(previousEdgeIds, action.payload);
         return {  
           ...previousState,
           selected: {
@@ -299,124 +267,86 @@ export function rootReducer(previousState = initialState, action) {
     case ActionTypes.PREVIOUS_NODE_AND_EDGES:
       // if on query mode, revert back to previous node/edges
       const previousHistory = previousState.selected.queryModeHistory.slice();
-
-      // get the last element of the array
+      const length  = previousHistory.length;
       const lastElement = _.last(previousHistory);
 
-      // check to see if the last element in history is a node
-      if (lastElement === 'node') {
-        // First check to see if length of array is 3, this will usually indicate start of query mode. 
-        if (previousHistory.length === 3) {
-          // reset to initial values for query mode
-          return {
-            ...previousState,
-            selected: {
-              ...previousState.selected,
-              queryModeHistory: [],
-              multipleEdgeIds: [],
-            }
-          }
-        }
-
-        // If length is greater than 3, multiple entries performed, then the previous element should contain edges and type.
-        // skip those elements and go straight to the element before it
-        const elementBeforeEdges = previousHistory[previousHistory.length - 4];
-
-        // check to see if that element is an array of fields, node, or type
-        if (Array.isArray(elementBeforeEdges)) {
-          // if it is, store that array as your current edgeId's
-          // return a slice of queryModeHistory up to the index of that element
-          const newQueryHistory = previousHistory.slice(0, previousHistory.length - 4);
-          return {
-            ...previousState,
-            selected: {
-              ...previousState.selected,
-              queryModeHistory: newQueryHistory,
-              multipleEdgeIds: elementBeforeEdges
-            }
-          }
-        } else if (elementBeforeEdges === 'node') {
-          // if a node, create a slice of the queryModeHistory retaining up to that node
-          const newQueryHistory = previousHistory.slice(0, previousHistory.length - 3);
-          return {
-            ...previousState,
-            selected: {
-              ...previousState.selected,
-              queryModeHistory: newQueryHistory,
-            }
-          }
-        }
-
-        // Still inside of checking last element as a node, check to see if the element before the edges is not a node
-        if (elementBeforeEdges !== 'node') {
-          // have to check if the previous element before edges is a node
-          const elementBeforeType = previousHistory[previousHistory.length - 5];
-
-          // if an array, store that array as your current edgeId's and update queryHistory
-          if (Array.isArray(elementBeforeType)) {
-            const newQueryHistory = previousHistory.slice(0, previousHistory.length - 5);
-            return {
-              ...previousState,
-              selected: {
-                ...previousState.selected,
-                queryModeHistory: newQueryHistory,
-                multipleEdgeIds: elementBeforeType
-              }
-            }
-          } else { 
-            // this else checks to see if the element before TYPE is a node
-            const newQueryHistory = previousHistory.slice(0, previousHistory.length - 3);
-            // need to backtrack by removing the node, edges, and type
-            // slice of array up to that point should be returned in state
-            return {
-              ...previousState,
-              selected: {
-                ...previousState.selected,
-                queryModeHistory: newQueryHistory,
-              }
-            }
-          }
-        } else { 
-          // this else is checking to see if the element before EDGES is a node 
-          const newQueryHistory = previousHistory.slice(0, previousHistory.length - 4);
-          // need to backtrack by removing the node, edges, and type
-          // slice of array up to that point should be returned in state
-          return {
-            ...previousState,
-            selected: {
-              ...previousState.selected,
-              queryModeHistory: newQueryHistory,
-            }
-          }
-        }
-      } else {
-      // last element is not a node, should only be a type
-      const secondToLastElement = previousHistory[previousHistory.length - 2];
-      
-      // check second to last element to ensure it's not an array
-      if (Array.isArray(secondToLastElement)) {
-        // if it is an array, need to store array in multiple edges and update history up to that point
+      // first check to see if length of array is 3 and the last element is a node, this will usually indicate start of query mode. 
+      if (lastElement === 'node' && length === 3) {
+        // reset to initial values for query mode
         return {
           ...previousState,
           selected: {
             ...previousState.selected,
-            queryModeHistory: [...previousHistory.slice(0, previousHistory.length - 2)],
-            multipleEdgeIds: secondToLastElement,
+            queryModeHistory: [],
+            multipleEdgeIds: [],
           }
         }
       } else {
-        // if the second to last element is not an array, then update history up to that point
+        // revert to previous node+edges
+        const { newElement, newLength } = revertQueryHistory(previousHistory,lastElement, length);
         return {
           ...previousState,
           selected: {
             ...previousState.selected,
-            queryModeHistory: [...previousHistory.slice(0, previousHistory.length - 1)],
-            multipleEdgeIds: []
+            queryModeHistory: previousHistory.slice(0, newLength),
+            multipleEdgeIds: newElement
           }
         }
       }
-    }
     default:
       return previousState;
   }
+}
+
+
+
+// ***** HELPERS ***** //
+function getArgs(field:any): boolean {
+  if (Object.keys(field.args).length !== 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function pushHistory(currentTypeId: string, previousState): string[] {
+  let previousTypesIds = previousState.selected.previousTypesIds;
+  let previousTypeId = previousState.selected.currentNodeId;
+
+  if (previousTypeId === null || previousTypeId === currentTypeId) return previousTypesIds;
+
+  if (_.last(previousTypesIds) !== previousTypeId) return [...previousTypesIds, previousTypeId];
+}
+
+function isRelay(field:any): boolean {
+  if (field.relayType) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function revertQueryHistory(prevHistory: any, lastElement: any, length: number): { newElement: string, newLength: number } {
+  let newLength = length;
+  // If not a node, value is a type. Check the element before the type.
+  let indexHelper = 2;
+  let newElement = prevHistory[newLength - indexHelper];
+
+  // Set value accordingly to help locate the element in the array that needs to be verified.
+  if(lastElement === 'node'){
+     // Value set to 4 to check the element before the original node name, edges, and node at the end of the array.
+    indexHelper = 4;
+     newElement = prevHistory[newLength - indexHelper];
+  }
+   
+    
+  
+  // Check if element is an array of previously selected fields
+  Array.isArray(newElement) 
+    // if so, array will be stored as the new state's multipleEdgeIds and should no longer be in queryModeHistory. 
+    ? newLength -= indexHelper 
+    // else, intialize to empty array and navigate to that element in queryModeHistory
+    : (newLength -= indexHelper - 1, newElement = []);
+
+  return { newElement, newLength };
 }

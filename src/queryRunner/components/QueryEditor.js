@@ -43,7 +43,6 @@ export class QueryEditor extends React.Component {
 
   constructor(props) {
     super();
-
     // Keep a cached version of the value, this cache will be updated when the
     // editor is updated, which can later be used to protect the editor from
     // unnecessary updates during the update lifecycle.
@@ -82,7 +81,7 @@ export class QueryEditor extends React.Component {
       autoCloseBrackets: true,
       matchBrackets: true,
       showCursorWhenSelecting: true,
-      readOnly: this.props.readOnly ? 'nocursor' : false,
+      readOnly: this.props.readOnly ? true : false,
       foldGutter: {
         minFoldSize: 4,
       },
@@ -94,14 +93,15 @@ export class QueryEditor extends React.Component {
         closeOnUnfocus: false,
         completeSingle: false,
       },
+      //TODO voya
       info: {
         schema: this.props.schema,
         renderDescription: text => md.render(text),
-        onClick: reference => this.props.onClickReference(reference),
+        // onClick: reference => this.props.onClickReference(reference),
       },
       jump: {
         schema: this.props.schema,
-        onClick: reference => this.props.onClickReference(reference),
+        // onClick: reference => this.props.onClickReference(reference),
       },
       gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
       extraKeys: {
@@ -146,6 +146,7 @@ export class QueryEditor extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    this.editor.setOption('readOnly', this.props.readOnly);
     const CodeMirror = require('codemirror');
 
     // Ensure the changes caused by this update are not interpretted as

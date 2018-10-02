@@ -11,6 +11,9 @@ module.exports = {
     performance: {
       hints: false
     },
+    node: {
+      fs: 'empty'
+    },
     resolve: {
       extensions: [".ts", ".tsx", ".mjs", ".js", ".json", ".css", ".svg"]
     },
@@ -22,9 +25,9 @@ module.exports = {
       stats: "errors-only"
     },
     output: {
-      path: root("demo-dist"),
-      filename: "[name].js",
-      //sourceMapFilename: "[name].[id].map"
+      path: root("build"),
+      filename: "bundle.js",
+      sourceMapFilename: "[name].[id].map"
     },
     module: {
       rules: [

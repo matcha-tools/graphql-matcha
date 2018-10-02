@@ -1,5 +1,5 @@
 import Collapsible from "react-collapsible";
-import React from "react";
+import * as React from "react";
 import Viz from "../visualizer";
 
 export const CollapsibleVisualizer = props => {
@@ -23,7 +23,7 @@ export const CollapsibleVisualizer = props => {
     >
       <div id="viz" className="vis-open">
         <Viz
-          queryModeListener={props.queryModeListener}
+          queryModeHandler={props.queryModeHandler}
           toggleQueryMode={props.toggleQueryMode}
           inQueryMode={props.inQueryMode}
         />

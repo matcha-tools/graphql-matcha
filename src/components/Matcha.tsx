@@ -1,16 +1,16 @@
 import * as React from "react";
 import * as helpers from "../helpers";
 import { GraphiQL } from "../queryRunner/components/GraphiQL";
-import { CollapsibleVisualizer } from "./CollapsibleVisualizer.jsx";
-import { parseQueryArray} from "../utils/parsers"
+import { CollapsibleVisualizer } from "./CollapsibleVisualizer";
+import { parseQueryStack } from "../utils/parsers";
+import { debounce } from "lodash";
 
 interface MatchaStateTypes {
   inQueryMode: boolean;
   queryStr: string;
 }
 
-
-export default class Matcha extends React.Component<null,MatchaStateTypes>{
+export default class Matcha extends React.Component<null, MatchaStateTypes> {
 
   constructor(props) {
     super(props);
@@ -21,28 +21,30 @@ export default class Matcha extends React.Component<null,MatchaStateTypes>{
 
     this.toggleQueryMode = this.toggleQueryMode.bind(this);
     this.endQueryMode = this.endQueryMode.bind(this);
+    this.queryModeHandler = this.queryModeHandler.bind(this);
   }
 
   toggleQueryMode() {
     const inQueryMode = !this.state.inQueryMode;
-    this.setState({ inQueryMode });
+    const delayedSetState = debounce(() => this.setState({ inQueryMode }), 50);
+    delayedSetState();
   }
 
   endQueryMode() {
-    this.setState({ inQueryMode: false });
+    this.setState({  inQueryMode: false });
   }
-  
 
-  queryModeListener(queryStack) {
-    //queryStack.history --> the stack of nodes the person wants
-    //".currentFields --> the selected edges of the current 
-    let queryArray = queryStack.history;
-    if(queryStack.currentFields && queryStack.currentFields.length){
-       queryArray = queryStack.history.concat([queryStack.currentFields]);
+  queryModeHandler(connections): void {
+    if (this.state) {
+      if (!connections.history.length) return;
+      let queryStack = connections.history;
+      if (connections.currentFields && connections.currentFields.length) {
+        queryStack = queryStack.concat([connections.currentFields]);
+      }
+      const queryStr = parseQueryStack(queryStack);
+      //TODO make sure we are checking for diffs 
+      if(queryStr) this.setState({queryStr});
     }
-    const queryStr = parseQueryArray(queryArray);
-    console.log('matcha', queryStr);
-    
   }
 
   render() {
@@ -51,13 +53,12 @@ export default class Matcha extends React.Component<null,MatchaStateTypes>{
         <CollapsibleVisualizer
           toggleQueryMode={this.toggleQueryMode}
           endQueryMode={this.endQueryMode}
-          queryModeListener={this.queryModeListener}
+          queryModeHandler={this.queryModeHandler}
           inQueryMode={this.state.inQueryMode}
         />
         <div id="query-runner">
           <GraphiQL
             fetcher={helpers.graphQLFetcher}
-            query={helpers.parameters.query}
             variables={helpers.parameters.variables}
             operationName={helpers.parameters.operationName}
             onEditQuery={helpers.onEditQuery}

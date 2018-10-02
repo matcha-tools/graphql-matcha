@@ -1,4 +1,5 @@
-import { isEmpty, last as lastElementOf } from "lodash";
+import { isEmpty, last as lastElementOf, map } from "lodash";
+import {getNameFromFieldId} from "../visualizer/introspection/utils"
 
 
 export function parseQueryStack(queryArray: Array<any>): string {
@@ -24,18 +25,20 @@ function appendFragmentIfNoFields(queryArray: Array<any>): Array<any>{
   return queryArray;
 }
 
+function brace(string: string) {
+  return `{${string}}`;
+}
+
 function braceLastElementOf(array: Array<any>): string{
   const lastEle = lastElementOf(array);
   let result = '';
-  if (areFields(lastEle))
-    result = brace(lastEle.join(" "));
+  if (areFields(lastEle)){
+    const fieldNames = map(lastEle,getNameFromFieldId);
+    result = brace(fieldNames.join(" "));
+  }
   else
     result = brace(lastEle);
   return result;
-}
-
-function brace(string: string) {
-  return `{${string}}`;
 }
 
 const areFields = Array.isArray;
@@ -45,8 +48,9 @@ function braceRemainingElements(array:Array<any>, queryStr:string): string {
   for (let i = secondToLastIdx; i >=0; i--) {
     let element = array[i];
     let nextEle = array[i-1];
+    let fields = [];
     queryStr = areFields(element)
-    ? brace(element.join(" ") + queryStr)
+    ? (fields = map(element, getNameFromFieldId), brace(fields.join(" ") + queryStr))
     : !areFields(nextEle)
       ? brace(element + queryStr)
       : ' ' + element + queryStr;

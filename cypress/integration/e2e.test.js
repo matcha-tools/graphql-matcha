@@ -8,6 +8,7 @@ describe("Integration tests", () => {
     cy.get(".vis-control > button").should("be.disabled");
     cy.wait(1500);
     cy.get(".vis-control > button").should("be.enabled");
+    cy.wait(500);
     cy.contains("Hide Schema").click();
   });
 
@@ -16,7 +17,7 @@ describe("Integration tests", () => {
     cy.wait(1000);
     cy.get(".vis-control > button").click();
     cy.wait(600);
-    cy.get(".vis-control > button").click();
+    cy.get('.loader').click();
   });
 
   it("selects starship node, enters draft mode to focus on ROOT", () => {
@@ -43,7 +44,7 @@ describe("Integration tests", () => {
 
   it("clicks film field, exits query mode, runs the query with result", () => {
     cy.get(":nth-child(1) > .doc-category > :nth-child(2)").click();
-    cy.get(".vis-control > button").click();
+    cy.get('.loader').click();
     cy.get(".execute-button").click();
     cy.wait(1200);
     //check results
@@ -118,7 +119,7 @@ describe("Integration tests", () => {
   });
 
   it("exits query mode, and keeps the last generated query", () => {
-    cy.get(".vis-control > button").click();
+    cy.get('.loader').click();
     cy.contains(".query-editor", "{allPlanets{edges{node{climates name}}}}");
   });
 

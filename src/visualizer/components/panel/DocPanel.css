@@ -4,7 +4,7 @@
   & > .contents {
     display: flex;
     flex-direction: column;
-    background: var(--doc-panel-bg-color);
+    background: darkslategray;
     position: relative;
     z-index: 5;
     box-shadow: 0 0 10px 3px var(--shadow-color);

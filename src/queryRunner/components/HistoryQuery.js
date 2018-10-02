@@ -48,7 +48,7 @@ export default class HistoryQuery extends React.Component {
         .split('\n')
         .filter(line => line.indexOf('#') !== 0)
         .join('');
-    const starIcon = this.props.favorite ? '\u2605' : '\u2606';
+    const starIcon = this.props.favorite ? '\u2612' : '\u2610';
     return (
       <p
         // className={this.state.editable && 'editable'}
@@ -71,7 +71,7 @@ export default class HistoryQuery extends React.Component {
           {'\u2421'}
         </span>     
         <span onClick={this.copyToClipboard} style={editStyles}>
-          {'\u270e'}
+          {'\u1F4DD'}
         </span>
         <span onClick={this.handleStarClick.bind(this)} style={starStyles}>
           {starIcon}

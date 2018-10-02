@@ -7,8 +7,7 @@ export default class Logo extends React.Component {
 
   render() {
     return (
-      <div type="button" onClick={this.props.toggleQueryMode}>
-      <div className="loader">
+      <div className="loader" type="button" onClick={this.props.toggleQueryMode}>
       <div  className="hexContainer">
           <div className="hex">
               <div className="hex inner"></div>
@@ -26,7 +25,6 @@ export default class Logo extends React.Component {
           <div className="balls ball4"></div>
           <div className="balls ball5"></div>
           <div className="balls ball6"></div>
-      </div>
       </div>
       </div>
     )

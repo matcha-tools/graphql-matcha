@@ -65,8 +65,13 @@ class DocNavigation extends React.Component<DocNavigationProps> {
       )
     }
 
+    let minHeight = '24px';
+    if (this.props.inQueryMode) {
+      minHeight = '115px';
+    }
+
     return (
-      <div className="doc-navigation">
+      <div className="doc-navigation" style={{ minHeight }}>
         {(selectedType && (
           <span className="back" onClick={clickHandler}>
             {previousType ? previousType.name : 'Type List'}

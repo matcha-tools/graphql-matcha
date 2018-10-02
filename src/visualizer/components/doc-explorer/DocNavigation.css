@@ -1,7 +1,7 @@
 @import '../variables.css';
 
 .doc-navigation {
-  min-height: var(--icons-size);
+  /* min-height: 115px; */
   box-shadow: 0 4px 4px -2px var(--shadow-color);
   display: flex;
   justify-content: space-between;
@@ -21,6 +21,8 @@
     white-space: nowrap;
     padding-left: 2px;
     font-weight: normal;
+    flex: 1;
+    text-align: left;
 
     &:before {
       border-left: 2px solid var(--field-name-color);
@@ -39,6 +41,9 @@
     font-weight: bold;
     color: var(--primary-color);
     font-weight: bold;
+    display: flex;
+    flex: 1;
+    justify-content: flex-end
   }
 
   & > .header {

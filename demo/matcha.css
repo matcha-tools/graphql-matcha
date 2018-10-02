@@ -28,8 +28,9 @@ main {
 }
 
 .vis-control{
-  display:flex;
+  flex: 1;
 }
+
 .vis-control button{
  display:flex;
  flex:1;
@@ -1999,17 +2000,17 @@ li.CodeMirror-hint-active {
     border-top: 25px solid #EB38A5;
   }
   .inner {
-    background-color:white;
+    background-color:rgb(18, 20, 20);
     -webkit-transform: scale(.86, .86);
     -moz-transform: scale(.86, .86);
     transform: scale(.86, .86);
     z-index:1;
     }
     .inner:before {
-    border-bottom: 25px solid white;
+    border-bottom: 25px solid rgb(18, 20, 20);
     }
     .inner:after {
-    border-top: 25px solid white;
+    border-top: 25px solid rgb(18, 20, 20);
     } 
 
 
@@ -2035,7 +2036,7 @@ li.CodeMirror-hint-active {
     top: 11px;
     left: -24px;
     z-index: 4;
-    border-bottom: solid 42px white;
+    border-bottom: solid 42px rgb(18, 20, 20);
     border-right: solid 24px transparent;
     border-left: solid 24px transparent;
   }

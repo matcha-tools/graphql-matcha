@@ -122,10 +122,10 @@ class TypeDoc extends React.Component<TypeDocProps> {
 
         {_.map(type.fields, field => {
           let highlight = field.id === selectedId;
-          if(this.props.inQueryMode && selectedId){
+          if(this.props.inQueryMode && field.id && this.props.selectedFields){
             console.log('selected fields ->>', this.props.selectedFields);
-            console.log('selected id slice -->', selectedId.slice(field.id.lastIndexOf('::')+2));
-            highlight = _.includes(this.props.selectedFields, field.id.slice(selectedId.lastIndexOf('::')+2));
+            //console.log('selected id slice -->', selectedId.slice(field.id.lastIndexOf('::')+2));
+            highlight = _.includes(this.props.selectedFields, field.id.slice(field.id.lastIndexOf('::')+2));
           }
           
           let props: any = {

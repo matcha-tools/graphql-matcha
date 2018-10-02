@@ -108,19 +108,21 @@ export class QueryHistory extends React.Component {
           <div className="doc-explorer-rhs">{this.props.children}</div>
         </div>
         <div className="history-contents">
-          {queryNodes}
-          <div>
+          <div className="history-contents-buttons">
             <button
-              className="download-tests-button"
+              className="history-contents-download"
               onClick={this.downloadTestFile}
-              style={downloadButton}
-            >
-              Download Tests
+              style={downloadButton}>
+                Download Tests
+            </button>
+            <button 
+              className="history-contents-deleteAll" 
+              onClick={this._deleteAll} 
+              style={deleteAllButton}>
+                Delete All
             </button>
           </div>
-          <div>
-            <button className="deleteAll" onClick={this._deleteAll} style={deleteAllButton}>Delete All</button>
-          </div>
+          {queryNodes}
         </div>
       </div>
     );

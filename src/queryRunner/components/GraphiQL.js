@@ -269,10 +269,12 @@ export class GraphiQL extends React.Component {
 
     const footer = find(children, child => child.type === GraphiQL.Footer);
 
+    const queryWrapClass = this.props.inQueryMode ? "queryWrap input-disabled" : "queryWrap";
+
     const queryWrapStyle = {
       WebkitFlex: this.state.editorFlex,
       flex: this.state.editorFlex
-    };
+    }
 
     const historyPaneStyle = {
       display: this.state.historyPaneOpen ? "block" : "none",
@@ -319,7 +321,7 @@ export class GraphiQL extends React.Component {
             onDoubleClick={this.handleResetResize}
             onMouseDown={this.handleResizeStart}
           >
-            <div className="queryWrap" style={queryWrapStyle}>
+            <div className={queryWrapClass} style={queryWrapStyle}>
               <QueryEditor
                 ref={n => {
                   this.queryEditorComponent = n;

@@ -26,7 +26,7 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
 
   toggleQueryMode() {
     const inQueryMode = !this.state.inQueryMode;
-    const delayedSetState = debounce(()=>this.setState({ inQueryMode }),50);
+    const delayedSetState = debounce(() => this.setState({ inQueryMode }), 50);
     delayedSetState();
   }
 

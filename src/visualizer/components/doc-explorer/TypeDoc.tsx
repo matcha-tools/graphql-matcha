@@ -34,9 +34,6 @@ function mapStateToProps(state) {
     selectedType: getSelectedType(state),
     selectedEdgeId: state.selected.currentEdgeId,
     typeGraph: getTypeGraphSelector(state),
-    //TODO, disable button if svg is null;
-    //once svg != null, it means the schema is finished loading in the visualizer
-    //at which point, the query mode button should be enabled
     svg: state.graphView.svg,
   };
 }

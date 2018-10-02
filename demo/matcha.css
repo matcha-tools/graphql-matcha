@@ -41,11 +41,13 @@ main {
 
 .trigger-open {
   border-bottom: 1px solid black;
+  transition: all 1s ease;
 }
 
 .trigger-close {
   background:darkslategray;
   border-bottom: 1px solid white;
+  transition: all 1s ease;
 }
 
 .Collapsible {
@@ -70,9 +72,10 @@ main {
 /* Styling for when CodeMirror is disabled */
 .input-disabled {
   background-color:red;
-  border:1px solid rgb(225, 0, 152);
+  border:7px solid rgb(225, 0, 152);
   padding:2px 1px;
-  opacity: .7;
+  /* opacity: .7; */
+  filter: brightness(50%);
   z-index: 9;
 }
 
@@ -1368,6 +1371,7 @@ span.CodeMirror-selectedtext {
   top: 47px;
   color:white;
   margin-top: 1px;
+  width: 280px;
 }
 
 .graphiql-container .doc-explorer-contents {

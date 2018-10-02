@@ -23,6 +23,7 @@ export const theme = createMuiTheme({
       root: {
         width: variables.iconsSize,
         height: variables.iconSize,
+        padding: '0px',
       },
     },
     MuiInput: {

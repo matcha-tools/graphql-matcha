@@ -14,7 +14,7 @@ describe("Integration tests", () => {
 
   it("toggles in/out of query mode via button", () => {
     cy.contains("View Schema").click();
-    cy.wait(1500);
+    cy.wait(1000);
     cy.get('.vis-control > button').click();
     cy.wait(600);
     cy.get('.vis-control > button').click();

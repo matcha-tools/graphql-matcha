@@ -33,7 +33,12 @@ main {
 .vis-control button{
  display:flex;
  flex:1;
+<<<<<<< HEAD
  padding-bottom:3%;
+=======
+ padding-bottom: 3%;
+ z-index: 2;
+>>>>>>> master
  justify-content: center;
 }
 

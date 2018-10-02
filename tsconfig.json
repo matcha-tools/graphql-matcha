@@ -29,6 +29,6 @@
     "./manual-types.d.ts",
     "demo/**/*.tsx",
     "src/components/CollapsibleVisualizer.tsx",
-    "src/components/Matcha.tsx"
+    "src/components/Matcha.tsx", "cypress/integration/e2e.test.js"
   ]
 }

@@ -7,6 +7,8 @@ import { getSelectedType, getPreviousType } from '../../selectors';
 import { selectPreviousType, clearSelection, focusElement, previousNodeAndEdges } from '../../actions/';
 import FocusTypeButton from './FocusTypeButton';
 
+import Logo from '../../../loader/Logo.js';
+
 interface DocNavigationProps {
   selectedType: any;
   previousType: any;
@@ -43,11 +45,22 @@ class DocNavigation extends React.Component<DocNavigationProps> {
     const toggleDraftButton = () => {
       let disabled = true;
       if (this.props.svg) disabled = false;
+
+      let display = (
+        <button disabled={disabled} type="button" onClick={this.props.toggleQueryMode}>
+          Draft Query
+        </button>
+      );
+
+      if (this.props.inQueryMode) {
+        display = (
+          <Logo toggleQueryMode={this.props.toggleQueryMode}/>
+        )
+      }
+
       return (
         <div className="vis-control">
-          <button disabled={disabled} type="button" onClick={this.props.toggleQueryMode}>
-            Draft Query
-        </button>
+          {display}
         </div>
       )
     }

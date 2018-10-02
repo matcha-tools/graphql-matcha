@@ -48,7 +48,7 @@ class DocNavigation extends React.Component<DocNavigationProps> {
 
       let display = (
         <button disabled={disabled} type="button" onClick={this.props.toggleQueryMode}>
-          Draft Query
+          Activate Query mode
         </button>
       );
 

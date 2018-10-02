@@ -27,16 +27,13 @@ main {
   height: 60vh;
 }
 
-.vis-control{
-  
-}
-
 .vis-control button{
- display:flex;
- flex:1;
- padding:0px;
- justify-content: center;
- max-width: 50px;
+  color: white;
+  font: 14px 'helvetica neue', helvetica, arial, sans-serif;
+  background-color: #42a0dd;
+  border-radius: 2px;
+  line-height: 24px;
+  border: 1px solid #999;
 }
 
 .Collapsible {
@@ -1963,6 +1960,7 @@ li.CodeMirror-hint-active {
   position: relative;
   height: 100px;
   width: 100px;
+  cursor: pointer;
 }
 
 

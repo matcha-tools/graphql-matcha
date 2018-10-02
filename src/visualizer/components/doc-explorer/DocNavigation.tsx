@@ -12,6 +12,8 @@ interface DocNavigationProps {
   previousType: any;
   dispatch: any;
   inQueryMode: boolean;
+  svg: string;
+  toggleQueryMode: any;
 }
 
 function mapStateToProps(state) {
@@ -38,6 +40,18 @@ class DocNavigation extends React.Component<DocNavigationProps> {
       }
     };
 
+    const toggleDraftButton = () => {
+      let disabled = true;
+      if (this.props.svg) disabled = false;
+      return (
+        <div className="vis-control">
+          <button disabled={disabled} type="button" onClick={this.props.toggleQueryMode}>
+            Draft Query
+        </button>
+        </div>
+      )
+    }
+
     return (
       <div className="doc-navigation">
         {(selectedType && (
@@ -45,6 +59,9 @@ class DocNavigation extends React.Component<DocNavigationProps> {
             {previousType ? previousType.name : 'Type List'}
           </span>
         )) || <span className="header">Type List</span>}
+
+        {toggleDraftButton()}
+
         {selectedType && (
           <span className="active">
             {selectedType.name} <FocusTypeButton type={selectedType} />

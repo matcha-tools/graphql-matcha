@@ -204,7 +204,7 @@ export class QueryEditor extends React.Component {
   }
 
   _onKeyUp = (cm, event) => {
-    if (AUTO_COMPLETE_AFTER_KEY.test(event.key)) {
+    if (AUTO_COMPLETE_AFTER_KEY.test(event.key) && !this.props.readOnly) {
       this.editor.execCommand('autocomplete');
     }
   };
@@ -222,7 +222,6 @@ export class QueryEditor extends React.Component {
    * Render a custom UI for CodeMirror's hint which includes additional info
    * about the type and description for the selected context.
    */
-  //TODO disable this during ReadOnly
   _onHasCompletion = (cm, data) => {
     onHasCompletion(cm, data, this.props.onHintInformationRender);
   };

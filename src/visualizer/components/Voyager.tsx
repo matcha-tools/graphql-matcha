@@ -133,6 +133,9 @@ export default class Voyager extends React.Component<VoyagerProps> {
       this.store.dispatch(selectNode(root));
     } else if (!nextProps.inQueryMode && this.props.inQueryMode) {
       this.unsubscribe();
+      console.log(nextProps.introspection)
+      //TODO check to see if refering to the entire svg via "graph0" is valid for all schema.
+      this.store.dispatch(focusElement("graph0"));
       // store all pending edges in query history before clearing
       this.store.dispatch(storePendingEdges());
       this.store.dispatch(clearSelection());

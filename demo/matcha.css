@@ -31,9 +31,10 @@ main {
   display:flex;
 }
 .vis-control button{
+ color: red; 
  display:flex;
  flex:1;
- padding:0px;
+ padding-bottom:3%;
  justify-content: center;
 }
 
@@ -41,6 +42,15 @@ main {
   background-color: black;
   color:white;
   text-align:center;
+}
+
+/* Styling for when CodeMirror is disabled */
+.input-disabled {
+  background-color:red;
+  border:1px solid rgb(225, 0, 152);
+  padding:2px 1px;
+  opacity: .7;
+  z-index: 9;
 }
 
 
@@ -331,7 +341,7 @@ main {
 
 /* No `.graphiql-container` here so themes can overwrite */
 .result-window .CodeMirror {
-  background: #f6f7f8;
+  background: black;
 }
 
 .graphiql-container .result-window .CodeMirror-gutters {
@@ -829,7 +839,7 @@ div.CodeMirror-lint-tooltip > * + * {
 /* CURSOR */
 
 .CodeMirror .CodeMirror-cursor {
-  border-left: 1px solid black;
+  border-left: 1px solid white;
 }
 /* Shown when moving in bi-directional text */
 .CodeMirror div.CodeMirror-secondarycursor {
@@ -1004,7 +1014,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
    the editor. You probably shouldn't touch them. */
 
 .CodeMirror {
-  background: white;
+  background: black;
   overflow: hidden;
   position: relative;
 }

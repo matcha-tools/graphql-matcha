@@ -222,6 +222,7 @@ export class QueryEditor extends React.Component {
    * Render a custom UI for CodeMirror's hint which includes additional info
    * about the type and description for the selected context.
    */
+  //TODO disable this during ReadOnly
   _onHasCompletion = (cm, data) => {
     onHasCompletion(cm, data, this.props.onHintInformationRender);
   };

@@ -38,7 +38,7 @@ describe("Unit tests", () => {
     });
 
     it("should return query string from query array", () => {
-      const array = ["allFilms", "edges", "node", ["id", "title"]];
+      const array = ["allFilms", "edges", "node", ['FIELD::Film::id','FIELD::Film::title']];
       const expectedString = `{allFilms{edges{node{id title}}}}`;
       const result = parseQueryStack(array);
       // expect(result).to.equal(format(expectedString, { parser: "graphql" }));
@@ -52,7 +52,7 @@ describe("Unit tests", () => {
         "allFilms",
         "edges",
         "node",
-        ["id", "title"],
+        ['FIELD::Film::id','FIELD::Film::title'],
         "speciesConnection",
         "edges",
         "node"

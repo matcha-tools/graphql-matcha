@@ -137,7 +137,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
               if (this.props.inQueryMode) {
                 // store selected scalars, to be added to history when navigating to a new node
                 if (isScalarType(field.type)) {
-                  dispatch(storeEdges(field.name));
+                  dispatch(storeEdges(field.id));
                   dispatch(selectEdge(field.id));
                 } else {
                   // navigate to the new node, store previously selected edges and new node in history

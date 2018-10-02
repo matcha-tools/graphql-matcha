@@ -25,7 +25,7 @@
 
   --doc-panel-width: 320px;
   --type-info-popover-width: 320px;
-  --doc-panel-bg-color: rgb(18, 20, 20);
+  --doc-panel-bg-color: darkslategray;
   --doc-panel-item-stripe-color: rgba(158, 158, 158, 0.07);
   --doc-panel-item-hover-color: rgb(225, 0, 152);
   --doc-panel-selected-item-color: white;

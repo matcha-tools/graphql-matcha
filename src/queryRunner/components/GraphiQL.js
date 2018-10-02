@@ -18,7 +18,6 @@ import { ToolbarSelect, ToolbarSelectOption } from "./ToolbarSelect";
 import { QueryEditor } from "./QueryEditor";
 import { VariableEditor } from "./VariableEditor";
 import { ResultViewer } from "./ResultViewer";
-// import { DocExplorer } from './DocExplorer';
 import { QueryHistory } from "./QueryHistory";
 import CodeMirrorSizer from "../utility/CodeMirrorSizer";
 import StorageAPI from "../utility/StorageAPI";
@@ -119,11 +118,7 @@ export class GraphiQL extends React.Component {
       variableEditorOpen: Boolean(variables),
       variableEditorHeight:
         Number(this._storage.get("variableEditorHeight")) || 200,
-      // docExplorerOpen: this._storage.get('docExplorerOpen') === 'true' || false,
       historyPaneOpen: this._storage.get("historyPaneOpen") === "true" || false,
-      // docExplorerWidth:
-      //   Number(this._storage.get('docExplorerWidth')) ||
-      //     DEFAULT_DOC_EXPLORER_WIDTH,
       isWaitingForResponse: false,
       subscription: null,
       ...queryFacts
@@ -213,7 +208,6 @@ export class GraphiQL extends React.Component {
       },
       () => {
         if (this.state.schema === undefined) {
-          // this.docExplorerComponent.reset();
           this._fetchSchema();
         }
       }
@@ -245,8 +239,6 @@ export class GraphiQL extends React.Component {
     this._storage.set("operationName", this.state.operationName);
     this._storage.set("editorFlex", this.state.editorFlex);
     this._storage.set("variableEditorHeight", this.state.variableEditorHeight);
-    // this._storage.set('docExplorerWidth', this.state.docExplorerWidth);
-    // this._storage.set('docExplorerOpen', this.state.docExplorerOpen);
     this._storage.set("historyPaneOpen", this.state.historyPaneOpen);
   }
 
@@ -277,18 +269,12 @@ export class GraphiQL extends React.Component {
 
     const footer = find(children, child => child.type === GraphiQL.Footer);
 
+    const queryWrapClass = this.props.inQueryMode ? "queryWrap input-disabled" : "queryWrap";
+
     const queryWrapStyle = {
       WebkitFlex: this.state.editorFlex,
       flex: this.state.editorFlex
-    };
-
-    // const docWrapStyle = {
-    //   display: this.state.docExplorerOpen ? 'block' : 'none',
-    //   width: this.state.docExplorerWidth,
-    // };
-    // const docExplorerWrapClasses =
-    //   'docExplorerWrap' +
-    //   (this.state.docExplorerWidth < 200 ? ' doc-explorer-narrow' : '');
+    }
 
     const historyPaneStyle = {
       display: this.state.historyPaneOpen ? "block" : "none",
@@ -313,15 +299,11 @@ export class GraphiQL extends React.Component {
             storage={this._storage}
             queryID={this._editorQueryID}
           >
-            {/* <div className="docExplorerHide" onClick={this.handleToggleHistory}>
-              {'\u2715'}
-            </div> */}
           </QueryHistory>
         </div>
         <div className="editorWrap">
           <div className="topBarWrap">
             <div className="topBar">
-              {/* {logo} */}
               <ExecuteButton
                 isRunning={Boolean(this.state.subscription)}
                 onRun={this.handleRunQuery}
@@ -330,19 +312,6 @@ export class GraphiQL extends React.Component {
               />
               {toolbar}
             </div>
-
-            {/* 
-            
-            This is the button to open the doc explorer drawer
-            we do not need this, as we have a visualizer for that
-            We might want to use the drawer in the future for RESOLVERS!!
-            
-            {!this.state.docExplorerOpen &&
-              <button
-                className="docExplorerShow"
-                onClick={this.handleToggleDocs}>
-                {'Docs'}
-              </button>} */}
           </div>
           <div
             ref={n => {
@@ -352,7 +321,7 @@ export class GraphiQL extends React.Component {
             onDoubleClick={this.handleResetResize}
             onMouseDown={this.handleResizeStart}
           >
-            <div className="queryWrap" style={queryWrapStyle}>
+            <div className={queryWrapClass} style={queryWrapStyle}>
               <QueryEditor
                 ref={n => {
                   this.queryEditorComponent = n;
@@ -407,22 +376,6 @@ export class GraphiQL extends React.Component {
             </div>
           </div>
         </div>
-        {/* <div className={docExplorerWrapClasses} style={docWrapStyle}>
-          <div
-            className="docExplorerResizer"
-            onDoubleClick={this.handleDocsResetResize}
-            onMouseDown={this.handleDocsResizeStart}
-          />
-          <DocExplorer
-            ref={c => {
-              this.docExplorerComponent = c;
-            }}
-            schema={this.state.schema}>
-            <div className="docExplorerHide" onClick={this.handleToggleDocs}>
-              {'\u2715'}
-            </div>
-          </DocExplorer>
-        </div> */}
       </div>
     );
   }
@@ -648,16 +601,6 @@ export class GraphiQL extends React.Component {
     }
 
     try {
-      /* commented out, response is unable to get captured in the query object if     this is active
-       *
-       * this.setState({
-       *   isWaitingForResponse: true,
-       *   response: null,
-       *   operationName,
-       * });
-       * 
-       ********************************************/
-
       // _fetchQuery may return a subscription.
       const subscription = this._fetchQuery(
         editedQuery,
@@ -800,26 +743,12 @@ export class GraphiQL extends React.Component {
 
   _onClickHintInformation = event => {
     if (event.target.className === "typeName") {
-      const typeName = event.target.innerHTML;
-      const schema = this.state.schema;
-      if (schema) {
-        const type = schema.getType(typeName);
-        if (type) {
-          //TODO interact with voyager
+          //TODO interact with voyager on clicks from queryEditor
           // this.setState({ docExplorerOpen: true }, () => {
           //   this.docExplorerComponent.showDoc(type);
           // });
         }
-      }
-    }
   };
-
-  // handleToggleDocs = () => {
-  //   if (typeof this.props.onToggleDocs === 'function') {
-  //     this.props.onToggleDocs(!this.state.docExplorerOpen);
-  //   }
-  //   this.setState({ docExplorerOpen: !this.state.docExplorerOpen });
-  // };
 
   handleToggleHistory = () => {
     if (typeof this.props.onToggleHistory === "function") {
@@ -892,51 +821,6 @@ export class GraphiQL extends React.Component {
     return false;
   }
 
-  // handleDocsResizeStart = downEvent => {
-  //   downEvent.preventDefault();
-
-  //   const hadWidth = this.state.docExplorerWidth;
-  //   const offset = downEvent.clientX - getLeft(downEvent.target);
-
-  //   let onMouseMove = moveEvent => {
-  //     if (moveEvent.buttons === 0) {
-  //       return onMouseUp();
-  //     }
-
-  //     const app = ReactDOM.findDOMNode(this);
-  //     const cursorPos = moveEvent.clientX - getLeft(app) - offset;
-  //     const docsSize = app.clientWidth - cursorPos;
-
-  //     if (docsSize < 100) {
-  //       this.setState({ docExplorerOpen: false });
-  //     } else {
-  //       this.setState({
-  //         docExplorerOpen: true,
-  //         docExplorerWidth: Math.min(docsSize, 650),
-  //       });
-  //     }
-  //   };
-
-  //   let onMouseUp = () => {
-  //     if (!this.state.docExplorerOpen) {
-  //       this.setState({ docExplorerWidth: hadWidth });
-  //     }
-
-  //     document.removeEventListener('mousemove', onMouseMove);
-  //     document.removeEventListener('mouseup', onMouseUp);
-  //     onMouseMove = null;
-  //     onMouseUp = null;
-  //   };
-
-  //   document.addEventListener('mousemove', onMouseMove);
-  //   document.addEventListener('mouseup', onMouseUp);
-  // };
-
-  // handleDocsResetResize = () => {
-  //   this.setState({
-  //     docExplorerWidth: DEFAULT_DOC_EXPLORER_WIDTH,
-  //   });
-  // };
 
   handleVariableResizeStart = downEvent => {
     downEvent.preventDefault();

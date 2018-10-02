@@ -14,7 +14,7 @@ describe("Integration tests", () => {
 
   it("toggles in/out of query mode via button", () => {
     cy.contains("View Schema").click();
-    cy.wait(1500);
+    cy.wait(1000);
     cy.get('.vis-control > button').click();
     cy.wait(600);
     cy.get('.vis-control > button').click();
@@ -66,15 +66,6 @@ describe("Integration tests", () => {
     cy.wait(1200);
   });
 
-  it("goes back in to QMode, selects allPlanets > population", () => {
-    cy.get('.vis-control > button').click();
-    cy.get(".active").should("have.text", "Root ");
-    cy.get('.doc-category > :nth-child(6)').click();
-    cy.get('.doc-category > :nth-child(7)').click();
-    cy.contains('.query-editor','{allPlanets{edges{node{population}}}}');
-  })
-
-  
   xit("PRETTY goes back in to QMode, selects allPlanets > population", () => {
     cy.get('.vis-control > button').click();
     cy.get(".active").should("have.text", "Root ");
@@ -86,9 +77,24 @@ describe("Integration tests", () => {
     cy.contains('.query-editor','population');
   })
 
+  it("goes back in to QMode, selects allPlanets > population", () => {
+    cy.get('.vis-control > button').click();
+    cy.get(".active").should("have.text", "Root ");
+    cy.get('.doc-category > :nth-child(6)').click();
+    cy.get('.doc-category > :nth-child(7)').click();
+    cy.contains('.query-editor','{allPlanets{edges{node{population}}}}');
+  })
+
+  it("selects radius, deselects planet> population", () => {
+    cy.get('.doc-category > :nth-child(8)').click();
+    cy.get('.doc-category > :nth-child(7)').click();
+    cy.contains('.query-editor','{allPlanets{edges{node{climates}}}}');
+  })
+
+  
   it("exits query mode, and keeps the last generated query", () => {
     cy.get('.vis-control > button').click();
-    cy.contains('.query-editor','{allPlanets{edges{node{population}}}}');
+    cy.contains('.query-editor','{allPlanets{edges{node{climates}}}}');
   })
 
   xit("PRETTY exits query mode, and keeps the last generated query", () => {

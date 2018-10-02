@@ -65,6 +65,7 @@ class DocNavigation extends React.Component<DocNavigationProps> {
       )
     }
 
+    // determine size depndent 
     let minHeight = '24px';
     if (this.props.inQueryMode) {
       minHeight = '115px';

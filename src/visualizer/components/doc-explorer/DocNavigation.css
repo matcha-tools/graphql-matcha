@@ -1,7 +1,6 @@
 @import '../variables.css';
 
 .doc-navigation {
-  /* min-height: 115px; */
   box-shadow: 0 4px 4px -2px var(--shadow-color);
   display: flex;
   justify-content: space-between;

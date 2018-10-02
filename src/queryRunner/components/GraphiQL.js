@@ -269,7 +269,7 @@ export class GraphiQL extends React.Component {
 
     const footer = find(children, child => child.type === GraphiQL.Footer);
 
-    const queryWrapClass = (this.props.inQueryMode) ? ("queryWrap input-disabled") : ("queryWrap");
+    const queryWrapClass = this.props.inQueryMode ? "queryWrap input-disabled" : "queryWrap";
 
     const queryWrapStyle = {
       WebkitFlex: this.state.editorFlex,

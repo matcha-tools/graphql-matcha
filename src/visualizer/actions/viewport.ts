@@ -53,10 +53,10 @@ export function storeNodeAndEdges(field:any) {
 }
 
 export const STORE_EDGES = 'STORE_EDGES';
-export function storeEdges(name:string) {
+export function storeEdges(id:string) {
   return {
     type: STORE_EDGES,
-    payload: name,
+    payload: id,
   };
 }
 

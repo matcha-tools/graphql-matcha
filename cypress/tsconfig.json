@@ -4,7 +4,7 @@
     "baseUrl": "../node_modules",
     "module":"es6",
     "target": "es6",
-    "lib": ["es5", "dom"],
+    "lib": ["es2018", "dom"],
     "types": ["cypress"]
   },
   "include": [

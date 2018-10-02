@@ -26,6 +26,7 @@ interface TypeDocProps {
   dispatch: any;
   toggleQueryMode: any;
   inQueryMode: boolean;
+  selectedFields: any;
   svg: string;
 }
 
@@ -34,6 +35,7 @@ function mapStateToProps(state) {
     selectedType: getSelectedType(state),
     selectedEdgeId: state.selected.currentEdgeId,
     typeGraph: getTypeGraphSelector(state),
+    selectedFields: state.selected.multipleEdgeIds,
     svg: state.graphView.svg,
   };
 }
@@ -119,10 +121,15 @@ class TypeDoc extends React.Component<TypeDocProps> {
         <div className="title">{'fields'}</div>
 
         {_.map(type.fields, field => {
+          let highlight = field.id === selectedId;
+          if(this.props.inQueryMode && field.id && this.props.selectedFields){
+            highlight = _.includes(this.props.selectedFields, field.id);
+          }
+          
           let props: any = {
             key: field.name,
             className: classNames('item', {
-              '-selected': field.id === selectedId,
+              '-selected': highlight,
               '-with-args': !_.isEmpty(field.args),
             }),
             onClick: () => {
@@ -130,7 +137,7 @@ class TypeDoc extends React.Component<TypeDocProps> {
               if (this.props.inQueryMode) {
                 // store selected scalars, to be added to history when navigating to a new node
                 if (isScalarType(field.type)) {
-                  dispatch(storeEdges(field.name));
+                  dispatch(storeEdges(field.id));
                   dispatch(selectEdge(field.id));
                 } else {
                   // navigate to the new node, store previously selected edges and new node in history

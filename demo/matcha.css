@@ -38,11 +38,11 @@ main {
 
 .trigger-open {
   border-bottom: 1px solid black;
-  transition: all 1s ease;
+  transition: all 1s ease; 
 }
 
 .trigger-close {
-  background:darkslategray;
+  background:#132121;
   border-bottom: 1px solid white;
   transition: all 1s ease;
 }
@@ -54,26 +54,238 @@ main {
 }
 .typelist-item {
   border-bottom: 1px solid #e0e0e0;
-  background: darkslategray;
+  background: #132121;
 }
 
 .doc-navigation {
-  background: darkslategray;
+  border-bottom: 1px solid white;
+  background: #132121;
 }
 
 .scroll-area {
-  background: darkslategray;
+  background: #132121;
 }
 
 
 /* Styling for when CodeMirror is disabled */
 .input-disabled {
-  background-color:red;
-  border:7px solid rgb(225, 0, 152);
+  /* background-color:; */
+  /* border:2px solid rgb(225, 0, 152); */
   padding:2px 1px;
-  /* opacity: .7; */
-  filter: brightness(50%);
+  opacity: .7;
+  /* filter: brightness(50%); */
   z-index: 9;
+}
+
+.doc-panel {
+  border-right: 1px solid white;
+}
+
+
+/*spinning gql logo */
+
+.loader {
+  position: relative;
+  height: 100px;
+  width: 100px;
+  cursor: pointer;
+}
+
+.hexContainer{
+  position: relative;
+  top: 27.5px;
+  -webkit-animation: spin 2.5s ease-in-out infinite;
+  animation: spin 2.5s ease-in-out infinite;
+}
+
+.hex {
+  width: 80px;
+  height: 45px;
+  background:#EB38A5;
+  margin: auto auto;
+  position: relative;
+}
+
+.hex:before, .hex:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.hex:before {
+  top: -24px;
+  left: 0;
+  border-left: 40px solid transparent;
+  border-right: 40px solid transparent;
+  border-bottom: 25px solid#EB38A5;
+}
+
+.hex:after {
+  bottom: -24px;
+  left: 0;
+  border-left: 40px solid transparent;
+  border-right: 40px solid transparent;
+  border-top: 25px solid #EB38A5;
+}
+
+.inner {
+  background-color:#132121;
+  -webkit-transform: scale(.86, .86);
+  -moz-transform: scale(.86, .86);
+  transform: scale(.86, .86);
+  z-index:1;
+}
+
+.inner:before {
+  border-bottom: 25px solid #132121;
+}
+
+.inner:after {
+  border-top: 25px solid #132121;
+} 
+
+.triangleContainer {
+  position: absolute;
+  top: 0px;
+}
+
+.triangle {
+  display: inline-block;
+  height: 15px;
+  position: absolute;
+  top: -4px;
+  left: 15px;
+  z-index: 3;
+  border-bottom: solid 59px #EB38A5;
+  border-right: solid 35px transparent;
+  border-left: solid 35px transparent;
+}
+
+.triangleInner {
+  display: inline-block;
+  height: 15px;
+  position: absolute;
+  top: 11px;
+  left: -24px;
+  z-index: 4;
+  border-bottom: solid 42px #132121;
+  border-right: solid 24px transparent;
+  border-left: solid 24px transparent;
+}
+
+  
+.ballContainer {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  z-index: 5;
+  height: 86px;
+  width: 86px;
+  border-radius: 50%;
+  -webkit-animation: spin 2.5s ease-in-out 1s infinite;
+  /* animation: spin 2.5s ease-in-out 1s infinite; */
+  animation: shrink 2.5s ease-in-out infinite;
+}
+  
+.balls {
+  height: 86px;
+  width: 86px;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 6;
+}
+
+.balls:after {
+  content: "";
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background-color: #EB38A5;
+  position: relative;
+  display: block;
+}
+
+.ball1:after {
+  left: -2px;
+  top: 14px;
+}
+
+.ball2:after {
+  left: 33px;
+  top: -8px;
+}
+
+.ball3:after {
+  left: 70px;
+  top: 14px;
+}
+
+.ball4:after {
+  left: 70px;
+  top: 53px;
+}
+
+.ball5:after {
+  left: 33px;
+  top: 75px;
+}
+
+.ball6:after {
+  left: -2px;
+  top: 53px;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes shrink {
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(0.2);
+            transform: scale(0.2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@keyframes shrink {
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(0.2);
+            transform: scale(0.);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
 }
 
 
@@ -147,7 +359,7 @@ main {
     from(#f7f7f7),
     to(#e2e2e2)
   );
-  background: darkslategray;
+  background: #132121;
   border-bottom: 1px solid #d0d0d0;
   border-top: 1px solid #d0d0d0;
   cursor: default;
@@ -281,7 +493,7 @@ main {
 }
 
 .graphiql-container .variable-editor-title {
-  background: darkslategray;
+  background: #132121;
   border-bottom: 1px solid #d6d6d6;
   border-top: 1px solid #e0e0e0;
   color: white;
@@ -337,7 +549,7 @@ main {
 }
 
 .graphiql-container .result-window .CodeMirror-gutters {
-  background-color: darkslategray;
+  background-color: #132121;
   border-color: #e0e0e0;
   cursor: col-resize;
 }
@@ -807,9 +1019,9 @@ div.CodeMirror-lint-tooltip > * + * {
 /* GUTTER */
 
 .CodeMirror-gutters {
-  background: darkslategray;
+  background: #132121;
   border-right: 1px solid #ddd;
-  background-color: darkslategray;
+  background-color: #132121;
   white-space: nowrap;
 }
 .CodeMirror-linenumbers {
@@ -1061,7 +1273,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 .CodeMirror-gutters {
-  background: darkslategray;
+  background: #132121;
   min-height: 100%;
   position: absolute;
   left: 0;
@@ -1290,7 +1502,7 @@ span.CodeMirror-selectedtext {
   border-top: 1px solid #d3d6db;
   border-right: 1px solid #d3d6db;
   color: white;
-  background: darkslategray;
+  background: #132121;
   cursor: default;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1355,8 +1567,8 @@ span.CodeMirror-selectedtext {
 
 .graphiql-container .doc-explorer-contents,
 .graphiql-container .history-contents {
-  background: darkslategray;
-  background-color:darkslategray;
+  background: #132121;
+  background-color:#132121;
   border-top: 1px solid #d6d6d6;
   border-right: 1px solid white;
   bottom: 0;
@@ -1368,7 +1580,6 @@ span.CodeMirror-selectedtext {
   top: 47px;
   color:white;
   margin-top: 1px;
-  width: 280px;
 }
 
 .graphiql-container .doc-explorer-contents {
@@ -1598,7 +1809,7 @@ span.CodeMirror-selectedtext {
 }
 .CodeMirror-foldgutter {
   width: 0.7em;
-  background:darkslategray;
+  background:#132121;
 }
 .CodeMirror-foldgutter-open,
 .CodeMirror-foldgutter-folded {
@@ -1987,206 +2198,3 @@ li.CodeMirror-hint-active {
   margin-bottom: 0;
 }
 
-.loader {
-  position: relative;
-  height: 100px;
-  width: 100px;
-  cursor: pointer;
-}
-
-.hexContainer{
-  position: relative;
-  top: 27.5px;
-  -webkit-animation: spin 2.5s ease-in-out infinite;
-  animation: spin 2.5s ease-in-out infinite;
-}
-
-.hex {
-  width: 80px;
-  height: 45px;
-  background:#EB38A5;
-  margin: auto auto;
-  position: relative;
-}
-
-.hex:before, .hex:after {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 0;
-}
-
-.hex:before {
-  top: -24px;
-  left: 0;
-  border-left: 40px solid transparent;
-  border-right: 40px solid transparent;
-  border-bottom: 25px solid#EB38A5;
-}
-
-.hex:after {
-  bottom: -24px;
-  left: 0;
-  border-left: 40px solid transparent;
-  border-right: 40px solid transparent;
-  border-top: 25px solid #EB38A5;
-}
-
-.inner {
-  background-color:rgb(18, 20, 20);
-  -webkit-transform: scale(.86, .86);
-  -moz-transform: scale(.86, .86);
-  transform: scale(.86, .86);
-  z-index:1;
-}
-
-.inner:before {
-  border-bottom: 25px solid rgb(18, 20, 20);
-}
-
-.inner:after {
-  border-top: 25px solid rgb(18, 20, 20);
-} 
-
-.triangleContainer {
-  position: absolute;
-  top: 0px;
-}
-
-.triangle {
-  display: inline-block;
-  height: 15px;
-  position: absolute;
-  top: -4px;
-  left: 15px;
-  z-index: 3;
-  border-bottom: solid 59px #EB38A5;
-  border-right: solid 35px transparent;
-  border-left: solid 35px transparent;
-}
-
-.triangleInner {
-  display: inline-block;
-  height: 15px;
-  position: absolute;
-  top: 11px;
-  left: -24px;
-  z-index: 4;
-  border-bottom: solid 42px rgb(18, 20, 20);
-  border-right: solid 24px transparent;
-  border-left: solid 24px transparent;
-}
-
-  
-.ballContainer {
-  position: absolute;
-  top: 7px;
-  left: 7px;
-  z-index: 5;
-  height: 86px;
-  width: 86px;
-  border-radius: 50%;
-  -webkit-animation: spin 2.5s ease-in-out 1s infinite;
-  /* animation: spin 2.5s ease-in-out 1s infinite; */
-  animation: shrink 2.5s ease-in-out infinite;
-}
-  
-.balls {
-  height: 86px;
-  width: 86px;
-  border-radius: 50%;
-  position: absolute;
-  z-index: 6;
-}
-
-.balls:after {
-  content: "";
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  background-color: #EB38A5;
-  position: relative;
-  display: block;
-}
-
-.ball1:after {
-  left: -2px;
-  top: 14px;
-}
-
-.ball2:after {
-  left: 33px;
-  top: -8px;
-}
-
-.ball3:after {
-  left: 70px;
-  top: 14px;
-}
-
-.ball4:after {
-  left: 70px;
-  top: 53px;
-}
-
-.ball5:after {
-  left: 33px;
-  top: 75px;
-}
-
-.ball6:after {
-  left: -2px;
-  top: 53px;
-}
-
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-
-@keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-
-@-webkit-keyframes shrink {
-  0% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-  }
-  50% {
-    -webkit-transform: scale(0.2);
-            transform: scale(0.2);
-  }
-  100% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-  }
-}
-
-@keyframes shrink {
-  0% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-  }
-  50% {
-    -webkit-transform: scale(0.2);
-            transform: scale(0.);
-  }
-  100% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-  }
-}

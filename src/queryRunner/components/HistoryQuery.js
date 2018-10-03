@@ -36,10 +36,12 @@ export default class HistoryQuery extends React.Component {
     const editStyles = {
       display: this.state.showButtons ? '' : 'none',
       marginLeft: '10px',
+      // fontSize: "15px",
     };
     const starStyles = {
       display: this.props.favorite || this.state.showButtons ? '' : 'none',
       marginLeft: '10px',
+      // fontSize: "15px",
     };
     const displayName =
       this.props.label ||
@@ -48,7 +50,7 @@ export default class HistoryQuery extends React.Component {
         .split('\n')
         .filter(line => line.indexOf('#') !== 0)
         .join('');
-    const starIcon = this.props.favorite ? '\u2612' : '\u2610';
+    const starIcon = this.props.favorite ? '\u2605' : '\u2606';
     return (
       <p
         // className={this.state.editable && 'editable'}
@@ -68,10 +70,10 @@ export default class HistoryQuery extends React.Component {
               {displayName}
             </span>}
         <span onClick={this.handleDeleteItem.bind(this)} style={editStyles}>
-          {'\u2421'}
+          {'\u2A2F'}
         </span>     
         <span onClick={this.copyToClipboard} style={editStyles}>
-          {'\u1F4DD'}
+          {'\u270E'}
         </span>
         <span onClick={this.handleStarClick.bind(this)} style={starStyles}>
           {starIcon}

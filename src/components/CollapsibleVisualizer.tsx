@@ -26,6 +26,7 @@ export const CollapsibleVisualizer = props => {
           queryModeHandler={props.queryModeHandler}
           toggleQueryMode={props.toggleQueryMode}
           inQueryMode={props.inQueryMode}
+          schema={props.schema}
         />
       </div>
     </Collapsible>

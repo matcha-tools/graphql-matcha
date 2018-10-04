@@ -4,13 +4,19 @@ import { GraphiQL } from "../queryRunner/components/GraphiQL";
 import { CollapsibleVisualizer } from "./CollapsibleVisualizer";
 import { parseQueryStack } from "../utils/parsers";
 import { debounce } from "lodash";
+import { GraphQLSchema } from "graphql";
 
 interface MatchaStateTypes {
   inQueryMode: boolean;
   queryStr: string;
 }
 
-export default class Matcha extends React.Component<null, MatchaStateTypes> {
+interface MatchaPropTypes {
+  schema: GraphQLSchema;
+}
+
+
+export default class Matcha extends React.Component<MatchaPropTypes, MatchaStateTypes> {
 
   constructor(props) {
     super(props);
@@ -57,6 +63,7 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
           endQueryMode={this.endQueryMode}
           queryModeHandler={this.queryModeHandler}
           inQueryMode={this.state.inQueryMode}
+          schema = {this.props.schema}
         />
         <div id="query-runner">
           <GraphiQL

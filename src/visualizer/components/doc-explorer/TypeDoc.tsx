@@ -7,7 +7,7 @@ import './TypeDoc.css';
 
 import { SimplifiedTypeWithIDs } from '../../introspection/types';
 
-import { selectEdge } from '../../actions';
+import { selectEdge, selectNode, focusElement, storeNodeAndEdges, storeEdges } from '../../actions';
 import { getSelectedType } from '../../selectors';
 import { getTypeGraphSelector } from '../../graph';
 import TypeList from './TypeList';
@@ -17,12 +17,17 @@ import Description from './Description';
 import TypeLink from './TypeLink';
 import WrappedTypeName from './WrappedTypeName';
 import Argument from './Argument';
+import { isScalarType } from '../../introspection/utils';
 
 interface TypeDocProps {
   selectedType: any;
   selectedEdgeId: string;
   typeGraph: any;
   dispatch: any;
+  toggleQueryMode: any;
+  inQueryMode: boolean;
+  selectedFields: any;
+  svg: string;
 }
 
 function mapStateToProps(state) {
@@ -30,10 +35,16 @@ function mapStateToProps(state) {
     selectedType: getSelectedType(state),
     selectedEdgeId: state.selected.currentEdgeId,
     typeGraph: getTypeGraphSelector(state),
+    selectedFields: state.selected.multipleEdgeIds,
+    svg: state.graphView.svg,
   };
 }
 
 class TypeDoc extends React.Component<TypeDocProps> {
+  constructor(props) {
+    super(props);
+  }
+
   componentDidUpdate(prevProps: TypeDocProps) {
     if (this.props.selectedEdgeId !== prevProps.selectedEdgeId) {
       this.ensureActiveVisible();
@@ -104,18 +115,40 @@ class TypeDoc extends React.Component<TypeDocProps> {
     if (_.isEmpty(type.fields)) return null;
 
     let dispatch = this.props.dispatch;
+
     return (
       <div className="doc-category">
         <div className="title">{'fields'}</div>
+
         {_.map(type.fields, field => {
+          let highlight = field.id === selectedId;
+          if(this.props.inQueryMode && field.id && this.props.selectedFields){
+            highlight = _.includes(this.props.selectedFields, field.id);
+          }
+          
           let props: any = {
             key: field.name,
             className: classNames('item', {
-              '-selected': field.id === selectedId,
+              '-selected': highlight,
               '-with-args': !_.isEmpty(field.args),
             }),
             onClick: () => {
-              dispatch(selectEdge(field.id));
+              // if query mode is on, on-clicks will help generate query 
+              if (this.props.inQueryMode) {
+                // store selected scalars, to be added to history when navigating to a new node
+                if (isScalarType(field.type)) {
+                  dispatch(storeEdges(field.id));
+                  dispatch(selectEdge(field.id));
+                } else {
+                  // navigate to the new node, store previously selected edges and new node in history
+                  dispatch(focusElement(field.type.id));
+                  dispatch(selectNode(field.type.id));
+                  dispatch(storeNodeAndEdges(field));
+                }
+              } else {
+                // if query mode is not on, resume normal operations
+                dispatch(selectEdge(field.id));
+              }
             },
           };
           if (field.id === selectedId) props.ref = 'selectedItem';
@@ -151,24 +184,27 @@ class TypeDoc extends React.Component<TypeDocProps> {
     if (!typeGraph) {
       return (
         <div className="type-doc">
-          <span className="loading"> Loading... </span>;
+          <span className="loading"> Loading... </span>
         </div>
       );
     }
 
     return (
       <div className="type-doc">
-        <DocNavigation />
+        <DocNavigation 
+          inQueryMode={this.props.inQueryMode} 
+          svg={this.props.svg}
+          toggleQueryMode={this.props.toggleQueryMode}/>
         <div className="scroll-area">
           {!selectedType ? (
             <TypeList typeGraph={typeGraph} />
           ) : (
-            <div>
-              <Description className="-doc-type" text={selectedType.description} />
-              {this.renderTypesDef(selectedType, typeGraph, selectedEdgeId)}
-              {this.renderFields(selectedType, selectedEdgeId)}
-            </div>
-          )}
+              <div>
+                <Description className="-doc-type" text={selectedType.description} />
+                {this.renderTypesDef(selectedType, typeGraph, selectedEdgeId)}
+                {this.renderFields(selectedType, selectedEdgeId)}
+              </div>
+            )}
         </div>
       </div>
     );

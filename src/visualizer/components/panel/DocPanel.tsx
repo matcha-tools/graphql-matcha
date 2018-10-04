@@ -3,10 +3,12 @@ import * as React from 'react';
 import './DocPanel.css';
 
 import TypeDoc from '../doc-explorer/TypeDoc';
-import TypeInfoPopover from './TypeInfoPopover';
+// import TypeInfoPopover from './TypeInfoPopover';
 
 export interface DocPanelProps {
   header: React.ReactChild;
+  toggleQueryMode: any;
+  inQueryMode: boolean;
 }
 
 export default class DocPanel extends React.Component<DocPanelProps> {
@@ -15,10 +17,13 @@ export default class DocPanel extends React.Component<DocPanelProps> {
       <div className="doc-panel">
         <div className="contents">
           {this.props.header}
-          <TypeDoc />
+          <TypeDoc 
+            toggleQueryMode={this.props.toggleQueryMode}
+            inQueryMode={this.props.inQueryMode}
+          />
           
         </div>
-        <TypeInfoPopover />
+        {/* <TypeInfoPopover /> */}
       </div>
     );
   }

@@ -21,6 +21,8 @@ export type StateInterface = {
     currentNodeId: string | null;
     currentEdgeId: string | null;
     scalar: string | null;
+    queryModeHistory: string[];  
+    multipleEdgeIds: string[];
   };
   graphView: {
     svg: string;
@@ -44,6 +46,8 @@ const initialState: StateInterface = {
     currentNodeId: null,
     currentEdgeId: null,
     scalar: null,
+    queryModeHistory: [], 
+    multipleEdgeIds: [],
   },
   graphView: {
     svg: null,
@@ -52,15 +56,6 @@ const initialState: StateInterface = {
   menuOpened: false,
   errorMessage: null,
 };
-
-function pushHistory(currentTypeId: string, previousState): string[] {
-  let previousTypesIds = previousState.selected.previousTypesIds;
-  let previousTypeId = previousState.selected.currentNodeId;
-
-  if (previousTypeId === null || previousTypeId === currentTypeId) return previousTypesIds;
-
-  if (_.last(previousTypesIds) !== previousTypeId) return [...previousTypesIds, previousTypeId];
-}
 
 export function rootReducer(previousState = initialState, action) {
   const { type } = action;
@@ -189,7 +184,169 @@ export function rootReducer(previousState = initialState, action) {
           typeinfo: action.payload,
         },
       };
+    case ActionTypes.STORE_NODE_AND_EDGES:
+      const edgeIds = previousState.selected.multipleEdgeIds;
+      const previousQueryHistory = previousState.selected.queryModeHistory;
+
+      let name = action.payload.name ;
+      // check for args, if it has arguments append '(args)' to the name
+      if (getArgs(action.payload)) name = `${name}(args)`;
+      
+      let payload = [name];
+      // check to see if the node has relay, if so append edges and node to the array
+      if (isRelay(action.payload)) payload = [name, "edges", "node"];
+
+
+      // Push into queryModeHistory if edges have been selected & ensure previous selection was a node
+      if (edgeIds.length > 0 && !Array.isArray(previousQueryHistory[previousQueryHistory.length - 1])) {
+        return {
+          ...previousState,
+          selected: {
+            ...previousState.selected,
+            // Push selected edgeIds on previous node before pushing new node into the queryModeHistory
+            queryModeHistory: [...previousQueryHistory, edgeIds,...payload],
+            // Initialize to an empty array when navigating to a new node
+            multipleEdgeIds: [] 
+          }
+        }  
+      } else {
+        // If no edges were selected in previous node, only push new node to the array
+        return {
+          ...previousState,
+          selected: {
+            ...previousState.selected,
+            queryModeHistory: [...previousState.selected.queryModeHistory, ...payload]
+          }
+        }  
+      }
+
+    case ActionTypes.STORE_EDGES:
+      const previousEdgeIds = previousState.selected.multipleEdgeIds.slice();
+      // do not allow duplicates 
+      if (!_.includes(previousEdgeIds, action.payload)) {
+        return {  
+          ...previousState,
+          selected: {
+            ...previousState.selected, 
+            multipleEdgeIds: [...previousEdgeIds, action.payload],
+          }
+        }
+      } else {
+        // remove reselected edges
+        _.pull(previousEdgeIds, action.payload);
+        return {  
+          ...previousState,
+          selected: {
+            ...previousState.selected, 
+            multipleEdgeIds: [...previousEdgeIds]
+          }
+        }
+      }
+    case ActionTypes.STORE_PENDING_EDGES:
+      // if user exits out of query mode or hides schema, grab all selected edges and push to queryModeHistory
+      const pendingEdgeIds = previousState.selected.multipleEdgeIds;
+      if (pendingEdgeIds.length > 0) {
+        return {
+          ...previousState,
+          selected: {
+            ...previousState.selected,
+            queryModeHistory: [...previousState.selected.queryModeHistory, pendingEdgeIds]
+          }
+        }
+      } else {
+        // add an empty array to the query history, indicating to user that fields need to be inputted
+        return {
+          ...previousState,
+          selected: {
+            ...previousState.selected,
+            queryModeHistory: [...previousState.selected.queryModeHistory, []]
+          }
+        }
+      }
+      //TODO clean up,
+    case ActionTypes.PREVIOUS_NODE_AND_EDGES:
+      // if on query mode, revert back to previous node/edges
+      const previousHistory = previousState.selected.queryModeHistory.slice();
+      const length  = previousHistory.length;
+      const lastElement = _.last(previousHistory);
+
+      // first check to see if length of array is 3 and the last element is a node, this will usually indicate start of query mode. 
+      if (lastElement === 'node' && length === 3) {
+        // reset to initial values for query mode
+        return {
+          ...previousState,
+          selected: {
+            ...previousState.selected,
+            queryModeHistory: [],
+            multipleEdgeIds: [],
+          }
+        }
+      } else {
+        // revert to previous node+edges
+        const { newElement, newLength } = revertQueryHistory(previousHistory,lastElement, length);
+        return {
+          ...previousState,
+          selected: {
+            ...previousState.selected,
+            queryModeHistory: previousHistory.slice(0, newLength),
+            multipleEdgeIds: newElement
+          }
+        }
+      }
     default:
       return previousState;
   }
+}
+
+
+
+// ***** HELPERS ***** //
+function getArgs(field:any): boolean {
+  if (Object.keys(field.args).length !== 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function pushHistory(currentTypeId: string, previousState): string[] {
+  let previousTypesIds = previousState.selected.previousTypesIds;
+  let previousTypeId = previousState.selected.currentNodeId;
+
+  if (previousTypeId === null || previousTypeId === currentTypeId) return previousTypesIds;
+
+  if (_.last(previousTypesIds) !== previousTypeId) return [...previousTypesIds, previousTypeId];
+}
+
+function isRelay(field:any): boolean {
+  if (field.relayType) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function revertQueryHistory(prevHistory: any, lastElement: any, length: number): { newElement: string, newLength: number } {
+  let newLength = length;
+  // If not a node, value is a type. Check the element before the type.
+  let indexHelper = 2;
+  let newElement = prevHistory[newLength - indexHelper];
+
+  // Set value accordingly to help locate the element in the array that needs to be verified.
+  if(lastElement === 'node'){
+     // Value set to 4 to check the element before the original node name, edges, and node at the end of the array.
+    indexHelper = 4;
+     newElement = prevHistory[newLength - indexHelper];
+  }
+   
+    
+  
+  // Check if element is an array of previously selected fields
+  Array.isArray(newElement) 
+    // if so, array will be stored as the new state's multipleEdgeIds and should no longer be in queryModeHistory. 
+    ? newLength -= indexHelper 
+    // else, intialize to empty array and navigate to that element in queryModeHistory
+    : (newLength -= indexHelper - 1, newElement = []);
+
+  return { newElement, newLength };
 }

@@ -70,6 +70,7 @@
 
 .graphiql-container .doc-explorer-contents {
   min-width: 300px;
+  width: 400px;
 }
 
 .graphiql-container .doc-type-description p:first-child ,

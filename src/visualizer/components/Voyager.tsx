@@ -18,7 +18,7 @@ import DocPanel from './panel/DocPanel';
 import { SVGRender } from './../graph/';
 import { Viewport } from './../graph/';
 
-import { changeSchema, changeDisplayOptions } from '../actions/';
+import { changeSchema, changeDisplayOptions, focusElement, selectNode, clearSelection, storePendingEdges } from '../actions/';
 
 import { typeNameToId } from '../introspection/';
 import { StateInterface } from '../reducers';
@@ -45,7 +45,9 @@ export interface VoyagerProps {
   hideSettings?: boolean;
   workerURI?: string;
   loadWorker?: WorkerCallback;
-
+  toggleQueryMode(): undefined;
+  queryModeHandler(store: Object): undefined;
+  inQueryMode: boolean;
   children?: React.ReactNode;
 }
 
@@ -68,15 +70,20 @@ export default class Voyager extends React.Component<VoyagerProps> {
     hideSettings: PropTypes.bool,
     workerURI: PropTypes.string,
     loadWorker: PropTypes.func,
+    toggleQueryMode: PropTypes.func,
+    queryModeHandler: PropTypes.func,
+    inQueryMode: PropTypes.bool
   };
-
+  
   viewport: Viewport;
   renderer: SVGRender;
   store: Store<StateInterface>;
-
+  unsubscribe: Function;
+  
   constructor(props) {
     super(props);
     this.store = configureStore();
+    this.unsubscribe = () => {};
   }
 
   componentDidMount() {
@@ -93,7 +100,6 @@ export default class Voyager extends React.Component<VoyagerProps> {
   }
 
   updateIntrospection() {
-    console.log('UPDATING INTRO');
     let displayOpts = normalizeDisplayOptions(this.props.displayOptions);
 
     this.store.dispatch(changeSchema(this.props.introspection, displayOpts));
@@ -113,6 +119,28 @@ export default class Voyager extends React.Component<VoyagerProps> {
       this.viewport.resize();
     }
   }
+  
+  shouldComponentUpdate(nextProps: VoyagerProps) {
+    if (nextProps.inQueryMode && !this.props.inQueryMode) {
+      this.unsubscribe = this.store.subscribe(() => {
+        const { selected } = this.store.getState();
+        const storedSelections = { history:selected.queryModeHistory, currentFields: selected.multipleEdgeIds, currentNodeId: selected.currentNodeId};
+        return this.props.queryModeHandler(storedSelections);
+      });
+      //TODO abstract this into getRootFromProps()
+      let root = 'TYPE::' + nextProps.introspection["_queryType"].name;
+      this.store.dispatch(focusElement(root));
+      this.store.dispatch(selectNode(root));
+    } else if (!nextProps.inQueryMode && this.props.inQueryMode) {
+      this.unsubscribe();
+      //TODO check to see if refering to the entire svg via "graph0" is valid for all schema.
+      this.store.dispatch(focusElement("graph0"));
+      // store all pending edges in query history before clearing
+      this.store.dispatch(storePendingEdges());
+      this.store.dispatch(clearSelection());
+    }
+    return true;
+  }
 
   render() {
     let { hideDocs = false, hideSettings } = this.props;
@@ -127,11 +155,16 @@ export default class Voyager extends React.Component<VoyagerProps> {
       <Provider store={this.store}>
         <MuiThemeProvider theme={theme}>
           <div className="graphql-voyager">
-            {!hideDocs && <DocPanel header={panelHeader} />}
+            {!hideDocs && <DocPanel 
+              header={panelHeader} 
+              toggleQueryMode={this.props.toggleQueryMode} 
+              inQueryMode={this.props.inQueryMode}/>}
             {!hideSettings && <Settings />}
-            <div ref="viewport" className="viewport" />
+            <div ref="viewport" className="viewport">
+              <LoadingAnimation />
+            </div>
             <ErrorBar />
-            <LoadingAnimation />
+            
           </div>
         </MuiThemeProvider>
       </Provider>
@@ -142,11 +175,6 @@ export default class Voyager extends React.Component<VoyagerProps> {
     return props.children || null;
   };
 }
-
-// Duck-type promise detection.
-// function isPromise(value) {
-//   return typeof value === 'object' && typeof value.then === 'function';
-// }
 
 function normalizeDisplayOptions(opts: VoyagerDisplayOptions = {}) {
   return {

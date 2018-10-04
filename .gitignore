@@ -2,3 +2,4 @@
 /cypress/integration/examples/
 /cypress/fixtures/
 /cypress/support/
+/build/*

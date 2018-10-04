@@ -8,7 +8,7 @@
     "test:unit": "mocha cypress/integration/*.built.test.js",
     "test:build": "webpack --config cypress/webpack.test.config.js ./cypress/integration/parser.unit.test.ts",
     "start": "webpack-dev-server --config build/webpack.config.js --hot --inline --mode=development",
-    "build": "webpack --config build/webpack.config.js --mode=development",
+    "build": "webpack --config ./webpack.config.js --mode=development",
     "cypress": "cypress open",
     "cypress:run": "cypress run --browser chrome"
   },
@@ -70,6 +70,7 @@
     "postcss-loader": "^3.0.0",
     "postcss-variables-loader": "^5.0.1",
     "react-svg-loader": "^2.1.0",
+    "supertest": "^3.3.0",
     "svg-as-symbol-loader": "^1.2.1",
     "ts-loader": "^5.1.1",
     "typescript": "^3.0.3",

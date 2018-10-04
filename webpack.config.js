@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const root = require("./helpers").root;
-const VERSION = JSON.stringify(require("../package.json").version);
+const VERSION = JSON.stringify(require("./package.json").version);
 
 module.exports = {
     mode: "development",

@@ -26,11 +26,7 @@ module.exports = {
     },
     output: {
       path: root("build"),
-<<<<<<< HEAD
-      filename: "[name].js",
-=======
       filename: "bundle.js",
->>>>>>> master
       sourceMapFilename: "[name].[id].map"
     },
     module: {

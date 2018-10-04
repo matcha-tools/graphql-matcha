@@ -4,11 +4,6 @@
   "description": "create tests, visualize schema",
   "main": "index.js",
   "scripts": {
-<<<<<<< HEAD
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --config build/webpack.config.js --hot --inline --mode=development",
-    "build": "webpack --config build/webpack.config.js --mode=development"
-=======
     "test": "npm run test:build && npm run test:unit && rm cypress/integration/unit.built.test.js && rm cypress/integration/index.html",
     "test:unit": "mocha cypress/integration/*.built.test.js",
     "test:build": "webpack --config cypress/webpack.test.config.js ./cypress/integration/parser.unit.test.ts",
@@ -16,7 +11,6 @@
     "build": "webpack --config build/webpack.config.js --mode=development",
     "cypress": "cypress open",
     "cypress:run": "cypress run --browser chrome"
->>>>>>> master
   },
   "repository": {
     "type": "git",

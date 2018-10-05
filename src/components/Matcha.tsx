@@ -4,7 +4,6 @@ import { GraphiQL } from "./queryRunner/components/GraphiQL";
 import { CollapsibleVisualizer } from "./CollapsibleVisualizer";
 import { parseQueryStack } from "../utils/parsers";
 import { debounce } from "lodash";
-import { GraphQLSchema } from "graphql";
 
 interface MatchaStateTypes {
   inQueryMode: boolean;

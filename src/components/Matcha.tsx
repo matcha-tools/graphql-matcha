@@ -1,23 +1,32 @@
 import * as React from "react";
 import * as helpers from "../helpers";
-import { GraphiQL } from "../queryRunner/components/GraphiQL";
+import { GraphiQL } from "./queryRunner/components/GraphiQL";
 import { CollapsibleVisualizer } from "./CollapsibleVisualizer";
 import { parseQueryStack } from "../utils/parsers";
 import { debounce } from "lodash";
+import { GraphQLSchema } from "graphql";
 
 interface MatchaStateTypes {
   inQueryMode: boolean;
   queryStr: string;
+  schema?: GraphQLSchema;
 }
 
 export default class Matcha extends React.Component<null, MatchaStateTypes> {
+  schema: any;
 
   constructor(props) {
     super(props);
     this.state = {
       inQueryMode: false,
-      queryStr: ""
+      queryStr: "",
+      schema: null
     };
+
+    fetch("http://localhost:3000/matcha/schema")
+      .then(res => {console.log(res); return res.json()})
+      .then(schema =>{console.log(schema); console.log(typeof schema);const gqlSchema = new GraphQLSchema(schema); this.setState({ schema:gqlSchema })})
+      .catch(err=>console.error(err));
 
     this.toggleQueryMode = this.toggleQueryMode.bind(this);
     this.endQueryMode = this.endQueryMode.bind(this);
@@ -31,21 +40,21 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
   }
 
   endQueryMode() {
-    this.setState({  inQueryMode: false });
+    this.setState({ inQueryMode: false });
   }
 
   queryModeHandler(connections): void {
     if (this.state) {
       // we need to exit out of query mode if query mode is enabled and nothing is selected
-        // spoke with sean about this at 11PM - 10/1/18 - Jon
+      // spoke with sean about this at 11PM - 10/1/18 - Jon
       if (!connections.history.length) return;
       let queryStack = connections.history;
       if (connections.currentFields && connections.currentFields.length) {
         queryStack = queryStack.concat([connections.currentFields]);
       }
       const queryStr = parseQueryStack(queryStack);
-      //TODO make sure we are checking for diffs 
-      if(queryStr) this.setState({queryStr});
+      //TODO make sure we are checking for diffs
+      if (queryStr) this.setState({ queryStr });
     }
   }
 
@@ -57,6 +66,7 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
           endQueryMode={this.endQueryMode}
           queryModeHandler={this.queryModeHandler}
           inQueryMode={this.state.inQueryMode}
+          schema={this.state.schema}
         />
         <div id="query-runner">
           <GraphiQL

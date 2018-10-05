@@ -1,6 +1,6 @@
 import Collapsible from "react-collapsible";
 import * as React from "react";
-import Viz from "../visualizer";
+import Viz from "./visualizer";
 
 export const CollapsibleVisualizer = props => {
   const closedTrigger = (
@@ -26,6 +26,7 @@ export const CollapsibleVisualizer = props => {
           queryModeHandler={props.queryModeHandler}
           toggleQueryMode={props.toggleQueryMode}
           inQueryMode={props.inQueryMode}
+          schema={props.schema}
         />
       </div>
     </Collapsible>

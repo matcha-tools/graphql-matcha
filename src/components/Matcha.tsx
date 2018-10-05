@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as helpers from "../helpers";
-import { GraphiQL } from "../queryRunner/components/GraphiQL";
+import { GraphiQL } from "./queryRunner/components/GraphiQL";
 import { CollapsibleVisualizer } from "./CollapsibleVisualizer";
 import { parseQueryStack } from "../utils/parsers";
 import { debounce } from "lodash";

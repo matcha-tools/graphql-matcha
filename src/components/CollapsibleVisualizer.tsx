@@ -1,6 +1,6 @@
 import Collapsible from "react-collapsible";
 import * as React from "react";
-import Viz from "../visualizer";
+import Viz from "./visualizer";
 
 export const CollapsibleVisualizer = props => {
   const closedTrigger = (

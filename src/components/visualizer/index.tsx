@@ -2,13 +2,13 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import * as React from "react";
 import { theme } from "./components/MUITheme";
 import { Voyager } from "./components";
-import { GraphQLSchema } from "graphql";
+// import { GraphQLSchema } from "graphql";
 
 export interface VizProps {
   queryModeHandler(): undefined;
   toggleQueryMode(): undefined; 
   inQueryMode: boolean;
-  schema: GraphQLSchema;
+  schema: any;
 }
 export default class Viz extends React.Component<VizProps> {
   constructor(props) {

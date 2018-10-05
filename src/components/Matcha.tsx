@@ -9,7 +9,7 @@ import { GraphQLSchema } from "graphql";
 interface MatchaStateTypes {
   inQueryMode: boolean;
   queryStr: string;
-  schema?: GraphQLSchema;
+  schema?: any;
 }
 
 export default class Matcha extends React.Component<null, MatchaStateTypes> {
@@ -25,7 +25,7 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
 
     fetch("http://localhost:3000/matcha/schema")
       .then(res => {console.log(res); return res.json()})
-      .then(schema =>{console.log(schema); console.log(typeof schema);const gqlSchema = new GraphQLSchema(schema); this.setState({ schema:gqlSchema })})
+      .then(schema =>{console.log(schema); console.log(typeof schema); this.setState({ schema })})
       .catch(err=>console.error(err));
 
     this.toggleQueryMode = this.toggleQueryMode.bind(this);

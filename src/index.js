@@ -1,9 +1,5 @@
 import * as React from "react";
 import { render } from "react-dom";
-import Matcha from "./components/Matcha.tsx";
+import Matcha from "./components/Matcha";
 
-
-export default function start(schema){
-  render(<Matcha schema={schema}/>, document.getElementById("root"));
-}
-
+render(<Matcha />, document.getElementById("root"));

@@ -1,5 +1,5 @@
-const config = require("../build/webpack.config.js");
-const root = require("../build/helpers").root;
+const config = require("../webpack.config.js");
+const root = require("../helpers").root;
 config.target = "node";
 // delete config.output;
 config.output = {

@@ -16,11 +16,8 @@ function matchaWrap(schema) {
       case "/voyager.worker.js":
         return res.sendFile(path.join(__dirname, "../build/voyager.worker.js"));
       case "/schema":
-        console.log('hit /schema');
-        // res.setHeader("Content-Type","application/json");
         return res.send(schema);
       default:
-        console.log(req.path);
         res.sendStatus(404);
     }
   }

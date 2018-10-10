@@ -1,6 +1,6 @@
-import { storeEdges, selectNode, clearSelection } from '../../src/visualizer/actions/viewport.ts';
-import {rootReducer } from '../../src/visualizer/reducers/index';
-import * as ActionTypes from '../../src/visualizer/actions/';
+import { storeEdges, selectNode, clearSelection } from '../../src/components/visualizer/actions/viewport.ts';
+import {rootReducer } from '../../src/components/visualizer/reducers/index';
+import * as ActionTypes from '../../src/components/visualizer/actions/';
 import {expect} from 'chai';
 
 describe("Actions unit Testing", () => {

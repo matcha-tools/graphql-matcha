@@ -238,6 +238,7 @@ function getSchema(introspection: any, sortByAlphabet: boolean, skipRelay: boole
   }
 
   introspection = introspectionFromSchema(schema, { descriptions: true });
+  console.log('INTRO => ', introspection);
   let simpleSchema = simplifySchema(introspection.__schema);
 
   assignTypesAndIDs(simpleSchema);

@@ -1,31 +1,38 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import * as _ from 'lodash';
+import * as React from "react";
+import * as PropTypes from "prop-types";
+import * as _ from "lodash";
 
-import { Provider } from 'react-redux';
-import { Store } from 'redux';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import { Provider } from "react-redux";
+import { Store } from "redux";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 
-import { configureStore } from '../redux';
+import { configureStore } from "../redux";
 
-import './Voyager.css';
-import './viewport.css';
+import "./Voyager.css";
+import "./viewport.css";
 
-import ErrorBar from './utils/ErrorBar';
-import LoadingAnimation from './utils/LoadingAnimation';
-import DocPanel from './panel/DocPanel';
+import ErrorBar from "./utils/ErrorBar";
+import LoadingAnimation from "./utils/LoadingAnimation";
+import DocPanel from "./panel/DocPanel";
 
-import { SVGRender } from './../graph/';
-import { Viewport } from './../graph/';
+import { SVGRender } from "./../graph/";
+import { Viewport } from "./../graph/";
 
-import { changeSchema, changeDisplayOptions, focusElement, selectNode, clearSelection, storePendingEdges } from '../actions/';
+import {
+  changeSchema,
+  changeDisplayOptions,
+  focusElement,
+  selectNode,
+  clearSelection,
+  storePendingEdges
+} from "../actions/";
 
-import { typeNameToId } from '../introspection/';
-import { StateInterface } from '../reducers';
+import { typeNameToId } from "../introspection/";
+import { StateInterface } from "../reducers";
 
-import { WorkerCallback } from '../utils/types';
-import Settings from './settings/Settings';
-import { theme } from './MUITheme';
+import { WorkerCallback } from "../utils/types";
+import Settings from "./settings/Settings";
+import { theme } from "./MUITheme";
 
 type IntrospectionProvider = (query: string) => Promise<any>;
 
@@ -56,7 +63,7 @@ export default class Voyager extends React.Component<VoyagerProps> {
     introspection: PropTypes.oneOfType([
       PropTypes.func.isRequired,
       PropTypes.object.isRequired,
-      PropTypes.bool.isRequired,
+      PropTypes.bool.isRequired
     ]).isRequired,
     _schemaPresets: PropTypes.object,
     displayOptions: PropTypes.shape({
@@ -64,7 +71,7 @@ export default class Voyager extends React.Component<VoyagerProps> {
       skipRelay: PropTypes.bool,
       sortByAlphabet: PropTypes.bool,
       hideRoot: PropTypes.bool,
-      showLeafFields: PropTypes.bool,
+      showLeafFields: PropTypes.bool
     }),
     hideDocs: PropTypes.bool,
     hideSettings: PropTypes.bool,
@@ -74,12 +81,12 @@ export default class Voyager extends React.Component<VoyagerProps> {
     queryModeHandler: PropTypes.func,
     inQueryMode: PropTypes.bool
   };
-  
+
   viewport: Viewport;
   renderer: SVGRender;
   store: Store<StateInterface>;
   unsubscribe: Function;
-  
+
   constructor(props) {
     super(props);
     this.store = configureStore();
@@ -88,8 +95,14 @@ export default class Voyager extends React.Component<VoyagerProps> {
 
   componentDidMount() {
     // init viewport and svg-renderer
-    this.renderer = new SVGRender(this.store, this.props.workerURI, this.props.loadWorker);
-    this.viewport = new Viewport(this.store, this.refs['viewport'] as HTMLElement);
+    this.renderer = new SVGRender(
+      this.store,
+      this.props.workerURI,
+      this.props.loadWorker
+    );
+    this.viewport = new Viewport(this.store, this.refs[
+      "viewport"
+    ] as HTMLElement);
 
     this.updateIntrospection();
   }
@@ -119,16 +132,20 @@ export default class Voyager extends React.Component<VoyagerProps> {
       this.viewport.resize();
     }
   }
-  
+
   shouldComponentUpdate(nextProps: VoyagerProps) {
     if (nextProps.inQueryMode && !this.props.inQueryMode) {
       this.unsubscribe = this.store.subscribe(() => {
         const { selected } = this.store.getState();
-        const storedSelections = { history:selected.queryModeHistory, currentFields: selected.multipleEdgeIds, currentNodeId: selected.currentNodeId};
+        const storedSelections = {
+          history: selected.queryModeHistory,
+          currentFields: selected.multipleEdgeIds,
+          currentNodeId: selected.currentNodeId
+        };
         return this.props.queryModeHandler(storedSelections);
       });
       //TODO abstract this into getRootFromProps()
-      let root = 'TYPE::' + nextProps.introspection["_queryType"].name;
+      let root = "TYPE::" + nextProps.introspection["_queryType"].name;
       this.store.dispatch(focusElement(root));
       this.store.dispatch(selectNode(root));
     } else if (!nextProps.inQueryMode && this.props.inQueryMode) {
@@ -148,23 +165,25 @@ export default class Voyager extends React.Component<VoyagerProps> {
     const children = React.Children.toArray(this.props.children);
 
     const panelHeader = children.find(
-      (child: React.ReactElement<any>) => child.type === Voyager.PanelHeader,
+      (child: React.ReactElement<any>) => child.type === Voyager.PanelHeader
     );
 
     return (
       <Provider store={this.store}>
         <MuiThemeProvider theme={theme}>
           <div className="graphql-voyager">
-            {!hideDocs && <DocPanel 
-              header={panelHeader} 
-              toggleQueryMode={this.props.toggleQueryMode} 
-              inQueryMode={this.props.inQueryMode}/>}
+            {!hideDocs && (
+              <DocPanel
+                header={panelHeader}
+                toggleQueryMode={this.props.toggleQueryMode}
+                inQueryMode={this.props.inQueryMode}
+              />
+            )}
             {!hideSettings && <Settings />}
             <div ref="viewport" className="viewport">
               <LoadingAnimation />
             </div>
             <ErrorBar />
-            
           </div>
         </MuiThemeProvider>
       </Provider>
@@ -179,6 +198,6 @@ export default class Voyager extends React.Component<VoyagerProps> {
 function normalizeDisplayOptions(opts: VoyagerDisplayOptions = {}) {
   return {
     ...opts,
-    rootTypeId: opts.rootType && typeNameToId(opts.rootType),
+    rootTypeId: opts.rootType && typeNameToId(opts.rootType)
   };
 }

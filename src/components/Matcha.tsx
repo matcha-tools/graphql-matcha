@@ -4,11 +4,12 @@ import { GraphiQL } from "./queryRunner/components/GraphiQL";
 import { CollapsibleVisualizer } from "./CollapsibleVisualizer";
 import { parseQueryStack } from "../utils/parsers";
 import { debounce } from "lodash";
+import {introspectionQuery, buildClientSchema, GraphQLSchema} from "graphql";
 
 interface MatchaStateTypes {
   inQueryMode: boolean;
   queryStr: string;
-  schema?: any;
+  schema?: GraphQLSchema;
 }
 
 export default class Matcha extends React.Component<null, MatchaStateTypes> {
@@ -25,12 +26,19 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
     this.toggleQueryMode = this.toggleQueryMode.bind(this);
     this.endQueryMode = this.endQueryMode.bind(this);
     this.queryModeHandler = this.queryModeHandler.bind(this);
+    
   }
 
   componentDidMount(){
-    fetch("http://localhost:3000/matcha/schema")
-    .then(res => {console.log(res); return res.json()})
-    .then(schema =>{console.log(schema); console.log(typeof schema); this.setState({ schema })})
+    this.getIntroSpectionThenRender();
+  }
+  
+  
+  getIntroSpectionThenRender(){
+    fetch(`http://localhost:3000/graphql?query=${introspectionQuery}`)
+    .then(res => res.json())
+    .then(introspectionResponse => buildClientSchema(introspectionResponse.data))
+    .then(clientSchema => this.setState({schema:clientSchema}))
     .catch(err=>console.error(err));
   }
 
@@ -44,7 +52,7 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
     this.setState({ inQueryMode: false });
   }
 
-  queryModeHandler(connections): void {
+  queryModeHandler(connections: { history: string[][], currentFields: string[]}): void {
     if (this.state) {
       // we need to exit out of query mode if query mode is enabled and nothing is selected
       // spoke with sean about this at 11PM - 10/1/18 - Jon
@@ -54,7 +62,6 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
         queryStack = queryStack.concat([connections.currentFields]);
       }
       const queryStr = parseQueryStack(queryStack);
-      //TODO make sure we are checking for diffs
       if (queryStr) this.setState({ queryStr });
     }
   }

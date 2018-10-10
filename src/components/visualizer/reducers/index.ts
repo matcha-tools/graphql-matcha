@@ -21,7 +21,7 @@ export type StateInterface = {
     currentNodeId: string | null;
     currentEdgeId: string | null;
     scalar: string | null;
-    queryModeHistory: string[];  
+    queryModeHistory: string[][];  
     multipleEdgeIds: string[];
   };
   graphView: {
@@ -270,8 +270,8 @@ export function rootReducer(previousState = initialState, action) {
       const length  = previousHistory.length;
       const lastElement = _.last(previousHistory);
 
-      // first check to see if length of array is 3 and the last element is a node, this will usually indicate start of query mode. 
-      if (lastElement === 'node' && length === 3) {
+      // TODO: verify root node always root 
+      if(previousState.graphView.focusedId === "TYPE::Root") {
         // reset to initial values for query mode
         return {
           ...previousState,

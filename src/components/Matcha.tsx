@@ -22,14 +22,16 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
       schema: null
     };
 
-    fetch("http://localhost:3000/matcha/schema")
-      .then(res => {console.log(res); return res.json()})
-      .then(schema =>{console.log(schema); console.log(typeof schema); this.setState({ schema })})
-      .catch(err=>console.error(err));
-
     this.toggleQueryMode = this.toggleQueryMode.bind(this);
     this.endQueryMode = this.endQueryMode.bind(this);
     this.queryModeHandler = this.queryModeHandler.bind(this);
+  }
+
+  componentDidMount(){
+    fetch("http://localhost:3000/matcha/schema")
+    .then(res => {console.log(res); return res.json()})
+    .then(schema =>{console.log(schema); console.log(typeof schema); this.setState({ schema })})
+    .catch(err=>console.error(err));
   }
 
   toggleQueryMode() {

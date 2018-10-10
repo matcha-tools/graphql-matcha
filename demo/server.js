@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 
 app.use('/graphql', graphqlHTTP(() => ({ schema, graphiql: false })));
-app.use('/matcha', matcha({schema}))
+app.use('/matcha', matcha())
 
 app.listen(PORT, () => {
   console.log(`Server started at port ${PORT}`);

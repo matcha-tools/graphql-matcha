@@ -456,6 +456,21 @@ main {
   display: flex;
 }
 
+.topBarWrap .logoWrap {
+  height:23px;
+  background: #132121;
+  border-bottom: 1px solid #d0d0d0;
+  border-top: 1px solid #d0d0d0;
+}
+
+.logoWrap .logo {
+  margin-top: 3px;
+  margin-right: 25px;
+  color: white;
+  font-size: 15px;
+  float: right;
+}
+
 .graphiql-container .historyShow {
   background: -webkit-gradient(
     linear,

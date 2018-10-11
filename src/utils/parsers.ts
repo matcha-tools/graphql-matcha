@@ -9,10 +9,10 @@ export function parseQueryStack(queryArray: Array<any>): string {
   queryStr = braceRemainingElements(newQueryArray, queryStr);
   
   //TODO use prettier for production, not dev
-  // const prettier = require("prettier/standalone");
-  // const plugins = [require("prettier/parser-graphql")];
-  // const formattedQstr = prettier.format(queryString, { parser: "graphql", plugins });
-  return queryStr;
+  const prettier = require("prettier/standalone");
+  const plugins = [require("prettier/parser-graphql")];
+  const formattedQstr = prettier.format(queryStr, { parser: "graphql", plugins });
+  return formattedQstr;
 }
 
 function appendFragmentIfNoFields(queryArray: Array<any>): Array<any>{

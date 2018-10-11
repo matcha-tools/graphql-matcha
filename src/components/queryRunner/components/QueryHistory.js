@@ -95,7 +95,7 @@ export class QueryHistory extends React.Component {
   render() {
     const downloadButton = {
       display: this.selectedForTestingStore.items.length === 0 ? "none" : "",
-      marginLeft: "10px"
+      marginLeft: "2px"
     };
     const deleteAllButton = {
       display: (this.historyStore.items.length === 0) ? "none" : "",
@@ -109,17 +109,17 @@ export class QueryHistory extends React.Component {
         </div>
         <div className="history-contents">
           <div className="history-contents-buttons">
-            <button
-              className="history-contents-download"
-              onClick={this.downloadTestFile}
-              style={downloadButton}>
-                Download Tests
-            </button>
             <button 
               className="history-contents-deleteAll" 
               onClick={this._deleteAll} 
               style={deleteAllButton}>
                 Delete All
+            </button>
+            <button
+              className="history-contents-download"
+              onClick={this.downloadTestFile}
+              style={downloadButton}>
+                Download Tests
             </button>
           </div>
           {queryNodes}

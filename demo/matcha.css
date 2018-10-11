@@ -27,24 +27,69 @@ main {
   height: 60vh;
 }
 
+/* .vis-control .loader{
+  position: absolute;
+  margin-top: -50px;
+  margin-left: -49px;
+} */
+
 .vis-control button{
+  font-size: 14px;
+  background: #1f61a0;
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2),
+    0 1px 0 #1d3749, inset 0 1px #1d3749;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2),
+    0 1px 0 #1d3749, inset 0 1px #1d3749;
   color: white;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 5px;
+  padding: 2px 5px 2px;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px;
+  border:none;
+  /* color: white;
   font: 14px 'helvetica neue', helvetica, arial, sans-serif;
   background-color: #42a0dd;
   border-radius: 2px;
   line-height: 24px;
-  border: 1px solid #999;
+  -webkit-box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2),
+  0 1px 0 #1d3749, inset 0 1px #1d3749;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2),
+  0 1px 0 #1d3749, inset 0 1px #1d3749;
+  border: none;
+  align-items: center;
+  margin-left: 30px; */
+}
+
+.vis-control button:active {
+  background: #1d3749;
+  -webkit-box-shadow: 0 1px 0 #1d3749,
+  inset 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 1px 1px 1px rgba(0, 0, 0, 0.12),
+  inset 0 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 0 #1d3749,
+  inset 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 1px 1px 1px rgba(0, 0, 0, 0.12),
+  inset 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .trigger-open {
   border-bottom: 1px solid black;
-  transition: all 1s ease; 
+  transition: all 1s ease;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: 'helvetica neue', helvetica, arial, sans-serif;
 }
 
 .trigger-close {
   background:#132121;
   border-bottom: 1px solid white;
   transition: all 1s ease;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: 'helvetica neue', helvetica, arial, sans-serif;
 }
 
 .Collapsible {
@@ -58,12 +103,32 @@ main {
 }
 
 .doc-navigation {
+  max-height: 12px;
   border-bottom: 1px solid white;
   background: #132121;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .scroll-area {
   background: #132121;
+}
+
+.type-doc {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin-top: 0px;
+  overflow: hidden;
+  min-height: 10px;
 }
 
 
@@ -349,6 +414,8 @@ main {
 }
 
 .graphiql-container .topBar {
+  margin-left: -4px;
+  padding-left:10px;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
@@ -373,9 +440,9 @@ main {
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  height: 34px;
+  height: 12px;
   overflow-y: visible;
-  padding: 7px 14px 6px;
+  padding: 5px 14px 6px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -488,11 +555,12 @@ main {
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  height: 30px;
+  height: 27px;
   position: relative;
 }
 
 .graphiql-container .variable-editor-title {
+  height: 11px;
   background: #132121;
   border-bottom: 1px solid #d6d6d6;
   border-top: 1px solid #e0e0e0;
@@ -561,25 +629,17 @@ main {
 }
 
 .graphiql-container .toolbar-button {
-  background: #fdfdfd;
-  background: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    from(#f9f9f9),
-    to(#ececec)
-  );
-  background: linear-gradient(#f9f9f9, #ececec);
+  background: #1f61a0;
   border-radius: 3px;
   -webkit-box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2),
-    0 1px 0 rgba(255, 255, 255, 0.7), inset 0 1px #fff;
+    0 1px 0 #1d3749, inset 0 1px #1d3749;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2),
-    0 1px 0 rgba(255, 255, 255, 0.7), inset 0 1px #fff;
-  color: #555;
+    0 1px 0 #1d3749, inset 0 1px #1d3749;
+  color: white;
   cursor: pointer;
   display: inline-block;
   margin: 0 5px;
-  padding: 3px 11px 5px;
+  padding: 2px 5px 2px;
   text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -587,7 +647,15 @@ main {
 }
 
 .graphiql-container .toolbar-button:active {
-  background: -webkit-gradient(
+  background: #1d3749;
+  -webkit-box-shadow: 0 1px 0 #1d3749,
+  inset 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 1px 1px 1px rgba(0, 0, 0, 0.12),
+  inset 0 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 0 #1d3749,
+  inset 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 1px 1px 1px rgba(0, 0, 0, 0.12),
+  inset 0 0 5px rgba(0, 0, 0, 0.1);
+  
+  /* background: -webkit-gradient(
     linear,
     left top,
     left bottom,
@@ -600,18 +668,12 @@ main {
     inset 0 0 5px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7),
     inset 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 1px 1px 1px rgba(0, 0, 0, 0.12),
-    inset 0 0 5px rgba(0, 0, 0, 0.1);
+    inset 0 0 5px rgba(0, 0, 0, 0.1); */
 }
 
 .graphiql-container .toolbar-button.error {
-  background: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    from(#fdf3f3),
-    to(#e6d6d7)
-  );
-  background: linear-gradient(#fdf3f3, #e6d6d7);
+  background: #1d3749;
+  background: #1d3749;
   color: #b00;
 }
 
@@ -636,30 +698,31 @@ main {
 }
 
 .graphiql-container .execute-button-wrap {
-  height: 34px;
+  height:34px;
   margin: 0 14px 0 28px;
   position: relative;
 }
 
 .graphiql-container .execute-button {
-  background: -webkit-gradient(
+  /* background: -webkit-gradient(
     linear,
     left top,
     left bottom,
     from(#fdfdfd),
     to(#d2d3d6)
-  );
-  background: linear-gradient(#fdfdfd, #d2d3d6);
-  border-radius: 17px;
+  ); */
+  /* background: #42a0dd; */
+  border-radius: 0px;
   border: 1px solid rgba(0, 0, 0, 0.25);
-  -webkit-box-shadow: 0 1px 0 #fff;
-  box-shadow: 0 1px 0 #fff;
   cursor: pointer;
-  fill: #444;
-  height: 34px;
+  fill: white;
+  height: 30px;
   margin: 0;
   padding: 0;
   width: 34px;
+  background: transparent;
+  border-right: 1px solid white;
+  border-left: 1px solid white;
 }
 
 .graphiql-container .execute-button svg {
@@ -667,17 +730,17 @@ main {
 }
 
 .graphiql-container .execute-button:active {
-  background: -webkit-gradient(
+  /* background: -webkit-gradient(
     linear,
     left top,
     left bottom,
     from(#e6e6e6),
     to(#c3c3c3)
-  );
-  background: linear-gradient(#e6e6e6, #c3c3c3);
-  -webkit-box-shadow: 0 1px 0 #fff, inset 0 0 2px rgba(0, 0, 0, 0.2),
+  ); */
+  background: #1d3749;
+  -webkit-box-shadow: 0 1px 0 #1d3749, inset 0 0 2px rgba(0, 0, 0, 0.2),
     inset 0 0 6px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 0 #fff, inset 0 0 2px rgba(0, 0, 0, 0.2),
+  box-shadow: 0 1px 0 #1d3749, inset 0 0 2px rgba(0, 0, 0, 0.2),
     inset 0 0 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -1502,14 +1565,14 @@ span.CodeMirror-selectedtext {
   border-top: 1px solid #d3d6db;
   border-right: 1px solid #d3d6db;
   color: white;
-  background: #132121;
+  background:#132121;
   cursor: default;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   height: 35px;
   line-height: 14px;
-  padding: 8px 8px 5px;
+  padding: 5px 8px 5px;
   position: relative;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -1524,8 +1587,7 @@ span.CodeMirror-selectedtext {
   flex: 1;
   font-weight: bold;
   overflow-x: hidden;
-  padding: 10px 0 10px 10px;
-  text-align: center;
+  padding: 0px 0 10px 10px;
   text-overflow: ellipsis;
   -webkit-user-select: initial;
   -moz-user-select: initial;
@@ -1577,9 +1639,63 @@ span.CodeMirror-selectedtext {
   padding: 20px 15px;
   position: absolute;
   right: 0;
-  top: 47px;
+  top: 23px;
   color:white;
   margin-top: 1px;
+}
+
+.history-contents-buttons .history-contents-download {
+  background: #1f61a0;
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2),
+    0 1px 0 #1d3749, inset 0 1px #1d3749;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2),
+    0 1px 0 #1d3749, inset 0 1px #1d3749;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 10px;
+  padding: 2px 5px 2px;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px;
+  border: none;
+}
+
+.history-contents-buttons .history-contents-download:active {
+  background: #1d3749;
+  -webkit-box-shadow: 0 1px 0 #1d3749,
+  inset 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 1px 1px 1px rgba(0, 0, 0, 0.12),
+  inset 0 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 0 #1d3749,
+  inset 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 1px 1px 1px rgba(0, 0, 0, 0.12),
+  inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.history-contents-buttons .history-contents-deleteAll {
+  background: rgb(34, 106, 173);
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 10px;
+  padding: 2px 5px 2px;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px;
+  border: none;
+}
+
+.history-contents-buttons .history-contents-deleteAll:active {
+  background: #1d3749;
+  -webkit-box-shadow: 0 1px 0 #1d3749,
+  inset 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 1px 1px 1px rgba(0, 0, 0, 0.12),
+  inset 0 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 0 #1d3749,
+  inset 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 1px 1px 1px rgba(0, 0, 0, 0.12),
+  inset 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .graphiql-container .doc-explorer-contents {
@@ -1828,6 +1944,7 @@ span.CodeMirror-selectedtext {
 }
 
 .graphiql-container .history-contents-buttons {
+  height: 9px;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;

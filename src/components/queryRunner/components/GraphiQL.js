@@ -312,6 +312,9 @@ export class GraphiQL extends React.Component {
               />
               {toolbar}
             </div>
+            <div className="logoWrap">
+              <h1 className="logo">GraphQL-Matcha</h1>
+            </div>
           </div>
           <div
             ref={n => {

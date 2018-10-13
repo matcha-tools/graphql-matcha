@@ -1,7 +1,7 @@
 const path = require("path");
 
-function matchaWrap(schema) {
-  function matcha(req, res, next) {
+function matcha() {
+  function route(req, res) {
     const html = getIndexHTMLString();
     switch (req.path) {
       case "/":
@@ -10,19 +10,17 @@ function matchaWrap(schema) {
       case "/visualizer.css":
         return res.sendFile(path.join(__dirname, "../build/visualizer.css"));
       case "/matcha.css":
-        return res.sendFile(path.join(__dirname, "matcha.css"));
+        return res.sendFile(path.join(__dirname, "../build/matcha.css"));
       case "/bundle.js":
         return res.sendFile(path.join(__dirname, "../build/bundle.js"));
       case "/voyager.worker.js":
         return res.sendFile(path.join(__dirname, "../build/voyager.worker.js"));
-      case "/schema":
-        return res.send(schema);
       default:
         res.sendStatus(404);
     }
   }
 
-  return matcha;
+  return route;
 }
 
 function getIndexHTMLString() {
@@ -83,6 +81,4 @@ function getIndexHTMLString() {
   return html;
 }
 
-module.exports = {
-  matchaWrap
-};
+module.exports = matcha;

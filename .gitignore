@@ -4,4 +4,4 @@
 /cypress/support/
 /cypress/screenshots/
 /build/*
-!/build/.gitkeep
+!/build/matcha.css

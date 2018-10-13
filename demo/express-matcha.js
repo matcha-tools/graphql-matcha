@@ -1,7 +1,7 @@
 const path = require("path");
 
-function matchaWrap() {
-  function matcha(req, res) {
+function matcha() {
+  function route(req, res) {
     const html = getIndexHTMLString();
     switch (req.path) {
       case "/":
@@ -10,7 +10,7 @@ function matchaWrap() {
       case "/visualizer.css":
         return res.sendFile(path.join(__dirname, "../build/visualizer.css"));
       case "/matcha.css":
-        return res.sendFile(path.join(__dirname, "matcha.css"));
+        return res.sendFile(path.join(__dirname, "../build/matcha.css"));
       case "/bundle.js":
         return res.sendFile(path.join(__dirname, "../build/bundle.js"));
       case "/voyager.worker.js":
@@ -20,7 +20,7 @@ function matchaWrap() {
     }
   }
 
-  return matcha;
+  return route;
 }
 
 function getIndexHTMLString() {
@@ -81,6 +81,4 @@ function getIndexHTMLString() {
   return html;
 }
 
-module.exports = {
-  matchaWrap
-};
+module.exports = matcha;

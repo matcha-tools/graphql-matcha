@@ -2,3 +2,6 @@
 /cypress/integration/examples/
 /cypress/fixtures/
 /cypress/support/
+/cypress/screenshots/
+/build/*
+!/build/matcha.css

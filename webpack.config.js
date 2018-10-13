@@ -1,10 +1,9 @@
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const root = require("./helpers").root;
-const VERSION = JSON.stringify(require("../package.json").version);
+const VERSION = JSON.stringify(require("./package.json").version);
 
 module.exports = {
     mode: "development",
@@ -17,7 +16,7 @@ module.exports = {
     resolve: {
       extensions: [".ts", ".tsx", ".mjs", ".js", ".json", ".css", ".svg"]
     },
-    entry: ["./src/visualizer/polyfills.ts", "./src/index.js"],
+    entry: ["./src/components/visualizer/polyfills.ts", "./src/index.js"],
     devServer: {
       contentBase: root("demo"),
       watchContentBase: true,
@@ -68,7 +67,7 @@ module.exports = {
         },
 
         {
-          test: /src\/visualizer\/.*\.css$/,
+          test: /src\/components\/visualizer\/.*\.css$/,
           exclude: /variables\.css$/,
 
             use: [
@@ -92,7 +91,7 @@ module.exports = {
         }
         ,
         {
-          test: /src\/visualizer\/components\/variables\.css$/,
+          test: /src\/components\/visualizer\/components\/variables\.css$/,
           loader: "postcss-variables-loader?es5=1"
         },
         {
@@ -135,12 +134,9 @@ module.exports = {
         VERSION: VERSION
       }),
 
-      new HtmlWebpackPlugin({
-        template: "./index.html"
-      }),
 
       new MiniCssExtractPlugin({
-        filename: "[name].[hash].css"
+        filename: "visualizer.css"
       }),
 
       new CopyWebpackPlugin([

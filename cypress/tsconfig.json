@@ -5,7 +5,7 @@
     "module":"es6",
     "target": "es6",
     "lib": ["es2018", "dom"],
-    "types": ["cypress"]
+    "types": ["cypress","node"]
   },
   "include": [
     "**/*.ts"

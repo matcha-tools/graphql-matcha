@@ -1,6 +1,6 @@
 describe("Integration tests", () => {
   it("visits the site", () => {
-    cy.visit("http://localhost:9090");
+    cy.visit("http://localhost:3000/matcha");
   });
 
   it("disables the Draft button until the schema has generated", () => {

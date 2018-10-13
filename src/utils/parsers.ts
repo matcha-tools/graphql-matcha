@@ -1,5 +1,5 @@
 import { isEmpty, last as lastElementOf, map } from "lodash";
-import {getNameFromFieldId} from "../visualizer/introspection/utils"
+import {getNameFromFieldId} from "../components/visualizer/introspection/utils"
 
 
 export function parseQueryStack(queryArray: Array<any>): string {
@@ -11,7 +11,7 @@ export function parseQueryStack(queryArray: Array<any>): string {
   //TODO use prettier for production, not dev
   // const prettier = require("prettier/standalone");
   // const plugins = [require("prettier/parser-graphql")];
-  // const formattedQstr = prettier.format(queryString, { parser: "graphql", plugins });
+  // const formattedQstr = prettier.format(queryStr, { parser: "graphql", plugins });
   return queryStr;
 }
 

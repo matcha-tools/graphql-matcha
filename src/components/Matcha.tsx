@@ -54,8 +54,6 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
 
   queryModeHandler(connections: { history: string[][], currentFields: string[]}): void {
     if (this.state) {
-      // we need to exit out of query mode if query mode is enabled and nothing is selected
-      // spoke with sean about this at 11PM - 10/1/18 - Jon
       if (!connections.history.length) return;
       let queryStack = connections.history;
       if (connections.currentFields && connections.currentFields.length) {

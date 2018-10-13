@@ -47,8 +47,8 @@ class DocNavigation extends React.Component<DocNavigationProps> {
       if (this.props.svg) disabled = false;
 
       let display = (
-        <button disabled={disabled} type="button" onClick={this.props.toggleQueryMode}>
-          Activate Query mode
+        <button disabled={disabled} type="button" title="Activate Query Mode" onClick={this.props.toggleQueryMode}>
+          Draft-Query
         </button>
       );
 
@@ -66,7 +66,7 @@ class DocNavigation extends React.Component<DocNavigationProps> {
     }
 
     // determine size depndent 
-    let minHeight = '24px';
+    let minHeight = '12px';
     if (this.props.inQueryMode) {
       minHeight = '115px';
     }

@@ -190,7 +190,7 @@ export function rootReducer(previousState = initialState, action) {
 
       let name = action.payload.name ;
       // check for args, if it has arguments append '(args)' to the name
-      if (getArgs(action.payload)) name = `${name}(args)`;
+      if (getArgs(action.payload)) name = `${name}(args: args)`;
       
       let payload = [name];
       // check to see if the node has relay, if so append edges and node to the array

@@ -1,6 +1,6 @@
 const express = require("express");
 const graphqlHTTP = require('express-graphql');
-const matcha = require('./express-matcha').matchaWrap;
+const matcha = require('./express-matcha');
 const cors = require("cors");
 const PORT = 3000;
 

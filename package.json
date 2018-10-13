@@ -1,8 +1,11 @@
 {
-  "name": "react-matcha",
+  "name": "graphql-matcha",
   "version": "0.0.1",
-  "description": "create tests, visualize schema",
+  "description": "GraphQL query generator/runner, schema visualizer, and mocha test generator",
   "main": "index.js",
+  "files": [
+    "build"
+  ],
   "scripts": {
     "test": "npm run test:build && npm run test:unit && rm cypress/integration/unit.built.test.js && rm cypress/integration/index.html",
     "test:unit": "mocha cypress/integration/*.built.test.js",
@@ -14,14 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/s-herbert/react-matcha.git"
+    "url": "git+https://github.com/matcha-tools/graphql-matcha.git"
   },
-  "author": "",
+  "author": "sherbert,echoi,jche,bleong",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/s-herbert/react-matcha/issues"
+    "url": "https://github.com/matcha-tools/graphql-matcha/issues"
   },
-  "homepage": "https://github.com/s-herbert/react-matcha#readme",
+  "homepage": "https://github.com/matcha-tools/graphql-matcha#readme",
   "devDependencies": {
     "@babel/core": "^7.1.0",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
@@ -46,6 +49,7 @@
     "@types/html-webpack-plugin": "^3.2.0",
     "@types/lodash": "^4.14.116",
     "@types/mocha": "^5.2.5",
+    "@types/prettier": "^1.13.2",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
     "@types/react-redux": "^6.0.9",
@@ -82,7 +86,6 @@
   "dependencies": {
     "@f/animate": "^1.0.1",
     "@material-ui/core": "^3.1.0",
-    "@types/prettier": "^1.13.2",
     "classnames": "^2.2.6",
     "codemirror": "^5.40.0",
     "codemirror-graphql": "^0.7.1",

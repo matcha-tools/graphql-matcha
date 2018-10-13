@@ -14,6 +14,7 @@ interface MatchaStateTypes {
 
 export default class Matcha extends React.Component<null, MatchaStateTypes> {
   schema: any;
+  endpoint: string;
 
   constructor(props) {
     super(props);
@@ -23,6 +24,8 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
       schema: null
     };
 
+    this.endpoint = '';
+
     this.toggleQueryMode = this.toggleQueryMode.bind(this);
     this.endQueryMode = this.endQueryMode.bind(this);
     this.queryModeHandler = this.queryModeHandler.bind(this);
@@ -30,12 +33,20 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
   }
 
   componentDidMount(){
-    this.getIntroSpectionThenRender();
+    this.getGQLEndpointUrl()
+    .then(()=>this.getIntroSpectionThenRender());
   }
   
+
+  getGQLEndpointUrl(){
+    return fetch(`matcha/endpoint`)
+    .then(res => res.text())
+    .then(endpoint => this.endpoint = endpoint)
+    .catch(err=>console.error(err));
+  }
   
   getIntroSpectionThenRender(){
-    fetch(`http://localhost:3000/graphql?query=${introspectionQuery}`)
+    fetch(`${this.endpoint}?query=${introspectionQuery}`)
     .then(res => res.json())
     .then(introspectionResponse => buildClientSchema(introspectionResponse.data))
     .then(clientSchema => this.setState({schema:clientSchema}))

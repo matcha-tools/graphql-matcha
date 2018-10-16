@@ -87,7 +87,7 @@ export default class Matcha extends React.Component<null, MatchaStateTypes> {
         />
         <div id="query-runner">
           <GraphiQL
-            fetcher={helpers.graphQLFetcher}
+            fetcher={helpers.graphQLFetcher(this.endpoint)}
             variables={helpers.parameters.variables}
             operationName={helpers.parameters.operationName}
             onEditQuery={helpers.onEditQuery}

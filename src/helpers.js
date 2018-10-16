@@ -73,28 +73,31 @@ export function updateURL() {
 // Defines a GraphQL fetcher using the fetch API. You're not required to
 // use fetch, and could instead implement graphQLFetcher however you like,
 // as long as it returns a Promise or Observable.
-export function graphQLFetcher(graphQLParams) {
-  // This example expects a GraphQL server at the path /graphql.
-  // Change this to point wherever you host your GraphQL server.
-  return fetch("http://localhost:3000/graphql", {
-    method: "post",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(graphQLParams),
-  })
-    .then(function(response) {
-      return response.text();
-    })
-    .then(function(responseBody) {
-      try {
-        return JSON.parse(responseBody);
-      } catch (error) {
-        return responseBody;
-      }
-    });
-  }
 
-  
- 
+//TODO
+export function graphQLFetcher(endpoint) {
+  function fetcher(graphQLParams) {
+    // This example expects a GraphQL server at the path /graphql.
+    // Change this to point wherever you host your GraphQL server.
+    console.log('EP-->', endpoint);
+    return fetch(`${endpoint}`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(graphQLParams)
+    })
+      .then(function(response) {
+        return response.text();
+      })
+      .then(function(responseBody) {
+        try {
+          return JSON.parse(responseBody);
+        } catch (error) {
+          return responseBody;
+        }
+      });
+  }
+  return fetcher;
+}

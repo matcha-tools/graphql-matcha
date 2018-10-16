@@ -522,6 +522,7 @@ export class GraphiQL extends React.Component {
   }
 
   _fetchQuery(query, variables, operationName, cb) {
+  console.log('calling _fetchQry')
     const fetcher = this.props.fetcher;
     let jsonVariables = null;
 

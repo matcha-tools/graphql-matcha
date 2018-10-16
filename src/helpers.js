@@ -79,7 +79,7 @@ export function graphQLFetcher(endpoint) {
   function fetcher(graphQLParams) {
     // This example expects a GraphQL server at the path /graphql.
     // Change this to point wherever you host your GraphQL server.
-    console.log('EP-->', endpoint);
+    if(!endpoint) return '';
     return fetch(`${endpoint}`, {
       method: "post",
       headers: {

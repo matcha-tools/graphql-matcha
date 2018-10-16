@@ -5,3 +5,4 @@
 /cypress/screenshots/
 /build/*
 !/build/matcha.css
+!/build/express-matcha.js

@@ -10,7 +10,6 @@ cache:
 script: 
  - node demo/server.js -- &
  - npm run build
- - npm start -- &
  - npm run cypress:run
  - kill $(jobs -p) || true
  

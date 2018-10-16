@@ -1,6 +1,6 @@
 const path = require("path");
 
-function matcha() {
+function matcha(config) {
   function route(req, res) {
     const html = getIndexHTMLString();
     switch (req.path) {
@@ -15,6 +15,8 @@ function matcha() {
         return res.sendFile(path.join(__dirname, "../build/bundle.js"));
       case "/voyager.worker.js":
         return res.sendFile(path.join(__dirname, "../build/voyager.worker.js"));
+      case "/endpoint":
+        return res.send(config.endpoint);
       default:
         res.sendStatus(404);
     }

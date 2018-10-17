@@ -67,6 +67,8 @@ describe("Integration tests", () => {
     );
     cy.get(".execute-button").click();
     cy.wait(1200);
+
+    
   });
 
   xit("PRETTY goes back in to QMode, selects allPlanets > population", () => {

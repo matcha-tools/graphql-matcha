@@ -461,7 +461,10 @@ export class GraphiQL extends React.Component {
   _fetchSchema() {
     const fetcher = this.props.fetcher;
 
-    const fetch = observableToPromise(fetcher({ query: introspectionQuery }));
+    const observableFetch = fetcher({ query: introspectionQuery });
+    //TODO make this cleaner
+    if(observableFetch ==='') return;
+    const fetch = observableToPromise(observableFetch);
     if (!isPromise(fetch)) {
       this.setState({
         response: "Fetcher did not return a Promise for introspection."

@@ -1,6 +1,6 @@
 {
   "name": "graphql-matcha",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "description": "GraphQL query generator/runner, schema visualizer, and mocha test generator",
   "main": "index.js",
   "files": [

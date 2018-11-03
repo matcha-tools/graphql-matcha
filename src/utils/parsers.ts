@@ -7,11 +7,6 @@ export function parseQueryStack(queryArray: Array<any>): string {
   let newQueryArray = appendFragmentIfNoFields(queryArray.slice())
   let queryStr = braceLastElementOf(newQueryArray);
   queryStr = braceRemainingElements(newQueryArray, queryStr);
-  
-  //TODO use prettier for production, not dev
-  // const prettier = require("prettier/standalone");
-  // const plugins = [require("prettier/parser-graphql")];
-  // const formattedQstr = prettier.format(queryStr, { parser: "graphql", plugins });
   return queryStr;
 }
 
